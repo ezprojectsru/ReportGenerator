@@ -10,10 +10,9 @@
 
 ## 1.	Функциональные блоки
 
-*	Функционал подключения приложения к Серверу
-
-*	Функционал регистрации и авторизации 
-*	Функционал для Администратора 
+*	Функционал подключения приложения к Серверу ![Work](https://img.shields.io/badge/WORK%2010%25-current%20work-blue?style=?style=?style=plastic&logo=appveyor&logo=appveyor&logo=csharp)
+*	Функционал регистрации и авторизации ![Plan](https://img.shields.io/badge/PLAN-this%20week%20plan-red?style=?style=plastic&logo=appveyor&logo=csharp)
+*	Функционал для Администратора ![Plan](https://img.shields.io/badge/PLAN-this%20week%20plan-red?style=?style=plastic&logo=appveyor&logo=csharp)
 *	Функционал для Менеджера
 *	Функционал для Сотрудника
 *	Функционал Отдела
@@ -22,7 +21,7 @@
 *	Функционал Задачи
 *	Функционал Плана
 *	Функционал Отчета
-*	Функционал Производственного календаря
+*	Функционал Производственного календаря ![Plan](https://img.shields.io/badge/PLAN-this%20week%20plan-red?style=?style=plastic&logo=appveyor&logo=csharp)
 *	Функционал генерации отчетов по различным аспектам деятельности в интервале времени в электронном, табличном виде, с возможностью экспорта в редактируемые форматы (например, Excel)
 *	Функционал авто-обновления приложения
 *	Документация к проекту
