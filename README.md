@@ -10,9 +10,9 @@
 
 ## 1.	Функциональные блоки
 
-*	Функционал подключения приложения к Серверу ![Work](https://img.shields.io/badge/WORK%2010%25-current%20work-blue?style=?style=?style=plastic&logo=appveyor&logo=appveyor&logo=csharp)
-*	Функционал регистрации и авторизации ![Plan](https://img.shields.io/badge/PLAN-this%20week%20plan-red?style=?style=plastic&logo=appveyor&logo=csharp)
-*	Функционал для Администратора ![Plan](https://img.shields.io/badge/PLAN-this%20week%20plan-red?style=?style=plastic&logo=appveyor&logo=csharp)
+*	Функционал подключения приложения к Серверу ![Completed](https://img.shields.io/badge/Completed%20100%25-task%20completed-green?style=?style=?style=plastic&logo=appveyor&logo=appveyor&logo=csharp)
+*	Функционал регистрации и авторизации ![Completed](https://img.shields.io/badge/Completed%20100%25-task%20completed-green?style=?style=?style=plastic&logo=appveyor&logo=appveyor&logo=csharp)
+*	Функционал для Администратора ![Work](https://img.shields.io/badge/WORK%201%25-current%20work-blue?style=?style=?style=plastic&logo=appveyor&logo=appveyor&logo=csharp)
 *	Функционал для Менеджера
 *	Функционал для Сотрудника
 *	Функционал Отдела
@@ -26,14 +26,14 @@
 *	Функционал авто-обновления приложения
 *	Документация к проекту
 
-### 1.1.	 Функционал подключения приложения к Серверу ![Work](https://img.shields.io/badge/WORK%2010%25-current%20work-blue?style=?style=?style=plastic&logo=appveyor&logo=appveyor&logo=csharp)
+### 1.1.	 Функционал подключения приложения к Серверу ![Completed](https://img.shields.io/badge/Completed%20100%25-task%20completed-green?style=?style=?style=plastic&logo=appveyor&logo=appveyor&logo=csharp)
 * При старте приложения происходит проверка возможности подключения к удаленной БД Сервера.
 * В случае успешного подключения открывается основное окно приложения
 * В случае ошибки подключения пользователю выводится сообщение о необходимости обратиться к системному администратору или в тех поддержку.
 
 
 
-### 1.2.	 Функционал регистрации и авторизации ![Plan](https://img.shields.io/badge/PLAN-this%20week%20plan-red?style=?style=plastic&logo=appveyor&logo=csharp)
+### 1.2.	 Функционал регистрации и авторизации ![Completed](https://img.shields.io/badge/Completed%20100%25-task%20completed-green?style=?style=?style=plastic&logo=appveyor&logo=appveyor&logo=csharp)
 *	Новый пользователь может зарегистрироваться в системе самостоятельно с базовыми правами и без прикрепления к конкретному отделу
 *	При регистрации указываются следующие поля:
     * Логин – обязательное поле
@@ -48,7 +48,7 @@
 *	При неудачной авторизации пользователю выводится сообщение, что неверно указан Логин или Пароль.
 
 
-### 1.3.	Функционал для Администратора ![Plan](https://img.shields.io/badge/PLAN-this%20week%20plan-red?style=?style=plastic&logo=appveyor&logo=csharp)
+### 1.3.	Функционал для Администратора ![Work](https://img.shields.io/badge/WORK%201%25-current%20work-blue?style=?style=?style=plastic&logo=appveyor&logo=appveyor&logo=csharp)
 *	Функционал Администратора делится на 2 группы: Администратор Системы (ОИТ) и Администратор отделов
     *	Администратор ОИТ имеет весь администраторский функционал и доступ к данным всех структурных подразделений компании
     *	Администратор конкретного отдела имеет доступ к данным только своего отдела и не имеет доступ к данным других структурных подразделений.
