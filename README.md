@@ -12,7 +12,7 @@
 
 *	Функционал подключения приложения к Серверу ![Completed](https://img.shields.io/badge/Completed%20100%25-task%20completed-green?style=?style=?style=plastic&logo=appveyor&logo=appveyor&logo=csharp)
 *	Функционал регистрации и авторизации ![Completed](https://img.shields.io/badge/Completed%20100%25-task%20completed-green?style=?style=?style=plastic&logo=appveyor&logo=appveyor&logo=csharp)
-*	Функционал для Администратора ![Work](https://img.shields.io/badge/WORK%201%25-current%20work-blue?style=?style=?style=plastic&logo=appveyor&logo=appveyor&logo=csharp)
+*	Функционал для Администратора ![Work](https://img.shields.io/badge/WORK%2035%25-current%20work-blue?style=?style=?style=plastic&logo=appveyor&logo=appveyor&logo=csharp)
 *	Функционал для Менеджера
 *	Функционал для Сотрудника
 *	Функционал Отдела
@@ -48,7 +48,7 @@
 *	При неудачной авторизации пользователю выводится сообщение, что неверно указан Логин или Пароль.
 
 
-### 1.3.	Функционал для Администратора ![Work](https://img.shields.io/badge/WORK%201%25-current%20work-blue?style=?style=?style=plastic&logo=appveyor&logo=appveyor&logo=csharp)
+### 1.3.	Функционал для Администратора ![Work](https://img.shields.io/badge/WORK%2035%25-current%20work-blue?style=?style=?style=plastic&logo=appveyor&logo=appveyor&logo=csharp)
 *	Функционал Администратора делится на 2 группы: Администратор Системы (ОИТ) и Администратор отделов
     *	Администратор ОИТ имеет весь администраторский функционал и доступ к данным всех структурных подразделений компании
     *	Администратор конкретного отдела имеет доступ к данным только своего отдела и не имеет доступ к данным других структурных подразделений.
