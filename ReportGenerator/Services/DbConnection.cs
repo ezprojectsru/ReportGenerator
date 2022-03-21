@@ -44,7 +44,7 @@ namespace ReportGenerator.Services
                 }
                 catch 
                 {
-                    MessageBox.Show("Ошибка десериализации настроек. Обратитесь к системному администратору.", "Подключение к серверу");
+                    
                 }
                        
         }       
