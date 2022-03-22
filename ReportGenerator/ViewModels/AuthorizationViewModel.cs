@@ -5,8 +5,6 @@ using System.Windows.Input;
 using ReportGenerator.DataBase.Controls;
 using ReportGenerator.DataBase.Models;
 using ReportGenerator.Views;
-
-using System.Data.SqlClient;
 using System.Threading;
 
 namespace ReportGenerator.ViewModels
