@@ -16,6 +16,8 @@ namespace ReportGenerator.ViewModels
     /// </summary>
     public class AuthorizationViewModel : BindableBase
     {
+        private Thread _thread;
+        private CancellationTokenSource _tokenSource;
         private bool isConnected = false;
         public string ConnectionStatus { get; set; } = "Проверка подключения к Серверу, подождите...";
         public string Login { get; set; }
@@ -23,23 +25,13 @@ namespace ReportGenerator.ViewModels
 
 
         /// <summary>
-        /// Процедура инициализации. Проверка подключения к серверу
+        /// Инициализация потока для проверки подключения
         /// </summary>
         private void Init()
         {
-            DbConnection db = new DbConnection();
-            SqlConnection conn = db.ConnectOpen();
-
-            if (conn != null)
-            {
-                isConnected = true;
-                ConnectionStatus = "";
-                db.ConnectClose();
-            }
-            else
-            {
-                ConnectionStatus = "Подключение к Серверу отсутствует!";
-            }
+            _tokenSource = new CancellationTokenSource();
+            _thread = new Thread(Worker) { IsBackground = true };
+            _thread.Start(_tokenSource.Token);
         }
 
         
@@ -84,13 +76,14 @@ namespace ReportGenerator.ViewModels
             SettingsWindow settingsWindow = new SettingsWindow();
             if (settingsWindow.ShowDialog() == true)
             {
+                isConnected = false;
+                ConnectionStatus = "Проверка подключения к Серверу, подождите...";
                 Init();
             }
 
         });
 
-        private Thread _thread;
-        private CancellationTokenSource _tokenSource;
+        
         /// <summary>
         /// Команда для проверки подключения к серверу
         /// </summary>
@@ -103,21 +96,19 @@ namespace ReportGenerator.ViewModels
         }, () => _thread == null);
 
         private void Worker(object state)
-        {            
-            
-                DbConnection db = new DbConnection();
-                SqlConnection conn = db.ConnectOpen();
+        {
+            DbConnection db = new DbConnection();
 
-                if (conn != null)
-                {
-                    isConnected = true;
-                    ConnectionStatus = "";
-                    db.ConnectClose();
-                }
-                else
-                {
-                    ConnectionStatus = "Подключение к Серверу отсутствует!";
-                }            
+            if (db.CheckConnect())
+            {
+                isConnected = true;
+                ConnectionStatus = "";
+            }
+            else
+            {
+                isConnected = false;
+                ConnectionStatus = "Подключение к Серверу отсутствует!";
+            }
         }
     }
 }

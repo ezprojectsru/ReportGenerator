@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using System.Data.SqlClient;
 using System.IO;
 using System.Text.Json;
@@ -12,7 +13,7 @@ namespace ReportGenerator.Services
     public class DbConnection
     {
 
-        public SqlConnection Connection { get; set; }
+        public SqlConnection Connection { get; set; }        
         public DbConnection()
         {
             if (!File.Exists("settings.json"))
@@ -40,14 +41,38 @@ namespace ReportGenerator.Services
                     builder.InitialCatalog = connectConfig.DbName;
                     builder.UserID = connectConfig.Username;
                     builder.Password = connectConfig.Password;
-                    Connection = new SqlConnection(builder.ToString());
+                    Connection = new SqlConnection(builder.ToString());                    
+                    
                 }
                 catch 
                 {
                     
-                }
-                       
-        }       
+                }                       
+        }
+
+        /// <summary>
+        /// Проверка есть ли соединение
+        /// </summary>
+        /// <returns></returns>
+        public bool CheckConnect()
+        {
+            bool result = true;
+            try
+            {
+                Connection.Open();                
+            }
+            catch (Exception ex)
+            {
+                result = false;
+            }
+
+            if (Connection != null && Connection.State != ConnectionState.Closed)
+            {
+                Connection.Close();
+            }
+            return result;
+        }
+        
 
         /// <summary>
         /// Возвращает созданное соединение
@@ -57,29 +82,7 @@ namespace ReportGenerator.Services
             return Connection;
         }
 
-        /// <summary>
-        /// Открывает соединение и возвращает его или null
-        /// </summary>        
-        public SqlConnection ConnectOpen()
-        {
-            try
-            {
-                Connection.Open();
-                return Connection;
-            }
-            catch (Exception ex)
-            {
-                return null;
-            }
-        }
-
-        /// <summary>
-        /// Закрывает соединение
-        /// </summary> 
-        public void ConnectClose()
-        {
-            Connection.Close();
-        }
+        
 
         
 
