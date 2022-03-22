@@ -9,6 +9,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+using DevExpress.Xpf.DXBinding;
 using ReportGenerator.Services;
 using System;
 using System.Diagnostics;

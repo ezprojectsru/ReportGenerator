@@ -17,7 +17,7 @@ namespace ReportGenerator.ViewModels
     public class AuthorizationViewModel : BindableBase
     {
         private bool isConnected = false;
-        public string ConnectionStatus { get; set; } = "Проверка подключения к Серверу";
+        public string ConnectionStatus { get; set; } = "Проверка подключения к Серверу, подождите...";
         public string Login { get; set; }
         public string Password { get; set; }
 
@@ -103,10 +103,8 @@ namespace ReportGenerator.ViewModels
         }, () => _thread == null);
 
         private void Worker(object state)
-        {
-            var token = (CancellationToken)state;
-            while (!token.IsCancellationRequested)
-            {
+        {            
+            
                 DbConnection db = new DbConnection();
                 SqlConnection conn = db.ConnectOpen();
 
@@ -119,8 +117,7 @@ namespace ReportGenerator.ViewModels
                 else
                 {
                     ConnectionStatus = "Подключение к Серверу отсутствует!";
-                }
-            }
+                }            
         }
     }
 }
