@@ -26,6 +26,7 @@ namespace ReportGenerator.Services
             services.AddTransient<PlanEditWindowViewModel>();
             services.AddTransient<UserEditWindowViewModel>();
             services.AddTransient<DepartamentEditWindowViewModel>();
+            services.AddTransient<RoleEditWindowViewModel>();
 
             // Сервисы
             services.AddSingleton<PageNavigationService>();

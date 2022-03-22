@@ -50,6 +50,17 @@ namespace ReportGenerator.ViewModels
     /// </summary>
     public class AppManagerPageViewModel : BindableBase
     {
+        public List<Role> ListRoles { get; set; }
+        private Role _roleSelected;
+        public Role RoleSelected
+        {
+            get { return _roleSelected; }
+            set
+            {
+                _roleSelected = value;
+            }
+        }
+
         public List<Departament> ListDepartaments { get; set; }
         private Departament _departamentSelected;
         public Departament DepartamentSelected
@@ -65,6 +76,7 @@ namespace ReportGenerator.ViewModels
 
         private User _newUser;
         private Departament _newDepartament;
+        private Role _newRole;
 
         private SessionUser _sessionUser;
 
@@ -89,6 +101,10 @@ namespace ReportGenerator.ViewModels
             
             ListDepartaments = new List<Departament>();
             ListDepartaments = DepartamentControl.GetAllDepartamentsList();
+
+            ListRoles = new List<Role>();
+            ListRoles = RoleControl.GetAllRolesList();
+
             MessageService.Bus += Receive;
         }
 
@@ -113,6 +129,11 @@ namespace ReportGenerator.ViewModels
             if (data is Departament departament)
             {
                 _newDepartament = departament;
+                MessageService.Bus -= Receive;
+            }
+            if (data is Role role)
+            {
+                _newRole = role;
                 MessageService.Bus -= Receive;
             }
         }
@@ -263,5 +284,57 @@ namespace ReportGenerator.ViewModels
                     ListDepartaments = DepartamentControl.GetAllDepartamentsList();
                  }
         }, () => _departamentSelected != null);
+
+        public ICommand OpenCreateNewRoleWindow => new DelegateCommand(() =>
+        {
+            RoleEditWindow roleEditWindow = new RoleEditWindow();
+            MessageService.Send(0);
+            MessageService.Bus += Receive;
+
+            if (roleEditWindow.ShowDialog() == true)
+            {
+                if (_newRole.id == 0)
+                {
+                    RoleControl.InsertNewRole(_newRole);
+                    ListRoles = new List<Role>();
+                    ListRoles = RoleControl.GetAllRolesList();
+                }
+            }
+            else
+            {
+                MessageService.Bus -= Receive;
+            }
+        });
+
+        public ICommand OpenEditSelectedRoleWindow => new DelegateCommand(() =>
+        {
+            RoleEditWindow roleEditWindow = new RoleEditWindow();
+            MessageService.Send(_roleSelected);
+            MessageService.Bus += Receive;
+
+            if (roleEditWindow.ShowDialog() == true)
+            {
+                if (_newRole.id != 0)
+                {
+                    RoleControl.UpdateCurrentRole(_newRole);
+                    ListRoles = new List<Role>();
+                    ListRoles = RoleControl.GetAllRolesList();
+                }
+            }
+            else
+            {
+                MessageService.Bus -= Receive;
+            }
+        }, () => _roleSelected != null);
+
+        public ICommand DeleteSelectedRole=> new DelegateCommand(() =>
+        {
+            if (MessageBox.Show("Вы уверены, что хотите удалить роль?", "Удаление роли", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
+            {
+                RoleControl.DeleteCurrentRole(_roleSelected.id);
+                ListRoles = new List<Role>();
+                ListRoles = RoleControl.GetAllRolesList();
+            }
+        }, () => _roleSelected != null);
     }
 }

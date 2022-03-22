@@ -195,13 +195,45 @@
                     <TextBlock Margin="3">Таблицы</TextBlock>
                 </TabItem.Header>
                 <TabItem.Content>
-                    <TextBlock
-                        Margin="0,100,0,0"
-                        HorizontalAlignment="Center"
-                        FontSize="18"
-                        FontWeight="Bold"
-                        Text="=&gt;Тут будет управление Секторами, Ролями и Группами=&gt;"
-                        TextWrapping="Wrap" />
+                    <StackPanel Margin="10">
+
+                        <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+                            <Button
+                                Margin="5"
+                                Padding="5"
+                                Command="{Binding OpenCreateNewRoleWindow}"
+                                Content="+ Создать" />
+                            <Button
+                                Margin="5"
+                                Padding="5"
+                                Command="{Binding OpenEditSelectedRoleWindow}"
+                                Content="Редактировать" />
+                            <Button
+                                Margin="5"
+                                Padding="5"
+                                Command="{Binding DeleteSelectedRole}"
+                                Content="Удалить" />
+                        </StackPanel>
+                        <ListView
+                            Margin="10"
+                            ItemsSource="{Binding ListRoles}"
+                            SelectedItem="{Binding RoleSelected}">
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn
+                                        Width="0"
+                                        DisplayMemberBinding="{Binding id}"
+                                        Header="ID" />
+                                    <GridViewColumn
+                                        Width="200"
+                                        DisplayMemberBinding="{Binding name}"
+                                        Header="Название" />
+
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+
+                    </StackPanel>
                 </TabItem.Content>
             </TabItem>
         </TabControl>

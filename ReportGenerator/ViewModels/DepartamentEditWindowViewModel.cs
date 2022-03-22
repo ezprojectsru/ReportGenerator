@@ -29,6 +29,7 @@ namespace ReportGenerator.ViewModels
             if (dataReceive is Departament data)
             {
                 CurrentDepartament = data;
+                Title = "Редактирование отдела";
                 MessageService.Bus -= Receive;
             }
 

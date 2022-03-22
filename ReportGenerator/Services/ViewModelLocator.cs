@@ -17,5 +17,6 @@ namespace ReportGenerator.Services
         public AppManagerPageViewModel AppManagerPageViewModel => InversionOfControl.Resolve<AppManagerPageViewModel>();
         public UserEditWindowViewModel UserEditWindowViewModel => InversionOfControl.Resolve<UserEditWindowViewModel>();
         public DepartamentEditWindowViewModel DepartamentEditWindowViewModel => InversionOfControl.Resolve<DepartamentEditWindowViewModel>();
+        public RoleEditWindowViewModel RoleEditWindowViewModel => InversionOfControl.Resolve<RoleEditWindowViewModel>();
     }
 }

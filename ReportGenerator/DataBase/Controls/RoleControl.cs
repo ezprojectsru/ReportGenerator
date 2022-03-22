@@ -74,5 +74,59 @@ namespace ReportGenerator.DataBase.Controls
 
             return role.id;
         }
+
+        public static List<Role> GetAllRolesList()
+        {
+
+            List<Role> roles = new List<Role>();
+            DbConnection db = new DbConnection();
+            SqlConnection conn = db.GetConnection();
+
+            using (conn)
+            {
+                roles = conn.Query<Role>("Select * From roles").ToList();
+            }
+
+            return roles;
+        }
+
+        public static void InsertNewRole(Role role)
+        {
+            DbConnection db = new DbConnection();
+            SqlConnection conn = db.GetConnection();
+
+            using (conn)
+            {
+                string insertQuery = "INSERT INTO roles (name) VALUES (@name)";
+                var result = conn.Execute(insertQuery, role);
+            }
+        }
+
+        public static void UpdateCurrentRole(Role role)
+        {
+            DbConnection db = new DbConnection();
+            SqlConnection conn = db.GetConnection();
+
+            using (conn)
+            {
+                string updatetQuery = "UPDATE roles SET name = @name WHERE id = @id";
+                var result = conn.Execute(updatetQuery, role);
+            }
+        }
+
+        public static void DeleteCurrentRole(int id)
+        {
+            DbConnection db = new DbConnection();
+            SqlConnection conn = db.GetConnection();
+
+            using (conn)
+            {
+                string deleteQuery = "DELETE FROM roles WHERE id = @id";
+                var result = conn.Execute(deleteQuery, new
+                {
+                    id
+                });
+            }
+        }
     }
 }

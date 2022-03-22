@@ -10,6 +10,16 @@ namespace ReportGenerator.DataBase.Models
         /// Класс модели Роли
         /// </summary>
         public int id { get; set; }
-        public string name { get; set; }        
-    }
+        public string name { get; set; }
+
+        public Role()
+        { }
+
+        public Role(int id, string name)
+        {
+            this.id = id;
+            this.name = name;
+
+        }
+    }    
 }
