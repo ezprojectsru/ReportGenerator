@@ -15,11 +15,11 @@
 *	Функционал для Администратора ![Work](https://img.shields.io/badge/WORK%2050%25-current%20work-blue?style=?style=?style=plastic&logo=appveyor&logo=appveyor&logo=csharp)
 *	Функционал для Менеджера
 *	Функционал для Сотрудника
-*	Функционал Отдела
-*	Функционал Категорий деятельности отдела
+*	Функционал Отдела ![Completed](https://img.shields.io/badge/Completed%20100%25-task%20completed-green?style=?style=?style=plastic&logo=appveyor&logo=appveyor&logo=csharp)
+*	Функционал Категорий деятельности отдела ![Completed](https://img.shields.io/badge/Completed%20100%25-task%20completed-green?style=?style=?style=plastic&logo=appveyor&logo=appveyor&logo=csharp)
 *	Функционал Проектов и направлений
-*	Функционал Задачи
-*	Функционал Плана
+*	Функционал Задачи ![Completed](https://img.shields.io/badge/Completed%20100%25-task%20completed-green?style=?style=?style=plastic&logo=appveyor&logo=appveyor&logo=csharp)
+*	Функционал Плана ![Completed](https://img.shields.io/badge/Completed%20100%25-task%20completed-green?style=?style=?style=plastic&logo=appveyor&logo=appveyor&logo=csharp)
 *	Функционал Отчета
 *	Функционал Производственного календаря ![Plan](https://img.shields.io/badge/PLAN-this%20week%20plan-red?style=?style=plastic&logo=appveyor&logo=csharp)
 *	Функционал генерации отчетов по различным аспектам деятельности в интервале времени в электронном, табличном виде, с возможностью экспорта в редактируемые форматы (например, Excel)
@@ -77,7 +77,7 @@
 *	Функционал просмотра истории своей деятельности
 *	Функционал просмотра истории исправлений, замечания руководителя, статус согласования планов и отчетов
 
-### 1.6.	Функционал Отдела
+### 1.6.	Функционал Отдела ![Completed](https://img.shields.io/badge/Completed%20100%25-task%20completed-green?style=?style=?style=plastic&logo=appveyor&logo=appveyor&logo=csharp)
 *	Отдел – структурное подразделение компании, включающее в себя Сотрудников компании и имеющий Категории своей деятельности.
 *	Отдел состоит из полей:
     *	Название отдела – обязательное поле
@@ -88,7 +88,7 @@
     *	ОИТ
     *	Поддержка и развитие IT-инфраструктуры компании
 
-### 1.7.	Функционал Категорий деятельности отдела
+### 1.7.	Функционал Категорий деятельности отдела ![Completed](https://img.shields.io/badge/Completed%20100%25-task%20completed-green?style=?style=?style=plastic&logo=appveyor&logo=appveyor&logo=csharp)
 *	Каждый отдел имеет список категории своей деятельности. 
 *	Категория состоит из полей:
     *	Название категории – обязательное поле
@@ -108,7 +108,7 @@
     *	АСУП
     *	Автоматизированная система управления предприятием
 
-### 1.9.	 Функционал Задачи
+### 1.9.	 Функционал Задачи ![Completed](https://img.shields.io/badge/Completed%20100%25-task%20completed-green?style=?style=?style=plastic&logo=appveyor&logo=appveyor&logo=csharp)
 *	Задача – основной составной элемент Планов и Отчетов.
 *	Задача состоит из полей:
     *	Название задачи – обязательное поле
@@ -129,7 +129,7 @@
     *	Реализовать каркас нового приложения согласно собственным представлениям о необходимых ему свойствах
     *	Нет
 
-### 1.10.	Функционал Плана
+### 1.10.	Функционал Плана ![Completed](https://img.shields.io/badge/Completed%20100%25-task%20completed-green?style=?style=?style=plastic&logo=appveyor&logo=appveyor&logo=csharp)
 *	История деятельности сотрудников формируется из недельных планов и отчетов.
 *	Данные для формирования плана – начальный список задач.
 *	План состоит из полей:
