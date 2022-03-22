@@ -12,15 +12,15 @@
 
 *	Функционал подключения приложения к Серверу ![Completed](https://img.shields.io/badge/Completed%20100%25-task%20completed-green?style=?style=?style=plastic&logo=appveyor&logo=appveyor&logo=csharp)
 *	Функционал регистрации и авторизации ![Completed](https://img.shields.io/badge/Completed%20100%25-task%20completed-green?style=?style=?style=plastic&logo=appveyor&logo=appveyor&logo=csharp)
-*	Функционал для Администратора ![Work](https://img.shields.io/badge/WORK%2050%25-current%20work-blue?style=?style=?style=plastic&logo=appveyor&logo=appveyor&logo=csharp)
-*	Функционал для Менеджера
-*	Функционал для Сотрудника
+*	Функционал для Администратора ![Work](https://img.shields.io/badge/WORK%2060%25-current%20work-blue?style=?style=?style=plastic&logo=appveyor&logo=appveyor&logo=csharp)
+*	Функционал для Менеджера ![Plan](https://img.shields.io/badge/PLAN-this%20week%20plan-red?style=?style=plastic&logo=appveyor&logo=csharp)
+*	Функционал для Сотрудника ![Plan](https://img.shields.io/badge/PLAN-this%20week%20plan-red?style=?style=plastic&logo=appveyor&logo=csharp)
 *	Функционал Отдела ![Completed](https://img.shields.io/badge/Completed%20100%25-task%20completed-green?style=?style=?style=plastic&logo=appveyor&logo=appveyor&logo=csharp)
 *	Функционал Категорий деятельности отдела ![Completed](https://img.shields.io/badge/Completed%20100%25-task%20completed-green?style=?style=?style=plastic&logo=appveyor&logo=appveyor&logo=csharp)
-*	Функционал Проектов и направлений
+*	Функционал Проектов и направлений ![Plan](https://img.shields.io/badge/PLAN-this%20week%20plan-red?style=?style=plastic&logo=appveyor&logo=csharp)
 *	Функционал Задачи ![Completed](https://img.shields.io/badge/Completed%20100%25-task%20completed-green?style=?style=?style=plastic&logo=appveyor&logo=appveyor&logo=csharp)
 *	Функционал Плана ![Completed](https://img.shields.io/badge/Completed%20100%25-task%20completed-green?style=?style=?style=plastic&logo=appveyor&logo=appveyor&logo=csharp)
-*	Функционал Отчета
+*	Функционал Отчета ![Plan](https://img.shields.io/badge/PLAN-this%20week%20plan-red?style=?style=plastic&logo=appveyor&logo=csharp)
 *	Функционал Производственного календаря ![Plan](https://img.shields.io/badge/PLAN-this%20week%20plan-red?style=?style=plastic&logo=appveyor&logo=csharp)
 *	Функционал генерации отчетов по различным аспектам деятельности в интервале времени в электронном, табличном виде, с возможностью экспорта в редактируемые форматы (например, Excel)
 *	Функционал авто-обновления приложения
@@ -60,7 +60,7 @@
 *	Функционал создания, редактирования и удаления Категорий деятельности отдела
 *	Функционал создания, редактирования и удаления Проектов и направлений
 
-### 1.4.	Функционал для Менеджера
+### 1.4.	Функционал для Менеджера ![Plan](https://img.shields.io/badge/PLAN-this%20week%20plan-red?style=?style=plastic&logo=appveyor&logo=csharp)
 *	Функционал Менеджера делится на 2 группы: Менеджер Системы (ОИТ) и Менеджер отделов
     *	Менеджер ОИТ имеет весь менеджерский функционал и доступ к данным всех структурных подразделений компании
     *	Менеджер конкретного отдела имеет доступ к данным только своего отдела и не имеет доступ к данным других структурных подразделений.
@@ -70,7 +70,7 @@
 *	Функционал согласования Планов и Отчетов Сотрудника
 *	Генерация отчетов по различным аспектам деятельности
 
-### 1.5.	Функционал для Сотрудника
+### 1.5.	Функционал для Сотрудника ![Plan](https://img.shields.io/badge/PLAN-this%20week%20plan-red?style=?style=plastic&logo=appveyor&logo=csharp)
 *	Сотрудник имеет фиксированные права доступа исключительно к собственным Планам и Отчетам
 *	Функционал создания, редактирования и удаления СОБСТВЕННЫХ Задач, Планов и Отчетов
 *	Функционал создания и редактирования Отчетов ДЛЯ поставленных Планов Менеджером или Администратором
@@ -99,7 +99,7 @@
     *	ТП
     *	Любые вопросы, требующие оперативных изменений продуктов и модулей
 
-### 1.8.	Функционал Проектов и направлений
+### 1.8.	Функционал Проектов и направлений ![Plan](https://img.shields.io/badge/PLAN-this%20week%20plan-red?style=?style=plastic&logo=appveyor&logo=csharp)
 *	Каждая Категория деятельности отдела имеет список своих Проектов и направлений
 *	Проект состоит из полей:
     *	Название проекта – обязательное поле
@@ -149,7 +149,7 @@
     *	Перед реализацией каркаса тщательно продумать архитектуру приложения
     *	Да
 
-### 1.11.	Функционал Отчета
+### 1.11.	Функционал Отчета ![Plan](https://img.shields.io/badge/PLAN-this%20week%20plan-red?style=?style=plastic&logo=appveyor&logo=csharp)
 *	История деятельности сотрудников формируется из недельных планов и отчетов.
 *	Данные для формирования отчета – конечный список задач.
 *	Отчет состоит из полей:
