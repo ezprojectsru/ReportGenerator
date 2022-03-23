@@ -12,15 +12,15 @@
 
 *	Функционал подключения приложения к Серверу ![Completed](https://img.shields.io/badge/Completed%20100%25-task%20completed-green?style=?style=?style=plastic&logo=appveyor&logo=appveyor&logo=csharp)
 *	Функционал регистрации и авторизации ![Completed](https://img.shields.io/badge/Completed%20100%25-task%20completed-green?style=?style=?style=plastic&logo=appveyor&logo=appveyor&logo=csharp)
-*	Функционал для Администратора ![Work](https://img.shields.io/badge/WORK%2050%25-current%20work-blue?style=?style=?style=plastic&logo=appveyor&logo=appveyor&logo=csharp)
-*	Функционал для Менеджера
-*	Функционал для Сотрудника
-*	Функционал Отдела
-*	Функционал Категорий деятельности отдела
-*	Функционал Проектов и направлений
-*	Функционал Задачи
-*	Функционал Плана
-*	Функционал Отчета
+*	Функционал для Администратора ![Work](https://img.shields.io/badge/WORK%2060%25-current%20work-blue?style=?style=?style=plastic&logo=appveyor&logo=appveyor&logo=csharp)
+*	Функционал для Менеджера ![Plan](https://img.shields.io/badge/PLAN-this%20week%20plan-red?style=?style=plastic&logo=appveyor&logo=csharp)
+*	Функционал для Сотрудника ![Plan](https://img.shields.io/badge/PLAN-this%20week%20plan-red?style=?style=plastic&logo=appveyor&logo=csharp)
+*	Функционал Отдела ![Completed](https://img.shields.io/badge/Completed%20100%25-task%20completed-green?style=?style=?style=plastic&logo=appveyor&logo=appveyor&logo=csharp)
+*	Функционал Категорий деятельности отдела ![Completed](https://img.shields.io/badge/Completed%20100%25-task%20completed-green?style=?style=?style=plastic&logo=appveyor&logo=appveyor&logo=csharp)
+*	Функционал Проектов и направлений ![Plan](https://img.shields.io/badge/PLAN-this%20week%20plan-red?style=?style=plastic&logo=appveyor&logo=csharp)
+*	Функционал Задачи ![Completed](https://img.shields.io/badge/Completed%20100%25-task%20completed-green?style=?style=?style=plastic&logo=appveyor&logo=appveyor&logo=csharp)
+*	Функционал Плана ![Completed](https://img.shields.io/badge/Completed%20100%25-task%20completed-green?style=?style=?style=plastic&logo=appveyor&logo=appveyor&logo=csharp)
+*	Функционал Отчета ![Plan](https://img.shields.io/badge/PLAN-this%20week%20plan-red?style=?style=plastic&logo=appveyor&logo=csharp)
 *	Функционал Производственного календаря ![Plan](https://img.shields.io/badge/PLAN-this%20week%20plan-red?style=?style=plastic&logo=appveyor&logo=csharp)
 *	Функционал генерации отчетов по различным аспектам деятельности в интервале времени в электронном, табличном виде, с возможностью экспорта в редактируемые форматы (например, Excel)
 *	Функционал авто-обновления приложения
@@ -48,7 +48,7 @@
 *	При неудачной авторизации пользователю выводится сообщение, что неверно указан Логин или Пароль.
 
 
-### 1.3.	Функционал для Администратора ![Work](https://img.shields.io/badge/WORK%2050%25-current%20work-blue?style=?style=?style=plastic&logo=appveyor&logo=appveyor&logo=csharp)
+### 1.3.	Функционал для Администратора ![Work](https://img.shields.io/badge/WORK%2060%25-current%20work-blue?style=?style=?style=plastic&logo=appveyor&logo=appveyor&logo=csharp)
 *	Функционал Администратора делится на 2 группы: Администратор Системы (ОИТ) и Администратор отделов
     *	Администратор ОИТ имеет весь администраторский функционал и доступ к данным всех структурных подразделений компании
     *	Администратор конкретного отдела имеет доступ к данным только своего отдела и не имеет доступ к данным других структурных подразделений.
@@ -60,7 +60,7 @@
 *	Функционал создания, редактирования и удаления Категорий деятельности отдела
 *	Функционал создания, редактирования и удаления Проектов и направлений
 
-### 1.4.	Функционал для Менеджера
+### 1.4.	Функционал для Менеджера ![Plan](https://img.shields.io/badge/PLAN-this%20week%20plan-red?style=?style=plastic&logo=appveyor&logo=csharp)
 *	Функционал Менеджера делится на 2 группы: Менеджер Системы (ОИТ) и Менеджер отделов
     *	Менеджер ОИТ имеет весь менеджерский функционал и доступ к данным всех структурных подразделений компании
     *	Менеджер конкретного отдела имеет доступ к данным только своего отдела и не имеет доступ к данным других структурных подразделений.
@@ -70,14 +70,14 @@
 *	Функционал согласования Планов и Отчетов Сотрудника
 *	Генерация отчетов по различным аспектам деятельности
 
-### 1.5.	Функционал для Сотрудника
+### 1.5.	Функционал для Сотрудника ![Plan](https://img.shields.io/badge/PLAN-this%20week%20plan-red?style=?style=plastic&logo=appveyor&logo=csharp)
 *	Сотрудник имеет фиксированные права доступа исключительно к собственным Планам и Отчетам
 *	Функционал создания, редактирования и удаления СОБСТВЕННЫХ Задач, Планов и Отчетов
 *	Функционал создания и редактирования Отчетов ДЛЯ поставленных Планов Менеджером или Администратором
 *	Функционал просмотра истории своей деятельности
 *	Функционал просмотра истории исправлений, замечания руководителя, статус согласования планов и отчетов
 
-### 1.6.	Функционал Отдела
+### 1.6.	Функционал Отдела ![Completed](https://img.shields.io/badge/Completed%20100%25-task%20completed-green?style=?style=?style=plastic&logo=appveyor&logo=appveyor&logo=csharp)
 *	Отдел – структурное подразделение компании, включающее в себя Сотрудников компании и имеющий Категории своей деятельности.
 *	Отдел состоит из полей:
     *	Название отдела – обязательное поле
@@ -88,7 +88,7 @@
     *	ОИТ
     *	Поддержка и развитие IT-инфраструктуры компании
 
-### 1.7.	Функционал Категорий деятельности отдела
+### 1.7.	Функционал Категорий деятельности отдела ![Completed](https://img.shields.io/badge/Completed%20100%25-task%20completed-green?style=?style=?style=plastic&logo=appveyor&logo=appveyor&logo=csharp)
 *	Каждый отдел имеет список категории своей деятельности. 
 *	Категория состоит из полей:
     *	Название категории – обязательное поле
@@ -99,7 +99,7 @@
     *	ТП
     *	Любые вопросы, требующие оперативных изменений продуктов и модулей
 
-### 1.8.	Функционал Проектов и направлений
+### 1.8.	Функционал Проектов и направлений ![Plan](https://img.shields.io/badge/PLAN-this%20week%20plan-red?style=?style=plastic&logo=appveyor&logo=csharp)
 *	Каждая Категория деятельности отдела имеет список своих Проектов и направлений
 *	Проект состоит из полей:
     *	Название проекта – обязательное поле
@@ -108,7 +108,7 @@
     *	АСУП
     *	Автоматизированная система управления предприятием
 
-### 1.9.	 Функционал Задачи
+### 1.9.	 Функционал Задачи ![Completed](https://img.shields.io/badge/Completed%20100%25-task%20completed-green?style=?style=?style=plastic&logo=appveyor&logo=appveyor&logo=csharp)
 *	Задача – основной составной элемент Планов и Отчетов.
 *	Задача состоит из полей:
     *	Название задачи – обязательное поле
@@ -129,7 +129,7 @@
     *	Реализовать каркас нового приложения согласно собственным представлениям о необходимых ему свойствах
     *	Нет
 
-### 1.10.	Функционал Плана
+### 1.10.	Функционал Плана ![Completed](https://img.shields.io/badge/Completed%20100%25-task%20completed-green?style=?style=?style=plastic&logo=appveyor&logo=appveyor&logo=csharp)
 *	История деятельности сотрудников формируется из недельных планов и отчетов.
 *	Данные для формирования плана – начальный список задач.
 *	План состоит из полей:
@@ -145,11 +145,11 @@
     *	18.03.2022
     *	Начальный список задач (см. Функционал Задач)
     *	Иванов И.И.
-    *	Звягинцев Е.А.
+    *	Петров Е.П.
     *	Перед реализацией каркаса тщательно продумать архитектуру приложения
     *	Да
 
-### 1.11.	Функционал Отчета
+### 1.11.	Функционал Отчета ![Plan](https://img.shields.io/badge/PLAN-this%20week%20plan-red?style=?style=plastic&logo=appveyor&logo=csharp)
 *	История деятельности сотрудников формируется из недельных планов и отчетов.
 *	Данные для формирования отчета – конечный список задач.
 *	Отчет состоит из полей:
@@ -167,7 +167,7 @@
     *	18.03.2022
     *	Начальный список задач (см. Функционал Задач)
     *	Иванов И.И.
-    *	Звягинцев Е.А.
+    *	Петров Е.П.
     *	50%
     *	100%
     *	Задача выполнены на 100%, однако реализация и проверка заняли меньше времени, чем планировалось
@@ -210,14 +210,24 @@
     *	Вид: текстовые страницы с HTML разметкой
 
 ## 2.	Основные окна приложения
+![Windows](https://github.com/ezprojectsru/ReportGenerator/raw/main/Docs/%D0%A1%D1%82%D1%80%D1%83%D0%BA%D1%82%D1%83%D1%80%D0%B0%20%D0%BE%D0%BA%D0%BE%D0%BD.png)
 ## 3.	Предлагаемый стек технологий
 *	Язык - C#
 *	Платформа - .NET Core, WPF
 *	СУБД - MS SQL SERVER
 *	Проектирование – MVVM
 *	Фреймворк - Dapper
-## 4.	Требования к дизайну
-## 5.	Рабочие прототипы
+## 4. Зависимости проекта
+* Dapper
+* DevExpressMvvm
+* PropertyChanged.Fody
+* System.Data.SqlClient
+* Microsoft.Xaml.Behaviors.Wpf
+* Microsoft.Extensions.DependencyInjection
+## 5.	Требования к дизайну
+## 6.	Рабочие прототипы
+![Launch](https://github.com/ezprojectsru/ReportGenerator/raw/main/Docs/%D0%A1%D1%85%D0%B5%D0%BC%D0%B0%20%D1%81%D1%82%D0%B0%D1%80%D1%82%D0%B0%20%D0%BF%D1%80%D0%B8%D0%BB%D0%BE%D0%B6%D0%B5%D0%BD%D0%B8%D1%8F.png)
+![MainWindow](https://github.com/ezprojectsru/ReportGenerator/raw/main/Docs/%D0%A1%D1%85%D0%B5%D0%BC%D0%B0%20%D0%BE%D1%81%D0%BD%D0%BE%D0%B2%D0%BD%D0%BE%D0%B3%D0%BE%20%D0%BE%D0%BA%D0%BD%D0%B0.png)
 
 
 
