@@ -26,11 +26,7 @@ namespace ReportGenerator.DataBase.Controls
         /// <returns></returns>
         public string GetNameById(int id)
             {
-                Group group = null;
-                using (_connection)
-                {
-                    group = _connection.Query<Group>("SELECT name FROM groups WHERE id = @id", new { id }).FirstOrDefault();
-                }
+                Group group = _connection.Query<Group>("SELECT name FROM groups WHERE id = @id", new { id }).FirstOrDefault();                
                 return group.name;
             }
 
@@ -40,11 +36,7 @@ namespace ReportGenerator.DataBase.Controls
         /// <returns></returns>
         public List<string> GetAllNameGroups()
             {
-                List<Group> groups = new List<Group>();
-                using (_connection)
-                {
-                    groups = _connection.Query<Group>("Select name From groups").ToList();
-                }
+                List<Group> groups = _connection.Query<Group>("Select name From groups").ToList();                
                 List<string> groupNames = new List<string>();
                 foreach (Group group in groups)
                 {
@@ -60,11 +52,7 @@ namespace ReportGenerator.DataBase.Controls
         /// <returns></returns>
         public int GetIddByName(string name)
         {
-            Group group = new Group();
-            using (_connection)
-            {
-                group = _connection.Query<Group>("SELECT id FROM groups WHERE name = @name", new { name }).FirstOrDefault();
-            }
+            Group group = _connection.Query<Group>("SELECT id FROM groups WHERE name = @name", new { name }).FirstOrDefault();            
             return group.id;
         }
     }    

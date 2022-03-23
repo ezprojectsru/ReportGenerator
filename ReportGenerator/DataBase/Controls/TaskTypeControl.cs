@@ -26,11 +26,7 @@ namespace ReportGenerator.DataBase.Controls
         /// <returns></returns>
         public List<TaskType> GetTaskTypeListByDepartamentId(int id)
         {
-            List<TaskType> taskTypes = new List<TaskType>();
-            using (_connection)
-            {
-                taskTypes = _connection.Query<TaskType>("SELECT * FROM types WHERE departamentId = @id", new { id }).ToList();
-            }
+            List<TaskType> taskTypes = _connection.Query<TaskType>("SELECT * FROM types WHERE departamentId = @id", new { id }).ToList();            
             return taskTypes;
         }
 
@@ -43,16 +39,24 @@ namespace ReportGenerator.DataBase.Controls
         {
 
             List<string> typeShortNames = new List<string>();
-            List<TaskType> taskTypes = new List<TaskType>();
-            using (_connection)
-            {
-                taskTypes = _connection.Query<TaskType>("SELECT * FROM types WHERE departamentId = @id", new { id }).ToList();
-            }
+            List<TaskType> taskTypes = _connection.Query<TaskType>("SELECT * FROM types WHERE departamentId = @id", new { id }).ToList();            
             foreach (TaskType task in taskTypes)
             {
                 typeShortNames.Add(task.shortName);
             }
             return typeShortNames;
+        }
+
+        public string GetShortNameById(int id)
+        {
+            TaskType taskType = _connection.Query<TaskType>("SELECT shortName FROM types WHERE id = @id", new { id }).FirstOrDefault();            
+            return taskType.shortName;
+        }
+
+        public int GetIdByShortName(string shortName)
+        {
+            TaskType taskType = _connection.Query<TaskType>("SELECT id FROM types WHERE shortName = @shortName", new { shortName }).FirstOrDefault();
+            return taskType.id;
         }
     }
 }

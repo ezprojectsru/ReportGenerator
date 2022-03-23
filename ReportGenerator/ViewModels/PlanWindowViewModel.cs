@@ -86,10 +86,10 @@ namespace ReportGenerator.ViewModels
             List<Plan> targetPlans = _planControl.GetPlanListByUserId(_sessionUser.user.id);
             Plans = new List<ItemPlan>();
             foreach (Plan pl in targetPlans)
-            {                
-                ItemPlan item = new ItemPlan(pl.id, pl.name, pl.startDate, pl.finishDate,
-                    _userControl.GetFullNameById(pl.responsibleId),
-                    _userControl.GetFullNameById(pl.directorId), pl.comment ?? "");
+            {
+                string responsible = _userControl.GetFullNameById(pl.responsibleId);
+                string director = _userControl.GetFullNameById(pl.directorId);
+                ItemPlan item = new ItemPlan(pl.id, pl.name, pl.startDate, pl.finishDate, responsible, director, pl.comment ?? "");
                 Plans.Add(item);
             }            
         }

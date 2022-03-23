@@ -44,7 +44,7 @@
             <ComboBox
                 ItemsSource="{Binding Types}"
                 SelectedIndex="0"
-                SelectedItem="{Binding Type}" />
+                SelectedItem="{Binding TaskTypeName}" />
             <TextBlock Margin="0,5,0,0" Text="Час (план)" />
             <TextBox Text="{Binding Intensity}" />
             <TextBlock Margin="0,5,0,0" Text="Процент выполнения задачи на начало" />

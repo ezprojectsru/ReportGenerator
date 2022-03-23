@@ -26,11 +26,7 @@ namespace ReportGenerator.DataBase.Controls
         /// <returns></returns>
         public string GetNameById(int id)
         {
-            Sector sector = null;
-            using (_connection)
-            {
-                sector = _connection.Query<Sector>("SELECT name FROM sectors WHERE id = @id", new { id }).FirstOrDefault();
-            }
+            Sector sector = _connection.Query<Sector>("SELECT name FROM sectors WHERE id = @id", new { id }).FirstOrDefault();            
             return sector.name;
         }
 
@@ -40,11 +36,7 @@ namespace ReportGenerator.DataBase.Controls
         /// <returns></returns>
         public List<string> GetAllNameSectors()
         {
-            List<Sector> sectors = new List<Sector>();            
-            using (_connection)
-            {
-                sectors = _connection.Query<Sector>("Select name From sectors").ToList();
-            }
+            List<Sector> sectors = _connection.Query<Sector>("Select name From sectors").ToList();            
             List<string> sectorNames = new List<string>();
             foreach (Sector sector in sectors)
             {
@@ -60,11 +52,7 @@ namespace ReportGenerator.DataBase.Controls
         /// <returns></returns>
         public int GetIddByName(string name)
         {
-            Sector sector = new Sector();
-            using (_connection)
-            {
-                sector = _connection.Query<Sector>("SELECT id FROM sectors WHERE name = @name", new { name }).FirstOrDefault();
-            }
+            Sector sector = _connection.Query<Sector>("SELECT id FROM sectors WHERE name = @name", new { name }).FirstOrDefault();            
             return sector.id;
         }
     }

@@ -26,11 +26,7 @@ namespace ReportGenerator.DataBase.Controls
         /// <returns></returns>
         public List<Task> GetTaskListByPlanId(int id)
         {
-            List<Task> tasks = new List<Task>();
-            using (_connection)
-            {
-                tasks = _connection.Query<Task>("SELECT * FROM tasks WHERE planId = @id", new { id }).ToList();
-            }
+            List<Task> tasks = _connection.Query<Task>("SELECT * FROM tasks WHERE planId = @id", new { id }).ToList();            
             return tasks;
         }
 
@@ -40,11 +36,8 @@ namespace ReportGenerator.DataBase.Controls
         /// <param name="task"></param>
         public void UpdateCurrentTask(Task task)
         {
-            using (_connection)
-            {
-                string updatetQuery = "UPDATE tasks SET name = @name, priority = @priority, type = @type, intensity = @intensity, startCompletion = @startCompletion, planCompletion = @planCompletion, comment = @comment WHERE id = @id";
-                var result = _connection.Execute(updatetQuery, task);
-            }            
+            string updatetQuery = "UPDATE tasks SET name = @name, priority = @priority, typeId = @typeId, intensity = @intensity, startCompletion = @startCompletion, planCompletion = @planCompletion, comment = @comment WHERE id = @id";
+            var result = _connection.Execute(updatetQuery, task);                       
         }
 
         /// <summary>
@@ -53,11 +46,8 @@ namespace ReportGenerator.DataBase.Controls
         /// <param name="task"></param>
         public void InsertNewTask(Task task)
         {
-            using (_connection)
-            {                
-                string insertQuery = "INSERT INTO tasks (name, planId, priority, type, intensity, startCompletion, planCompletion, comment) VALUES (@name, @planId, @priority, @type, @intensity, @startCompletion, @planCompletion, @comment)";
-                var result = _connection.Execute(insertQuery, task);
-            }
+            string insertQuery = "INSERT INTO tasks (name, planId, priority, typeId, intensity, startCompletion, planCompletion, comment) VALUES (@name, @planId, @priority, @typeId, @intensity, @startCompletion, @planCompletion, @comment)";
+            var result = _connection.Execute(insertQuery, task);            
         }
 
         /// <summary>
@@ -66,14 +56,12 @@ namespace ReportGenerator.DataBase.Controls
         /// <param name="task"></param>
         public void DeleteCurrentTask(Task task)
         {
-            using (_connection)
-            {                
-                string deleteQuery = "DELETE FROM tasks WHERE id = @id";
-                var result = _connection.Execute(deleteQuery, new
+            string deleteQuery = "DELETE FROM tasks WHERE id = @id";
+            var result = _connection.Execute(deleteQuery, new
                 {
                     task.id
-                });                
-            }
+                });            
+            
         }
 
         /// <summary>
@@ -82,14 +70,12 @@ namespace ReportGenerator.DataBase.Controls
         /// <param name="id"></param>
         public void DeleteTasksByPlanId(int id)
         {
-            using (_connection)
-            {
-                string deleteQuery = "DELETE FROM tasks WHERE planId = @id";
+            string deleteQuery = "DELETE FROM tasks WHERE planId = @id";
                 var result = _connection.Execute(deleteQuery, new
                 {
                    id
                 });
-            }
+            
         }
     }
 }

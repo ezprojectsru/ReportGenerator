@@ -117,7 +117,7 @@
                                 Header="Приоритет" />
                             <GridViewColumn
                                 Width="70"
-                                DisplayMemberBinding="{Binding type}"
+                                DisplayMemberBinding="{Binding typeId}"
                                 Header="Тип" />
                             <GridViewColumn
                                 Width="70"

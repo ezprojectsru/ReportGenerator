@@ -21,22 +21,14 @@ namespace ReportGenerator.DataBase.Controls
         }
         public string GetNameById(int id)
         {            
-            Departament departament = null;
-            using (_connection)
-            {
-                departament = _connection.Query<Departament>("SELECT name FROM departaments WHERE id = @id", new { id }).FirstOrDefault();
-            }
+            Departament departament = _connection.Query<Departament>("SELECT name FROM departaments WHERE id = @id", new { id }).FirstOrDefault();            
             return departament.name;
         }
 
         public List<string> GetAllNameDepartaments()
         {
 
-            List<Departament> departaments = new List<Departament>();
-            using (_connection)
-            {
-                departaments = _connection.Query<Departament>("Select name From departaments").ToList();
-            }
+            List<Departament> departaments = _connection.Query<Departament>("Select name From departaments").ToList();            
             List<string> departamentNames = new List<string>();
             foreach (Departament departament in departaments)
             {
@@ -48,21 +40,13 @@ namespace ReportGenerator.DataBase.Controls
         public int GetIddByName(string name)
         {
 
-            Departament departament = new Departament(); 
-            using (_connection)
-            {
-                departament = _connection.Query<Departament>("SELECT id FROM departaments WHERE name = @name", new { name }).FirstOrDefault();
-            }
+            Departament departament = _connection.Query<Departament>("SELECT id FROM departaments WHERE name = @name", new { name }).FirstOrDefault();            
             return departament.id;
         }
 
         public List<Departament> GetAllDepartamentsList()
         {
-            List<Departament> departaments = new List<Departament>();
-            using (_connection)
-            {
-                departaments = _connection.Query<Departament>("Select * From departaments").ToList();
-            }
+            List<Departament> departaments = _connection.Query<Departament>("Select * From departaments").ToList();            
             return departaments;
         }
 
@@ -72,11 +56,8 @@ namespace ReportGenerator.DataBase.Controls
         /// <param name="departament"></param>
         public void InsertNewDepartament(Departament departament)
         {
-            using (_connection)
-            {                
-                string insertQuery = "INSERT INTO departaments (name, shortName, description) VALUES (@name, @shortName, @description)";
-                var result = _connection.Execute(insertQuery, departament);
-            }
+            string insertQuery = "INSERT INTO departaments (name, shortName, description) VALUES (@name, @shortName, @description)";
+            var result = _connection.Execute(insertQuery, departament);            
         }
 
         /// <summary>
@@ -85,11 +66,8 @@ namespace ReportGenerator.DataBase.Controls
         /// <param name="departament"></param>
         public void UpdateCurrentDepartament(Departament departament)
         {
-            using (_connection)
-            {
-                string updatetQuery = "UPDATE departaments SET name = @name, shortName = @shortName, description = @description WHERE id = @id";
-                var result = _connection.Execute(updatetQuery, departament);
-            }
+            string updatetQuery = "UPDATE departaments SET name = @name, shortName = @shortName, description = @description WHERE id = @id";
+            var result = _connection.Execute(updatetQuery, departament);            
         }
 
         /// <summary>
@@ -98,14 +76,11 @@ namespace ReportGenerator.DataBase.Controls
         /// <param name="id"></param>
         public void DeleteCurrentDepartament(int id)
         {
-            using (_connection)
-            {
-                string deleteQuery = "DELETE FROM departaments WHERE id = @id";
-                var result = _connection.Execute(deleteQuery, new
+             string deleteQuery = "DELETE FROM departaments WHERE id = @id";
+             var result = _connection.Execute(deleteQuery, new
                 {
                     id
-                });
-            }
+                });            
         }
     }
 }

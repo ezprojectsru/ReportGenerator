@@ -26,11 +26,7 @@ namespace ReportGenerator.DataBase.Controls
         /// <returns></returns>
         public List<Plan> GetPlanListByUserId(int id)
         {
-            List<Plan> plans = new List<Plan>();
-            using (_connection)
-            {
-                plans = _connection.Query<Plan>("SELECT * FROM plans WHERE responsibleId = @id", new { id }).ToList();
-            }
+            List<Plan> plans = _connection.Query<Plan>("SELECT * FROM plans WHERE responsibleId = @id", new { id }).ToList();            
             return plans;
         }
 
@@ -41,11 +37,7 @@ namespace ReportGenerator.DataBase.Controls
         /// <returns></returns>
         public Plan GetPlanById(int id)
         {
-            Plan plan = new Plan(); 
-            using (_connection)
-            {
-                plan = _connection.Query<Plan>("SELECT * FROM plans WHERE id = @id", new { id }).FirstOrDefault();
-            }
+            Plan plan = _connection.Query<Plan>("SELECT * FROM plans WHERE id = @id", new { id }).FirstOrDefault();            
             return plan;
         }
 
@@ -56,11 +48,7 @@ namespace ReportGenerator.DataBase.Controls
         /// <returns></returns>
         public int GetResponsibleIdByPlanId(int id)
         {
-            Plan plan = new Plan();
-            using (_connection)
-            {
-                plan = _connection.Query<Plan>("SELECT * FROM plans WHERE id = @id", new { id }).FirstOrDefault();
-            }
+            Plan plan = _connection.Query<Plan>("SELECT * FROM plans WHERE id = @id", new { id }).FirstOrDefault();            
             return plan.responsibleId;
         }
 
@@ -70,12 +58,8 @@ namespace ReportGenerator.DataBase.Controls
         /// <param name="plan"></param>
         public void InsertNewPlan(Plan plan)
         {            
-            using (_connection)
-            {               
-
-                string insertQuery = "INSERT INTO plans (name, startDate, finishDate, responsibleId, directorId, comment) VALUES (@name, @startDate, @finishDate, @responsibleId, @directorId, @comment)";
-                var result = _connection.Execute(insertQuery, plan);
-            }
+            string insertQuery = "INSERT INTO plans (name, startDate, finishDate, responsibleId, directorId, comment) VALUES (@name, @startDate, @finishDate, @responsibleId, @directorId, @comment)";
+            var result = _connection.Execute(insertQuery, plan);            
         }
 
         /// <summary>
@@ -84,11 +68,8 @@ namespace ReportGenerator.DataBase.Controls
         /// <param name="plan"></param>
         public void UpdateCurrentPlan(Plan plan)
         {  
-            using (_connection)
-            {
-                string updatetQuery = "UPDATE plans SET name = @name, startDate = @startDate, finishDate = @finishDate, responsibleId = @responsibleId, directorId = @directorId, comment = @comment WHERE id = @id";
-                var result = _connection.Execute(updatetQuery, plan);
-            }
+            string updatetQuery = "UPDATE plans SET name = @name, startDate = @startDate, finishDate = @finishDate, responsibleId = @responsibleId, directorId = @directorId, comment = @comment WHERE id = @id";
+            var result = _connection.Execute(updatetQuery, plan);            
         }
 
         /// <summary>
@@ -97,14 +78,11 @@ namespace ReportGenerator.DataBase.Controls
         /// <param name="id"></param>
         public void DeleteCurrentPlan(int id)
         {
-            using (_connection)
-            {
-                string deleteQuery = "DELETE FROM plans WHERE id = @id";
-                var result = _connection.Execute(deleteQuery, new
+            string deleteQuery = "DELETE FROM plans WHERE id = @id";
+            var result = _connection.Execute(deleteQuery, new
                 {
                     id
-                });
-            }
+                });            
         }
     }
 }

@@ -26,11 +26,7 @@ namespace ReportGenerator.DataBase.Controls
         /// <returns></returns>
         public string GetNameById(int id)
         {
-            Role role = null;
-            using (_connection)
-            {
-                role = _connection.Query<Role>("SELECT name FROM roles WHERE id = @id", new { id }).FirstOrDefault();
-            }
+            Role role = _connection.Query<Role>("SELECT name FROM roles WHERE id = @id", new { id }).FirstOrDefault();            
             return role.name;
         }
 
@@ -40,11 +36,7 @@ namespace ReportGenerator.DataBase.Controls
         /// <returns></returns>
         public List<string> GetAllNameRoles()
         {
-            List<Role> roles = new List<Role>();
-            using (_connection)
-            {
-                roles = _connection.Query<Role>("Select name From roles").ToList();
-            }
+            List<Role> roles = _connection.Query<Role>("Select name From roles").ToList();            
             List<string> roleNames = new List<string>();
             foreach (Role role in roles)
             {
@@ -60,53 +52,36 @@ namespace ReportGenerator.DataBase.Controls
         /// <returns></returns>
         public int GetIddByName(string name)
         {
-            Role role = new Role();
-            using (_connection)
-            {
-                role = _connection.Query<Role>("SELECT id FROM roles WHERE name = @name", new { name }).FirstOrDefault();
-            }
+            Role role = _connection.Query<Role>("SELECT id FROM roles WHERE name = @name", new { name }).FirstOrDefault();            
             return role.id;
         }
 
         public List<Role> GetAllRolesList()
         {
 
-            List<Role> roles = new List<Role>();
-            using (_connection)
-            {
-                roles = _connection.Query<Role>("Select * From roles").ToList();
-            }
+            List<Role> roles = _connection.Query<Role>("Select * From roles").ToList();            
             return roles;
         }
 
         public void InsertNewRole(Role role)
         {
-            using (_connection)
-            {
-                string insertQuery = "INSERT INTO roles (name) VALUES (@name)";
-                var result = _connection.Execute(insertQuery, role);
-            }
+            string insertQuery = "INSERT INTO roles (name) VALUES (@name)";
+            var result = _connection.Execute(insertQuery, role);            
         }
 
         public void UpdateCurrentRole(Role role)
         {            
-            using (_connection)
-            {
-                string updatetQuery = "UPDATE roles SET name = @name WHERE id = @id";
-                var result = _connection.Execute(updatetQuery, role);
-            }
+            string updatetQuery = "UPDATE roles SET name = @name WHERE id = @id";
+            var result = _connection.Execute(updatetQuery, role);            
         }
 
         public void DeleteCurrentRole(int id)
         {
-            using (_connection)
-            {
-                string deleteQuery = "DELETE FROM roles WHERE id = @id";
+            string deleteQuery = "DELETE FROM roles WHERE id = @id";
                 var result = _connection.Execute(deleteQuery, new
                 {
                     id
-                });
-            }
+                });            
         }
     }
 }

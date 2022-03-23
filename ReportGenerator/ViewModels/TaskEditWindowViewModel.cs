@@ -26,7 +26,8 @@ namespace ReportGenerator.ViewModels
         public string Name { get; set; }   
         public int PlanId { get; set; }
         public string Priority { get; set; }
-        public string Type { get; set; }
+        public int TaskTypeId { get; set; }
+        public string TaskTypeName { get; set; }
         public string Intensity { get; set; }
         public string StartCompletion { get; set; }
         public string PlanCompletion { get; set; }
@@ -81,7 +82,8 @@ namespace ReportGenerator.ViewModels
                 Name = _task.name;
                 PlanId = _task.planId;
                 Priority = _task.priority.ToString();
-                Type = _task.type;
+                TaskTypeId = _task.typeId; /// <============= 1
+                TaskTypeName = _taskTypeControl.GetShortNameById(TaskTypeId);
                 Intensity = _task.intensity.ToString();
                 StartCompletion = _task.startCompletion.ToString();
                 PlanCompletion = _task.planCompletion.ToString();
@@ -100,7 +102,15 @@ namespace ReportGenerator.ViewModels
             Name = "";
             PlanId = id;
             Priority = "1";
-            Type = "";
+            TaskTypeId = 0;
+            if (TaskTypeId == 0)
+            {
+                TaskTypeName = "";
+            }
+            else
+            {
+                TaskTypeName = _taskTypeControl.GetShortNameById(TaskTypeId);
+            }
             Intensity = "";
             StartCompletion = "";
             PlanCompletion = "";
@@ -124,7 +134,7 @@ namespace ReportGenerator.ViewModels
                     _resultTask.name = Name;
                     _resultTask.planId = PlanId;
                     _resultTask.priority = Int32.Parse(Priority);
-                    _resultTask.type = Type;
+                    _resultTask.typeId = _taskTypeControl.GetIdByShortName(TaskTypeName); // < ================= 2
                     _resultTask.intensity = Int32.Parse(Intensity);
                     _resultTask.startCompletion = Int32.Parse(StartCompletion);
                     _resultTask.planCompletion = Int32.Parse(PlanCompletion);

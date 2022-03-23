@@ -12,7 +12,7 @@ namespace ReportGenerator.DataBase.Models
         public string name { get; set; }
         public int planId { get; set; }        
         public int priority { get; set; }
-        public string type { get; set; }
+        public int typeId { get; set; } // typeId
         public int intensity { get; set; }
         public int startCompletion { get; set; }
         public int planCompletion { get; set; }
