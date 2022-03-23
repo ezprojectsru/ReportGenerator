@@ -18,7 +18,7 @@ namespace ReportGenerator.DataBase.Controls
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public static string GetNameById(int id)
+        public string GetNameById(int id)
         {
             Sector sector = null;
             DbConnection db = new DbConnection();
@@ -36,7 +36,7 @@ namespace ReportGenerator.DataBase.Controls
         /// Возвращает список названий всех секторов
         /// </summary>
         /// <returns></returns>
-        public static List<string> GetAllNameSectors()
+        public List<string> GetAllNameSectors()
         {
             List<Sector> sectors = new List<Sector>();
             DbConnection db = new DbConnection();
@@ -61,7 +61,7 @@ namespace ReportGenerator.DataBase.Controls
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        public static int GetIddByName(string name)
+        public int GetIddByName(string name)
         {
             Sector sector = new Sector();
             DbConnection db = new DbConnection();

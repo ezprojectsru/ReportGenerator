@@ -36,6 +36,12 @@ namespace ReportGenerator.ViewModels
         public string Group { get; set; }
         private string oldUsername;
 
+        private UserControl _userControl = new UserControl();
+        private DepartamentControl _departamentControl = new DepartamentControl();
+        private GroupControl _groupControl = new GroupControl();
+        private RoleControl _roleControl = new RoleControl();
+        private SectorControl _sectorControl = new SectorControl();
+
         public UserEditWindowViewModel()
         {
             Title = "Добавление пользователя";
@@ -83,17 +89,17 @@ namespace ReportGenerator.ViewModels
                 GroupId = _user.groupId.ToString();
                 Title = "Редактирование пользователя";
                 Departaments = new List<string>();
-                Departaments = DepartamentControl.GetAllNameDepartaments();
-                Departament = DepartamentControl.GetNameById(_user.departamentId);
+                Departaments = _departamentControl.GetAllNameDepartaments();
+                Departament = _departamentControl.GetNameById(_user.departamentId);
                 Roles = new List<string>();
-                Roles = RoleControl.GetAllNameRoles();
-                Role = RoleControl.GetNameById(_user.roleId);
+                Roles = _roleControl.GetAllNameRoles();
+                Role = _roleControl.GetNameById(_user.roleId);
                 Sectors = new List<string>();
-                Sectors = SectorControl.GetAllNameSectors();
-                Sector = SectorControl.GetNameById(_user.sectorId);
+                Sectors = _sectorControl.GetAllNameSectors();
+                Sector = _sectorControl.GetNameById(_user.sectorId);
                 Groups = new List<string>();
-                Groups = GroupControl.GetAllNameGroups();
-                Group = GroupControl.GetNameById(_user.groupId);
+                Groups = _groupControl.GetAllNameGroups();
+                Group = _groupControl.GetNameById(_user.groupId);
             }
         }
 
@@ -114,13 +120,13 @@ namespace ReportGenerator.ViewModels
             GroupId = "";
             Title = "Добавление пользователя";
             Departaments = new List<string>();
-            Departaments = DepartamentControl.GetAllNameDepartaments();
+            Departaments = _departamentControl.GetAllNameDepartaments();
             Roles = new List<string>();
-            Roles = RoleControl.GetAllNameRoles();
+            Roles = _roleControl.GetAllNameRoles();
             Sectors = new List<string>();
-            Sectors = SectorControl.GetAllNameSectors();
+            Sectors = _sectorControl.GetAllNameSectors();
             Groups = new List<string>();
-            Groups = GroupControl.GetAllNameGroups();
+            Groups = _groupControl.GetAllNameGroups();
         }
 
 
@@ -135,20 +141,22 @@ namespace ReportGenerator.ViewModels
         /// </summary>
         public ICommand SendDialogResultUser => new DelegateCommand<object>((currentWindow) =>
         {
-            if (!string.IsNullOrWhiteSpace(Username) && !string.IsNullOrWhiteSpace(Password) && !string.IsNullOrWhiteSpace(FullName) && !string.IsNullOrWhiteSpace(Email))
+            if (!string.IsNullOrWhiteSpace(Username) && !string.IsNullOrWhiteSpace(Password) && 
+            !string.IsNullOrWhiteSpace(FullName) && !string.IsNullOrWhiteSpace(Email))
             {
                 if (Id == 0)
                 {
-                    if (!UserControl.ExistsUserName(Username))
+                    if (!_userControl.ExistsUserName(Username))
                     {
 
                         try
                         {
-                            int departamentId = DepartamentControl.GetIddByName(Departament);
-                            int roleId = RoleControl.GetIddByName(Role);
-                            int sectorId = SectorControl.GetIddByName(Sector);
-                            int groupId = GroupControl.GetIddByName(Group);
-                            User _resultUser = new User(Id, Username, Password, СreateDate, FullName, Email, departamentId, roleId, sectorId, groupId);
+                            int departamentId = _departamentControl.GetIddByName(Departament);
+                            int roleId = _roleControl.GetIddByName(Role);
+                            int sectorId = _sectorControl.GetIddByName(Sector);
+                            int groupId = _groupControl.GetIddByName(Group);
+                            User _resultUser = new User(Id, Username, Password, СreateDate, FullName, 
+                                Email, departamentId, roleId, sectorId, groupId);
                             MessageService.Send(_resultUser);
                             Window wnd = currentWindow as Window;
                             wnd.DialogResult = true;
@@ -168,16 +176,17 @@ namespace ReportGenerator.ViewModels
                 {
                     if (oldUsername != Username)
                     {
-                        if (!UserControl.ExistsUserName(Username))
+                        if (!_userControl.ExistsUserName(Username))
                         {
                             try
                             {
 
-                                int departamentId = DepartamentControl.GetIddByName(Departament);
-                                int roleId = RoleControl.GetIddByName(Role);
-                                int sectorId = SectorControl.GetIddByName(Sector);
-                                int groupId = GroupControl.GetIddByName(Group);
-                                User _resultUser = new User(Id, Username, Password, СreateDate, FullName, Email, departamentId, roleId, sectorId, groupId);
+                                int departamentId = _departamentControl.GetIddByName(Departament);
+                                int roleId = _roleControl.GetIddByName(Role);
+                                int sectorId = _sectorControl.GetIddByName(Sector);
+                                int groupId = _groupControl.GetIddByName(Group);
+                                User _resultUser = new User(Id, Username, Password, СreateDate, 
+                                    FullName, Email, departamentId, roleId, sectorId, groupId);
                                 MessageService.Send(_resultUser);
                                 Window wnd = currentWindow as Window;
                                 wnd.DialogResult = true;
@@ -198,11 +207,12 @@ namespace ReportGenerator.ViewModels
                         try
                         {
 
-                            int departamentId = DepartamentControl.GetIddByName(Departament);
-                            int roleId = RoleControl.GetIddByName(Role);
-                            int sectorId = SectorControl.GetIddByName(Sector);
-                            int groupId = GroupControl.GetIddByName(Group);
-                            User _resultUser = new User(Id, Username, Password, СreateDate, FullName, Email, departamentId, roleId, sectorId, groupId);
+                            int departamentId = _departamentControl.GetIddByName(Departament);
+                            int roleId = _roleControl.GetIddByName(Role);
+                            int sectorId = _sectorControl.GetIddByName(Sector);
+                            int groupId = _groupControl.GetIddByName(Group);
+                            User _resultUser = new User(Id, Username, Password, СreateDate, 
+                                FullName, Email, departamentId, roleId, sectorId, groupId);
                             MessageService.Send(_resultUser);
                             Window wnd = currentWindow as Window;
                             wnd.DialogResult = true;

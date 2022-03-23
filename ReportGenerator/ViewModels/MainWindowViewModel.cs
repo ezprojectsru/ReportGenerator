@@ -13,6 +13,7 @@ namespace ReportGenerator.ViewModels
     /// </summary>
     public class MainWindowViewModel : BindableBase
     {
+        private RoleControl _roleControl = new RoleControl();
         private SessionUser _sessionUser;
 
         private readonly PageNavigationService _navigation;
@@ -20,6 +21,8 @@ namespace ReportGenerator.ViewModels
         public string FullName { get; set; }
         public string Departament { get; set; }
         public string Role { get; set; }
+
+        private DepartamentControl _departamentControl = new DepartamentControl();
 
         public MainWindowViewModel(PageNavigationService navigation)
         {
@@ -50,8 +53,8 @@ namespace ReportGenerator.ViewModels
         private void setStrings()
         {
             FullName = _sessionUser.user.fullName;
-            Departament = DepartamentControl.GetNameById(_sessionUser.user.departamentId);
-            Role = RoleControl.GetNameById(_sessionUser.user.roleId);
+            Departament = _departamentControl.GetNameById(_sessionUser.user.departamentId);
+            Role = _roleControl.GetNameById(_sessionUser.user.roleId);
         }
 
         /// <summary>

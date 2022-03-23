@@ -26,6 +26,11 @@ namespace ReportGenerator.ViewModels
         public string Sector { get; set; }        
         public string Group { get; set; }
 
+        private DepartamentControl _departamentControl = new DepartamentControl();
+        private GroupControl _groupControl = new GroupControl();
+        private RoleControl _roleControl = new RoleControl();
+        private SectorControl _sectorControl = new SectorControl();
+
         public ItemUser()
         {
         }
@@ -38,10 +43,11 @@ namespace ReportGenerator.ViewModels
             Сreate_Date = user.create_date;
             FullName = user.fullName;
             Email = user.email;
-            Departament = DepartamentControl.GetNameById(user.departamentId);
-            Role = RoleControl.GetNameById(user.roleId);
-            Sector = SectorControl.GetNameById(user.sectorId);
-            Group = GroupControl.GetNameById(user.groupId);
+            
+            Departament = _departamentControl.GetNameById(user.departamentId);
+            Role = _roleControl.GetNameById(user.roleId);
+            Sector = _sectorControl.GetNameById(user.sectorId);
+            Group = _groupControl.GetNameById(user.groupId);
         }
     }
 
@@ -50,6 +56,11 @@ namespace ReportGenerator.ViewModels
     /// </summary>
     public class AppManagerPageViewModel : BindableBase
     {
+        private UserControl _userControl = new UserControl();
+        private DepartamentControl _departamentControl = new DepartamentControl();
+        private GroupControl _groupControl = new GroupControl();
+        private RoleControl _roleControl = new RoleControl();
+        private SectorControl _sectorControl = new SectorControl();
         public List<Role> ListRoles { get; set; }
         private Role _roleSelected;
         public Role RoleSelected
@@ -92,7 +103,7 @@ namespace ReportGenerator.ViewModels
 
         public AppManagerPageViewModel()
         {
-            ListOfUsers = UserControl.GetAllUsersList();
+            ListOfUsers = _userControl.GetAllUsersList();
             Users = new List<ItemUser>();
             foreach(User user in ListOfUsers)
             {
@@ -100,10 +111,10 @@ namespace ReportGenerator.ViewModels
             }
             
             ListDepartaments = new List<Departament>();
-            ListDepartaments = DepartamentControl.GetAllDepartamentsList();
+            ListDepartaments = _departamentControl.GetAllDepartamentsList();
 
             ListRoles = new List<Role>();
-            ListRoles = RoleControl.GetAllRolesList();
+            ListRoles = _roleControl.GetAllRolesList();
 
             MessageService.Bus += Receive;
         }
@@ -143,8 +154,13 @@ namespace ReportGenerator.ViewModels
         /// </summary>
         public ICommand OpenEditSelectedUserWindow => new DelegateCommand(() =>
         {
-            User targetUser = new User(_userSelected.Id, _userSelected.Username, _userSelected.Password, _userSelected.Сreate_Date, _userSelected.FullName, _userSelected.Email, 
-                DepartamentControl.GetIddByName(_userSelected.Departament), RoleControl.GetIddByName(_userSelected.Role), SectorControl.GetIddByName(_userSelected.Sector), GroupControl.GetIddByName(_userSelected.Group));
+            User targetUser = new User(_userSelected.Id, _userSelected.Username, 
+                _userSelected.Password, _userSelected.Сreate_Date, 
+                _userSelected.FullName, _userSelected.Email,
+                _departamentControl.GetIddByName(_userSelected.Departament),
+                _roleControl.GetIddByName(_userSelected.Role),
+                _sectorControl.GetIddByName(_userSelected.Sector),
+                _groupControl.GetIddByName(_userSelected.Group));
             
             UserEditWindow userEditWindow = new UserEditWindow();
             MessageService.Send(targetUser);
@@ -154,9 +170,9 @@ namespace ReportGenerator.ViewModels
             {
                 if (_newUser.id != 0)
                 {
-                    UserControl.UpdateCurrentUser(_newUser);
+                    _userControl.UpdateCurrentUser(_newUser);
                     ListOfUsers = new List<User>();
-                    ListOfUsers = UserControl.GetAllUsersList();
+                    ListOfUsers = _userControl.GetAllUsersList();
                     Users = new List<ItemUser>();
                     foreach (User user in ListOfUsers)
                     {
@@ -183,9 +199,9 @@ namespace ReportGenerator.ViewModels
             {
                 if (_newUser.id == 0)
                 {
-                    UserControl.InsertNewUser(_newUser);
+                    _userControl.InsertNewUser(_newUser);
                     ListOfUsers = new List<User>();
-                    ListOfUsers = UserControl.GetAllUsersList();
+                    ListOfUsers = _userControl.GetAllUsersList();
                     Users = new List<ItemUser>();
                     foreach (User user in ListOfUsers)
                     {
@@ -206,11 +222,12 @@ namespace ReportGenerator.ViewModels
         {
             if (_sessionUser.user.id != _userSelected.Id)
             {
-                if (MessageBox.Show("Вы уверены, что хотите удалить пользователя?", "Удаление пользователя", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
+                if (MessageBox.Show("Вы уверены, что хотите удалить пользователя?", 
+                    "Удаление пользователя", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
                 {
-                    UserControl.DeleteCurrentUser(_userSelected.Id);
+                    _userControl.DeleteCurrentUser(_userSelected.Id);
                     ListOfUsers = new List<User>();
-                    ListOfUsers = UserControl.GetAllUsersList();
+                    ListOfUsers = _userControl.GetAllUsersList();
                     Users = new List<ItemUser>();
                     foreach (User user in ListOfUsers)
                     {
@@ -236,10 +253,10 @@ namespace ReportGenerator.ViewModels
             if (departamentEditWindow.ShowDialog() == true)
             {
                 if (_newDepartament.id == 0)
-                {                    
-                    DepartamentControl.InsertNewDepartament(_newDepartament);
+                {
+                    _departamentControl.InsertNewDepartament(_newDepartament);
                     ListDepartaments = new List<Departament>();
-                    ListDepartaments = DepartamentControl.GetAllDepartamentsList();                    
+                    ListDepartaments = _departamentControl.GetAllDepartamentsList();                    
                 }
             }
             else
@@ -260,10 +277,10 @@ namespace ReportGenerator.ViewModels
             if (departamentEditWindow.ShowDialog() == true)
             {
                 if (_newDepartament.id != 0)
-                {                    
-                    DepartamentControl.UpdateCurrentDepartament(_newDepartament);
+                {
+                    _departamentControl.UpdateCurrentDepartament(_newDepartament);
                     ListDepartaments = new List<Departament>();
-                    ListDepartaments = DepartamentControl.GetAllDepartamentsList();
+                    ListDepartaments = _departamentControl.GetAllDepartamentsList();
                 }
             }
             else
@@ -277,11 +294,12 @@ namespace ReportGenerator.ViewModels
         /// </summary>
         public ICommand DeleteSelectedDepartament => new DelegateCommand(() =>
         {
-                if (MessageBox.Show("Вы уверены, что хотите удалить отдел?", "Удаление отдела", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
+                if (MessageBox.Show("Вы уверены, что хотите удалить отдел?", "Удаление отдела", 
+                    MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
                 {
-                    DepartamentControl.DeleteCurrentDepartament(_departamentSelected.id);
+                _departamentControl.DeleteCurrentDepartament(_departamentSelected.id);
                     ListDepartaments = new List<Departament>();
-                    ListDepartaments = DepartamentControl.GetAllDepartamentsList();
+                    ListDepartaments = _departamentControl.GetAllDepartamentsList();
                  }
         }, () => _departamentSelected != null);
 
@@ -295,9 +313,9 @@ namespace ReportGenerator.ViewModels
             {
                 if (_newRole.id == 0)
                 {
-                    RoleControl.InsertNewRole(_newRole);
+                    _roleControl.InsertNewRole(_newRole);
                     ListRoles = new List<Role>();
-                    ListRoles = RoleControl.GetAllRolesList();
+                    ListRoles = _roleControl.GetAllRolesList();
                 }
             }
             else
@@ -316,9 +334,9 @@ namespace ReportGenerator.ViewModels
             {
                 if (_newRole.id != 0)
                 {
-                    RoleControl.UpdateCurrentRole(_newRole);
+                    _roleControl.UpdateCurrentRole(_newRole);
                     ListRoles = new List<Role>();
-                    ListRoles = RoleControl.GetAllRolesList();
+                    ListRoles = _roleControl.GetAllRolesList();
                 }
             }
             else
@@ -329,11 +347,12 @@ namespace ReportGenerator.ViewModels
 
         public ICommand DeleteSelectedRole=> new DelegateCommand(() =>
         {
-            if (MessageBox.Show("Вы уверены, что хотите удалить роль?", "Удаление роли", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
+            if (MessageBox.Show("Вы уверены, что хотите удалить роль?", "Удаление роли", 
+                MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
             {
-                RoleControl.DeleteCurrentRole(_roleSelected.id);
+                _roleControl.DeleteCurrentRole(_roleSelected.id);
                 ListRoles = new List<Role>();
-                ListRoles = RoleControl.GetAllRolesList();
+                ListRoles = _roleControl.GetAllRolesList();
             }
         }, () => _roleSelected != null);
     }

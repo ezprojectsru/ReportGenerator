@@ -18,7 +18,7 @@ namespace ReportGenerator.DataBase.Controls
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public static List<Plan> GetPlanListByUserId(int id)
+        public List<Plan> GetPlanListByUserId(int id)
         {
             List<Plan> plans = new List<Plan>();
             DbConnection db = new DbConnection();
@@ -37,7 +37,7 @@ namespace ReportGenerator.DataBase.Controls
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public static Plan GetPlanById(int id)
+        public Plan GetPlanById(int id)
         {
             Plan plan = new Plan();
             DbConnection db = new DbConnection();
@@ -56,7 +56,7 @@ namespace ReportGenerator.DataBase.Controls
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public static int GetResponsibleIdByPlanId(int id)
+        public int GetResponsibleIdByPlanId(int id)
         {
             Plan plan = new Plan();
             DbConnection db = new DbConnection();
@@ -74,7 +74,7 @@ namespace ReportGenerator.DataBase.Controls
         /// Добавление нового Плана
         /// </summary>
         /// <param name="plan"></param>
-        public static void InsertNewPlan(Plan plan)
+        public void InsertNewPlan(Plan plan)
         {
             DbConnection db = new DbConnection();
             SqlConnection conn = db.GetConnection();
@@ -91,7 +91,7 @@ namespace ReportGenerator.DataBase.Controls
         /// Обновление текущего плана
         /// </summary>
         /// <param name="plan"></param>
-        public static void UpdateCurrentPlan(Plan plan)
+        public void UpdateCurrentPlan(Plan plan)
         {
             DbConnection db = new DbConnection();
             SqlConnection conn = db.GetConnection();
@@ -107,7 +107,7 @@ namespace ReportGenerator.DataBase.Controls
         /// Удаление плана по его id
         /// </summary>
         /// <param name="id"></param>
-        public static void DeleteCurrentPlan(int id)
+        public void DeleteCurrentPlan(int id)
         {
             DbConnection db = new DbConnection();
             SqlConnection conn = db.GetConnection();

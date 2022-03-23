@@ -18,7 +18,7 @@ namespace ReportGenerator.DataBase.Controls
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public static string GetNameById(int id)
+        public string GetNameById(int id)
         {
             Role role = null;
             DbConnection db = new DbConnection();
@@ -36,7 +36,7 @@ namespace ReportGenerator.DataBase.Controls
         /// Возвращает список названий всех Ролей
         /// </summary>
         /// <returns></returns>
-        public static List<string> GetAllNameRoles()
+        public List<string> GetAllNameRoles()
         {
             List<Role> roles = new List<Role>();
             DbConnection db = new DbConnection();
@@ -61,7 +61,7 @@ namespace ReportGenerator.DataBase.Controls
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        public static int GetIddByName(string name)
+        public int GetIddByName(string name)
         {
             Role role = new Role();
             DbConnection db = new DbConnection();
@@ -75,7 +75,7 @@ namespace ReportGenerator.DataBase.Controls
             return role.id;
         }
 
-        public static List<Role> GetAllRolesList()
+        public List<Role> GetAllRolesList()
         {
 
             List<Role> roles = new List<Role>();
@@ -90,7 +90,7 @@ namespace ReportGenerator.DataBase.Controls
             return roles;
         }
 
-        public static void InsertNewRole(Role role)
+        public void InsertNewRole(Role role)
         {
             DbConnection db = new DbConnection();
             SqlConnection conn = db.GetConnection();
@@ -102,7 +102,7 @@ namespace ReportGenerator.DataBase.Controls
             }
         }
 
-        public static void UpdateCurrentRole(Role role)
+        public void UpdateCurrentRole(Role role)
         {
             DbConnection db = new DbConnection();
             SqlConnection conn = db.GetConnection();
@@ -114,7 +114,7 @@ namespace ReportGenerator.DataBase.Controls
             }
         }
 
-        public static void DeleteCurrentRole(int id)
+        public void DeleteCurrentRole(int id)
         {
             DbConnection db = new DbConnection();
             SqlConnection conn = db.GetConnection();

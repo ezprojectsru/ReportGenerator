@@ -18,7 +18,7 @@ namespace ReportGenerator.DataBase.Controls
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public static List<Task> GetTaskListByPlanId(int id)
+        public List<Task> GetTaskListByPlanId(int id)
         {
             List<Task> tasks = new List<Task>();
             DbConnection db = new DbConnection();
@@ -36,7 +36,7 @@ namespace ReportGenerator.DataBase.Controls
         /// Обновление текущей задачи
         /// </summary>
         /// <param name="task"></param>
-        public static void UpdateCurrentTask(Task task)
+        public void UpdateCurrentTask(Task task)
         {            
             DbConnection db = new DbConnection();
             SqlConnection conn = db.GetConnection();
@@ -52,7 +52,7 @@ namespace ReportGenerator.DataBase.Controls
         /// Добавление новой задачи
         /// </summary>
         /// <param name="task"></param>
-        public static void InsertNewTask(Task task)
+        public void InsertNewTask(Task task)
         {
             DbConnection db = new DbConnection();
             SqlConnection conn = db.GetConnection();
@@ -68,7 +68,7 @@ namespace ReportGenerator.DataBase.Controls
         /// Удаление текущей задачи
         /// </summary>
         /// <param name="task"></param>
-        public static void DeleteCurrentTask(Task task)
+        public void DeleteCurrentTask(Task task)
         {
             DbConnection db = new DbConnection();
             SqlConnection conn = db.GetConnection();
@@ -87,7 +87,7 @@ namespace ReportGenerator.DataBase.Controls
         /// Удаление всех задач, относящихся к Плану по его id
         /// </summary>
         /// <param name="id"></param>
-        public static void DeleteTasksByPlanId(int id)
+        public void DeleteTasksByPlanId(int id)
         {
             DbConnection db = new DbConnection();
             SqlConnection conn = db.GetConnection();

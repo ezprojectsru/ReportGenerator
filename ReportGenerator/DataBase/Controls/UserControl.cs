@@ -18,7 +18,7 @@ namespace ReportGenerator.DataBase.Controls
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public static string GetFullNameById(int id)
+        public string GetFullNameById(int id)
         {
             User user = null;
             DbConnection db = new DbConnection();
@@ -37,7 +37,7 @@ namespace ReportGenerator.DataBase.Controls
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public static int GetDepartamentIdById(int id)
+        public int GetDepartamentIdById(int id)
         {
             User user = new User();
             DbConnection db = new DbConnection();
@@ -56,7 +56,7 @@ namespace ReportGenerator.DataBase.Controls
         /// </summary>
         /// <param name="fullName"></param>
         /// <returns></returns>
-        public static int GetIddByFullName(string fullName)
+        public int GetIddByFullName(string fullName)
         {
             User user = new User();
             DbConnection db = new DbConnection();
@@ -74,7 +74,7 @@ namespace ReportGenerator.DataBase.Controls
         /// Возвращает список всех пользователей
         /// </summary>
         /// <returns></returns>
-        public static List<User> GetAllUsersList()
+        public List<User> GetAllUsersList()
         {
             List<User> users = new List<User>();
             DbConnection db = new DbConnection();
@@ -93,7 +93,7 @@ namespace ReportGenerator.DataBase.Controls
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        public static User GetUser(string name)
+        public User GetUser(string name)
         {
             User currentUser = null;
             DbConnection db = new DbConnection();
@@ -111,7 +111,7 @@ namespace ReportGenerator.DataBase.Controls
         /// Возвращает список полных имен всех пользователей
         /// </summary>
         /// <returns></returns>
-        public static List<string> GetAllFullNameUsers()
+        public List<string> GetAllFullNameUsers()
         {
             List<User> users = new List<User>();
             DbConnection db = new DbConnection();
@@ -135,7 +135,7 @@ namespace ReportGenerator.DataBase.Controls
         /// Добавление нового пользователя
         /// </summary>
         /// <param name="user"></param>
-        public static void InsertNewUser(User user)
+        public void InsertNewUser(User user)
         {
             DbConnection db = new DbConnection();
             SqlConnection conn = db.GetConnection();
@@ -151,7 +151,7 @@ namespace ReportGenerator.DataBase.Controls
         /// Обновление текущего пользователя
         /// </summary>
         /// <param name="user"></param>
-        public static void UpdateCurrentUser(User user)
+        public void UpdateCurrentUser(User user)
         {
             DbConnection db = new DbConnection();
             SqlConnection conn = db.GetConnection();
@@ -167,7 +167,7 @@ namespace ReportGenerator.DataBase.Controls
         /// Удаление текущего пользователя
         /// </summary>
         /// <param name="id"></param>
-        public static void DeleteCurrentUser(int id)
+        public void DeleteCurrentUser(int id)
         {
             DbConnection db = new DbConnection();
             SqlConnection conn = db.GetConnection();
@@ -187,7 +187,7 @@ namespace ReportGenerator.DataBase.Controls
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        public static bool ExistsUserName(string name)
+        public bool ExistsUserName(string name)
         {
             User currentUser = null;
             DbConnection db = new DbConnection();

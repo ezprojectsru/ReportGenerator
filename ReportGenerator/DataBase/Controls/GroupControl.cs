@@ -18,7 +18,7 @@ namespace ReportGenerator.DataBase.Controls
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public static string GetNameById(int id)
+        public string GetNameById(int id)
             {
                 Group group = null;
                 DbConnection db = new DbConnection();
@@ -35,7 +35,7 @@ namespace ReportGenerator.DataBase.Controls
         /// Возвращает список имен всех групп
         /// </summary>
         /// <returns></returns>
-        public static List<string> GetAllNameGroups()
+        public List<string> GetAllNameGroups()
             {
                 List<Group> groups = new List<Group>();
                 DbConnection db = new DbConnection();
@@ -59,7 +59,7 @@ namespace ReportGenerator.DataBase.Controls
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        public static int GetIddByName(string name)
+        public int GetIddByName(string name)
         {
             Group group = new Group();
             DbConnection db = new DbConnection();

@@ -14,6 +14,7 @@ namespace ReportGenerator.ViewModels
     /// </summary>
     public class PlanEditWindowViewModel : BindableBase
     {
+        private UserControl _userControl = new UserControl();
         public string Title { get; set; }
         private Plan _plan;
         public List<string> Users { get; set; }
@@ -80,9 +81,9 @@ namespace ReportGenerator.ViewModels
                 Comment = _plan.comment;
                 Title = "Редактирование плана";                
                 Users = new List<string>();
-                Users = UserControl.GetAllFullNameUsers();
-                ResponsibleFullName = UserControl.GetFullNameById(_plan.responsibleId);
-                DirectorFullName = UserControl.GetFullNameById(_plan.directorId);
+                Users = _userControl.GetAllFullNameUsers();
+                ResponsibleFullName = _userControl.GetFullNameById(_plan.responsibleId);
+                DirectorFullName = _userControl.GetFullNameById(_plan.directorId);
             }
         }
 
@@ -102,7 +103,7 @@ namespace ReportGenerator.ViewModels
             DirectorFullName = "";
             Title = "Создание плана";
             Users = new List<string>();
-            Users = UserControl.GetAllFullNameUsers();
+            Users = _userControl.GetAllFullNameUsers();
         }
 
         /// <summary>
@@ -114,8 +115,8 @@ namespace ReportGenerator.ViewModels
             {
                 try
                 {
-                    int responsibleId = UserControl.GetIddByFullName(ResponsibleFullName);
-                    int directorId = UserControl.GetIddByFullName(DirectorFullName);
+                    int responsibleId = _userControl.GetIddByFullName(ResponsibleFullName);
+                    int directorId = _userControl.GetIddByFullName(DirectorFullName);
                     Plan _resultPlan= new Plan(Id, Name, StartDate, FinishDate, responsibleId, directorId, Comment);
                     MessageService.Send(_resultPlan);
                     Window wnd = currentWindow as Window;

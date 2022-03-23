@@ -20,6 +20,7 @@ namespace ReportGenerator.ViewModels
         public string ConnectionStatus { get; set; } = "Проверка подключения к Серверу, подождите...";
         public string Login { get; set; }
         public string Password { get; set; }
+        private UserControl _userControl = new UserControl();
 
 
         /// <summary>
@@ -39,7 +40,7 @@ namespace ReportGenerator.ViewModels
         /// </summary>
         public ICommand LoginUser => new DelegateCommand(() =>
         {
-            User user = UserControl.GetUser(Login);
+            User user = _userControl.GetUser(Login);
             if (user != null)
             {
                 if (Password == user.password)

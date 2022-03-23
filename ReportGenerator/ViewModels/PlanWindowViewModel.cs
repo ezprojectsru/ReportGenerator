@@ -17,7 +17,8 @@ namespace ReportGenerator.ViewModels
     /// </summary>
     public class ItemPlan
     {
-        
+        private UserControl _userControl = new UserControl();
+
         public int Id { get; set; }
         public string Name { get; set; }
         public DateTime StartDate { get; set; }
@@ -32,8 +33,8 @@ namespace ReportGenerator.ViewModels
             Name = plan.name;
             StartDate = plan.startDate;
             FinishDate = plan.finishDate;
-            Responsible = UserControl.GetFullNameById(plan.responsibleId);
-            Director = UserControl.GetFullNameById(plan.directorId); ;
+            Responsible = _userControl.GetFullNameById(plan.responsibleId);
+            Director = _userControl.GetFullNameById(plan.directorId); ;
             Comment = plan.comment;
 
         }
@@ -59,6 +60,9 @@ namespace ReportGenerator.ViewModels
     /// </summary>
     public class PlanWindowViewModel : BindableBase
     {
+        private UserControl _userControl = new UserControl();
+        private TaskControl _taskControl = new TaskControl();
+        private PlanControl _planControl = new PlanControl();
         private ItemPlan _planSelected;
         public ItemPlan PlanSelected { 
             get { return _planSelected; } 
@@ -125,11 +129,13 @@ namespace ReportGenerator.ViewModels
         /// </summary>
         private void getPlansList()
         {
-            List<Plan> targetPlans = PlanControl.GetPlanListByUserId(_sessionUser.user.id);
+            List<Plan> targetPlans = _planControl.GetPlanListByUserId(_sessionUser.user.id);
             Plans = new List<ItemPlan>();
             foreach (Plan pl in targetPlans)
             {                
-                ItemPlan item = new ItemPlan(pl.id, pl.name, pl.startDate, pl.finishDate, UserControl.GetFullNameById(pl.responsibleId), UserControl.GetFullNameById(pl.directorId), pl.comment ?? "");
+                ItemPlan item = new ItemPlan(pl.id, pl.name, pl.startDate, pl.finishDate,
+                    _userControl.GetFullNameById(pl.responsibleId),
+                    _userControl.GetFullNameById(pl.directorId), pl.comment ?? "");
                 Plans.Add(item);
             }            
         }
@@ -139,7 +145,7 @@ namespace ReportGenerator.ViewModels
         /// </summary>        
         public void GetTasksFromSelectedPlan(int id)
         {
-            Tasks = TaskControl.GetTaskListByPlanId(id);    
+            Tasks = _taskControl.GetTaskListByPlanId(id);    
             
         }
 
@@ -148,12 +154,13 @@ namespace ReportGenerator.ViewModels
         /// </summary>
         public ICommand DeleteSelectedtask => new DelegateCommand(() =>
         {
-            if (MessageBox.Show("Вы уверены, что хотите удалить задачу?", "Удаление задачи", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
+            if (MessageBox.Show("Вы уверены, что хотите удалить задачу?", "Удаление задачи", 
+                MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
             {
                 Task targetTask = _taskSelected;
                 int planId = _taskSelected.planId;
-                TaskControl.DeleteCurrentTask(_taskSelected);
-                Tasks = TaskControl.GetTaskListByPlanId(planId);                
+                _taskControl.DeleteCurrentTask(_taskSelected);
+                Tasks = _taskControl.GetTaskListByPlanId(planId);                
             }
         }, () => _taskSelected != null);
 
@@ -171,8 +178,8 @@ namespace ReportGenerator.ViewModels
             {
                 if (_newTask.id == 0)
                 {
-                    TaskControl.InsertNewTask(_newTask);
-                    Tasks = TaskControl.GetTaskListByPlanId(_newTask.planId);
+                    _taskControl.InsertNewTask(_newTask);
+                    Tasks = _taskControl.GetTaskListByPlanId(_newTask.planId);
                 }                
             }
             else
@@ -194,9 +201,9 @@ namespace ReportGenerator.ViewModels
             if (taskEditWindow.ShowDialog() == true)
             {
                 if (_newTask.id != 0)
-                {                
-                    TaskControl.UpdateCurrentTask(_newTask);
-                    Tasks = TaskControl.GetTaskListByPlanId(_newTask.planId);
+                {
+                    _taskControl.UpdateCurrentTask(_newTask);
+                    Tasks = _taskControl.GetTaskListByPlanId(_newTask.planId);
                 }               
 
             }
@@ -213,10 +220,12 @@ namespace ReportGenerator.ViewModels
         public ICommand OpenEditSelectedPlanWindow => new DelegateCommand(() =>
         {           
 
-            int responsibleId = UserControl.GetIddByFullName(_planSelected.Responsible);
-            int directorId = UserControl.GetIddByFullName(_planSelected.Director); 
+            int responsibleId = _userControl.GetIddByFullName(_planSelected.Responsible);
+            int directorId = _userControl.GetIddByFullName(_planSelected.Director); 
 
-            Plan currentPlan = new Plan(_planSelected.Id, _planSelected.Name, _planSelected.StartDate, _planSelected.FinishDate, responsibleId, directorId, _planSelected.Comment);            
+            Plan currentPlan = new Plan(_planSelected.Id, _planSelected.Name, 
+                _planSelected.StartDate, _planSelected.FinishDate, responsibleId, 
+                directorId, _planSelected.Comment);            
             
             PlanEditWindow planEditWindow = new PlanEditWindow();
             MessageService.Send(currentPlan);
@@ -226,13 +235,15 @@ namespace ReportGenerator.ViewModels
             {
                 if (_newPlan.id != 0)
                 {
-                    PlanControl.UpdateCurrentPlan(_newPlan);
+                    _planControl.UpdateCurrentPlan(_newPlan);
 
-                    List<Plan> targetPlans = PlanControl.GetPlanListByUserId(_sessionUser.user.id);
+                    List<Plan> targetPlans = _planControl.GetPlanListByUserId(_sessionUser.user.id);
                     Plans = new List<ItemPlan>();
                     foreach (Plan pl in targetPlans)
                     {
-                        ItemPlan item = new ItemPlan(pl.id, pl.name, pl.startDate, pl.finishDate, UserControl.GetFullNameById(pl.responsibleId), UserControl.GetFullNameById(pl.directorId), pl.comment ?? "");
+                        ItemPlan item = new ItemPlan(pl.id, pl.name, pl.startDate, pl.finishDate,
+                            _userControl.GetFullNameById(pl.responsibleId),
+                            _userControl.GetFullNameById(pl.directorId), pl.comment ?? "");
                         Plans.Add(item);
                     }
 
@@ -262,13 +273,15 @@ namespace ReportGenerator.ViewModels
 
                 if (_newPlan.id == 0)
                 {
-                    PlanControl.InsertNewPlan(_newPlan);
+                    _planControl.InsertNewPlan(_newPlan);
 
-                    List<Plan> targetPlans = PlanControl.GetPlanListByUserId(_sessionUser.user.id);
+                    List<Plan> targetPlans = _planControl.GetPlanListByUserId(_sessionUser.user.id);
                     Plans = new List<ItemPlan>();
                     foreach (Plan pl in targetPlans)
                     {
-                        ItemPlan item = new ItemPlan(pl.id, pl.name, pl.startDate, pl.finishDate, UserControl.GetFullNameById(pl.responsibleId), UserControl.GetFullNameById(pl.directorId), pl.comment ?? "");
+                        ItemPlan item = new ItemPlan(pl.id, pl.name, pl.startDate, pl.finishDate,
+                            _userControl.GetFullNameById(pl.responsibleId),
+                            _userControl.GetFullNameById(pl.directorId), pl.comment ?? "");
                         Plans.Add(item);
                     }
 
@@ -288,17 +301,20 @@ namespace ReportGenerator.ViewModels
         /// </summary>
         public ICommand DeleteSelectedPlan => new DelegateCommand(() =>
         {
-            if (MessageBox.Show("Вы уверены, что хотите удалить план? Вместе с планом будут удалены и все его задачи.", "Удаление плана", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
+            if (MessageBox.Show("Вы уверены, что хотите удалить план? Вместе с планом будут удалены и все его задачи.", 
+                "Удаление плана", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
             {
-                TaskControl.DeleteTasksByPlanId(_planSelected.Id);          
+                _taskControl.DeleteTasksByPlanId(_planSelected.Id);
 
-                PlanControl.DeleteCurrentPlan(_planSelected.Id);
+                _planControl.DeleteCurrentPlan(_planSelected.Id);
 
-                List<Plan> targetPlans = PlanControl.GetPlanListByUserId(_sessionUser.user.id);
+                List<Plan> targetPlans = _planControl.GetPlanListByUserId(_sessionUser.user.id);
                 Plans = new List<ItemPlan>();
                 foreach (Plan pl in targetPlans)
                 {
-                    ItemPlan item = new ItemPlan(pl.id, pl.name, pl.startDate, pl.finishDate, UserControl.GetFullNameById(pl.responsibleId), UserControl.GetFullNameById(pl.directorId), pl.comment ?? "");
+                    ItemPlan item = new ItemPlan(pl.id, pl.name, pl.startDate, pl.finishDate,
+                        _userControl.GetFullNameById(pl.responsibleId),
+                        _userControl.GetFullNameById(pl.directorId), pl.comment ?? "");
                     Plans.Add(item);
                 }
 

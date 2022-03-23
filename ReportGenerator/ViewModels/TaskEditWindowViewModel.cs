@@ -9,11 +9,14 @@ using System.Windows.Input;
 
 namespace ReportGenerator.ViewModels
 {
+    /// <summary>
+    /// Класс ViewModel для окна редактирования задач
+    /// </summary>
     public class TaskEditWindowViewModel : BindableBase
     {
-        /// <summary>
-        /// Класс ViewModel для окна редактирования задач
-        /// </summary>
+        private UserControl _userControl = new UserControl();
+        private PlanControl _planControl = new PlanControl();
+        private TaskTypeControl _taskTypeControl = new TaskTypeControl();
         public string Title { get; set; }
         private Task _task;
         private int _departamentId;
@@ -62,9 +65,9 @@ namespace ReportGenerator.ViewModels
         private void setTypes(int planId)
         {
             Types = new List<string>();
-            _responsibleId = PlanControl.GetResponsibleIdByPlanId(planId);
-            _departamentId = UserControl.GetDepartamentIdById(_responsibleId);            
-            Types = TaskTypeControl.GetTaskShortNamesListByDepartamentId(_departamentId);
+            _responsibleId = _planControl.GetResponsibleIdByPlanId(planId);
+            _departamentId = _userControl.GetDepartamentIdById(_responsibleId);            
+            Types = _taskTypeControl.GetTaskShortNamesListByDepartamentId(_departamentId);
         }
 
         /// <summary>
@@ -111,7 +114,8 @@ namespace ReportGenerator.ViewModels
         /// </summary>
         public ICommand SendDialogResultTask => new DelegateCommand<object>((currentWindow) =>
         {
-            if (!string.IsNullOrWhiteSpace(Name) && !string.IsNullOrWhiteSpace(Intensity) && !string.IsNullOrWhiteSpace(StartCompletion) && !string.IsNullOrWhiteSpace(PlanCompletion))
+            if (!string.IsNullOrWhiteSpace(Name) && !string.IsNullOrWhiteSpace(Intensity) && 
+            !string.IsNullOrWhiteSpace(StartCompletion) && !string.IsNullOrWhiteSpace(PlanCompletion))
             {
                 try
                 {

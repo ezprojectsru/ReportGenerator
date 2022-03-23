@@ -13,7 +13,7 @@ namespace ReportGenerator.DataBase.Controls
     /// </summary>
     public class DepartamentControl
     {
-        public static string GetNameById(int id)
+        public string GetNameById(int id)
         {
             
             Departament departament = null;
@@ -29,7 +29,7 @@ namespace ReportGenerator.DataBase.Controls
 
         }
 
-        public static List<string> GetAllNameDepartaments()
+        public List<string> GetAllNameDepartaments()
         {
 
             List<Departament> departaments = new List<Departament>();
@@ -50,7 +50,7 @@ namespace ReportGenerator.DataBase.Controls
             return departamentNames;
         }
 
-        public static int GetIddByName(string name)
+        public int GetIddByName(string name)
         {
 
             Departament departament = new Departament();
@@ -66,7 +66,7 @@ namespace ReportGenerator.DataBase.Controls
 
         }
 
-        public static List<Departament> GetAllDepartamentsList()
+        public List<Departament> GetAllDepartamentsList()
         {
 
             List<Departament> departaments = new List<Departament>();
@@ -85,7 +85,7 @@ namespace ReportGenerator.DataBase.Controls
         /// Добавить новый отдел
         /// </summary>
         /// <param name="departament"></param>
-        public static void InsertNewDepartament(Departament departament)
+        public void InsertNewDepartament(Departament departament)
         {
             DbConnection db = new DbConnection();
             SqlConnection conn = db.GetConnection();
@@ -101,7 +101,7 @@ namespace ReportGenerator.DataBase.Controls
         /// Обновить текущий отдел
         /// </summary>
         /// <param name="departament"></param>
-        public static void UpdateCurrentDepartament(Departament departament)
+        public void UpdateCurrentDepartament(Departament departament)
         {
             DbConnection db = new DbConnection();
             SqlConnection conn = db.GetConnection();
@@ -117,7 +117,7 @@ namespace ReportGenerator.DataBase.Controls
         /// Удалить текущий отдел
         /// </summary>
         /// <param name="id"></param>
-        public static void DeleteCurrentDepartament(int id)
+        public void DeleteCurrentDepartament(int id)
         {
             DbConnection db = new DbConnection();
             SqlConnection conn = db.GetConnection();

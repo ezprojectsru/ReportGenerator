@@ -18,7 +18,7 @@ namespace ReportGenerator.DataBase.Controls
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public static List<TaskType> GetTaskTypeListByDepartamentId(int id)
+        public List<TaskType> GetTaskTypeListByDepartamentId(int id)
         {
             List<TaskType> taskTypes = new List<TaskType>();
             DbConnection db = new DbConnection();
@@ -37,7 +37,7 @@ namespace ReportGenerator.DataBase.Controls
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public static List<string> GetTaskShortNamesListByDepartamentId(int id)
+        public List<string> GetTaskShortNamesListByDepartamentId(int id)
         {
 
             List<string> typeShortNames = new List<string>();
