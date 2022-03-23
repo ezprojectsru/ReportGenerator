@@ -13,7 +13,7 @@ namespace ReportGenerator.Services
     public class DbConnection
     {
         
-        public SqlConnection Connection { get; set; }        
+        private SqlConnection _connection { get; set; }        
         public DbConnection()
         {
             Init();
@@ -46,7 +46,7 @@ namespace ReportGenerator.Services
                 builder.InitialCatalog = connectConfig.DbName;
                 builder.UserID = connectConfig.Username;
                 builder.Password = connectConfig.Password;
-                Connection = new SqlConnection(builder.ToString());
+                _connection = new SqlConnection(builder.ToString());
 
             }
             catch (Exception ex)
@@ -64,7 +64,7 @@ namespace ReportGenerator.Services
             bool result = true;
             try
             {
-                Connection.Open();                
+                _connection.Open();                
             }
             catch (Exception ex)
             {
@@ -72,9 +72,9 @@ namespace ReportGenerator.Services
                 File.AppendAllText(Constants.LogFileName, ex.ToString());
             }
 
-            if (Connection != null && Connection.State != ConnectionState.Closed)
+            if (_connection != null && _connection.State != ConnectionState.Closed)
             {
-                Connection.Close();
+                _connection.Close();
             }
             return result;
         }
@@ -85,7 +85,7 @@ namespace ReportGenerator.Services
         /// </summary>        
         public SqlConnection GetConnection()
         {
-            return Connection;
+            return _connection;
         }
 
         
