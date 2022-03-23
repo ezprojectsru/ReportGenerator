@@ -13,6 +13,12 @@ namespace ReportGenerator.DataBase.Controls
     /// </summary>
     public class SectorControl
     {
+        private SqlConnection _connection;
+        public SectorControl()
+        {
+            DbConnection db = new DbConnection();
+            _connection = db.GetConnection();
+        }
         /// <summary>
         /// Возвращает название сектора по его id
         /// </summary>
@@ -21,14 +27,10 @@ namespace ReportGenerator.DataBase.Controls
         public string GetNameById(int id)
         {
             Sector sector = null;
-            DbConnection db = new DbConnection();
-            SqlConnection conn = db.GetConnection();
-
-            using (conn)
+            using (_connection)
             {
-                sector = conn.Query<Sector>("SELECT name FROM sectors WHERE id = @id", new { id }).FirstOrDefault();
+                sector = _connection.Query<Sector>("SELECT name FROM sectors WHERE id = @id", new { id }).FirstOrDefault();
             }
-
             return sector.name;
         }
 
@@ -38,21 +40,16 @@ namespace ReportGenerator.DataBase.Controls
         /// <returns></returns>
         public List<string> GetAllNameSectors()
         {
-            List<Sector> sectors = new List<Sector>();
-            DbConnection db = new DbConnection();
-            SqlConnection conn = db.GetConnection();
-
-            using (conn)
+            List<Sector> sectors = new List<Sector>();            
+            using (_connection)
             {
-                sectors = conn.Query<Sector>("Select name From sectors").ToList();
+                sectors = _connection.Query<Sector>("Select name From sectors").ToList();
             }
-
             List<string> sectorNames = new List<string>();
             foreach (Sector sector in sectors)
             {
                 sectorNames.Add(sector.name);
             }
-
             return sectorNames;
         }
 
@@ -64,14 +61,10 @@ namespace ReportGenerator.DataBase.Controls
         public int GetIddByName(string name)
         {
             Sector sector = new Sector();
-            DbConnection db = new DbConnection();
-            SqlConnection conn = db.GetConnection();
-
-            using (conn)
+            using (_connection)
             {
-                sector = conn.Query<Sector>("SELECT id FROM sectors WHERE name = @name", new { name }).FirstOrDefault();
+                sector = _connection.Query<Sector>("SELECT id FROM sectors WHERE name = @name", new { name }).FirstOrDefault();
             }
-
             return sector.id;
         }
     }

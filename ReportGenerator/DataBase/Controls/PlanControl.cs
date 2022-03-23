@@ -13,6 +13,12 @@ namespace ReportGenerator.DataBase.Controls
     /// </summary>
     public class PlanControl
     {
+        private SqlConnection _connection;
+        public PlanControl()
+        {
+            DbConnection db = new DbConnection();
+            _connection = db.GetConnection();
+        }
         /// <summary>
         /// Возвращает список Планов, пренадлежащих пользователю с id
         /// </summary>
@@ -21,14 +27,10 @@ namespace ReportGenerator.DataBase.Controls
         public List<Plan> GetPlanListByUserId(int id)
         {
             List<Plan> plans = new List<Plan>();
-            DbConnection db = new DbConnection();
-            SqlConnection conn = db.GetConnection();
-
-            using (conn)
+            using (_connection)
             {
-                plans = conn.Query<Plan>("SELECT * FROM plans WHERE responsibleId = @id", new { id }).ToList();
+                plans = _connection.Query<Plan>("SELECT * FROM plans WHERE responsibleId = @id", new { id }).ToList();
             }
-
             return plans;
         }
 
@@ -39,15 +41,11 @@ namespace ReportGenerator.DataBase.Controls
         /// <returns></returns>
         public Plan GetPlanById(int id)
         {
-            Plan plan = new Plan();
-            DbConnection db = new DbConnection();
-            SqlConnection conn = db.GetConnection();
-
-            using (conn)
+            Plan plan = new Plan(); 
+            using (_connection)
             {
-                plan = conn.Query<Plan>("SELECT * FROM plans WHERE id = @id", new { id }).FirstOrDefault();
+                plan = _connection.Query<Plan>("SELECT * FROM plans WHERE id = @id", new { id }).FirstOrDefault();
             }
-
             return plan;
         }
 
@@ -59,14 +57,10 @@ namespace ReportGenerator.DataBase.Controls
         public int GetResponsibleIdByPlanId(int id)
         {
             Plan plan = new Plan();
-            DbConnection db = new DbConnection();
-            SqlConnection conn = db.GetConnection();
-
-            using (conn)
+            using (_connection)
             {
-                plan = conn.Query<Plan>("SELECT * FROM plans WHERE id = @id", new { id }).FirstOrDefault();
+                plan = _connection.Query<Plan>("SELECT * FROM plans WHERE id = @id", new { id }).FirstOrDefault();
             }
-
             return plan.responsibleId;
         }
 
@@ -75,15 +69,12 @@ namespace ReportGenerator.DataBase.Controls
         /// </summary>
         /// <param name="plan"></param>
         public void InsertNewPlan(Plan plan)
-        {
-            DbConnection db = new DbConnection();
-            SqlConnection conn = db.GetConnection();
-
-            using (conn)
+        {            
+            using (_connection)
             {               
 
                 string insertQuery = "INSERT INTO plans (name, startDate, finishDate, responsibleId, directorId, comment) VALUES (@name, @startDate, @finishDate, @responsibleId, @directorId, @comment)";
-                var result = conn.Execute(insertQuery, plan);
+                var result = _connection.Execute(insertQuery, plan);
             }
         }
 
@@ -92,14 +83,11 @@ namespace ReportGenerator.DataBase.Controls
         /// </summary>
         /// <param name="plan"></param>
         public void UpdateCurrentPlan(Plan plan)
-        {
-            DbConnection db = new DbConnection();
-            SqlConnection conn = db.GetConnection();
-
-            using (conn)
+        {  
+            using (_connection)
             {
                 string updatetQuery = "UPDATE plans SET name = @name, startDate = @startDate, finishDate = @finishDate, responsibleId = @responsibleId, directorId = @directorId, comment = @comment WHERE id = @id";
-                var result = conn.Execute(updatetQuery, plan);
+                var result = _connection.Execute(updatetQuery, plan);
             }
         }
 
@@ -109,13 +97,10 @@ namespace ReportGenerator.DataBase.Controls
         /// <param name="id"></param>
         public void DeleteCurrentPlan(int id)
         {
-            DbConnection db = new DbConnection();
-            SqlConnection conn = db.GetConnection();
-
-            using (conn)
+            using (_connection)
             {
                 string deleteQuery = "DELETE FROM plans WHERE id = @id";
-                var result = conn.Execute(deleteQuery, new
+                var result = _connection.Execute(deleteQuery, new
                 {
                     id
                 });

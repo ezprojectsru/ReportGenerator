@@ -13,6 +13,12 @@ namespace ReportGenerator.DataBase.Controls
     /// </summary>
     public class RoleControl
     {
+        private SqlConnection _connection;
+        public RoleControl()
+        {
+            DbConnection db = new DbConnection();
+            _connection = db.GetConnection();
+        }
         /// <summary>
         /// Возвращает название роли по ее id
         /// </summary>
@@ -21,14 +27,10 @@ namespace ReportGenerator.DataBase.Controls
         public string GetNameById(int id)
         {
             Role role = null;
-            DbConnection db = new DbConnection();
-            SqlConnection conn = db.GetConnection();
-
-            using (conn)
+            using (_connection)
             {
-                role = conn.Query<Role>("SELECT name FROM roles WHERE id = @id", new { id }).FirstOrDefault();
+                role = _connection.Query<Role>("SELECT name FROM roles WHERE id = @id", new { id }).FirstOrDefault();
             }
-
             return role.name;
         }
 
@@ -39,20 +41,15 @@ namespace ReportGenerator.DataBase.Controls
         public List<string> GetAllNameRoles()
         {
             List<Role> roles = new List<Role>();
-            DbConnection db = new DbConnection();
-            SqlConnection conn = db.GetConnection();
-
-            using (conn)
+            using (_connection)
             {
-                roles = conn.Query<Role>("Select name From roles").ToList();
+                roles = _connection.Query<Role>("Select name From roles").ToList();
             }
-
             List<string> roleNames = new List<string>();
             foreach (Role role in roles)
             {
                 roleNames.Add(role.name);
             }
-
             return roleNames;
         }
 
@@ -64,14 +61,10 @@ namespace ReportGenerator.DataBase.Controls
         public int GetIddByName(string name)
         {
             Role role = new Role();
-            DbConnection db = new DbConnection();
-            SqlConnection conn = db.GetConnection();
-
-            using (conn)
+            using (_connection)
             {
-                role = conn.Query<Role>("SELECT id FROM roles WHERE name = @name", new { name }).FirstOrDefault();
+                role = _connection.Query<Role>("SELECT id FROM roles WHERE name = @name", new { name }).FirstOrDefault();
             }
-
             return role.id;
         }
 
@@ -79,50 +72,37 @@ namespace ReportGenerator.DataBase.Controls
         {
 
             List<Role> roles = new List<Role>();
-            DbConnection db = new DbConnection();
-            SqlConnection conn = db.GetConnection();
-
-            using (conn)
+            using (_connection)
             {
-                roles = conn.Query<Role>("Select * From roles").ToList();
+                roles = _connection.Query<Role>("Select * From roles").ToList();
             }
-
             return roles;
         }
 
         public void InsertNewRole(Role role)
         {
-            DbConnection db = new DbConnection();
-            SqlConnection conn = db.GetConnection();
-
-            using (conn)
+            using (_connection)
             {
                 string insertQuery = "INSERT INTO roles (name) VALUES (@name)";
-                var result = conn.Execute(insertQuery, role);
+                var result = _connection.Execute(insertQuery, role);
             }
         }
 
         public void UpdateCurrentRole(Role role)
-        {
-            DbConnection db = new DbConnection();
-            SqlConnection conn = db.GetConnection();
-
-            using (conn)
+        {            
+            using (_connection)
             {
                 string updatetQuery = "UPDATE roles SET name = @name WHERE id = @id";
-                var result = conn.Execute(updatetQuery, role);
+                var result = _connection.Execute(updatetQuery, role);
             }
         }
 
         public void DeleteCurrentRole(int id)
         {
-            DbConnection db = new DbConnection();
-            SqlConnection conn = db.GetConnection();
-
-            using (conn)
+            using (_connection)
             {
                 string deleteQuery = "DELETE FROM roles WHERE id = @id";
-                var result = conn.Execute(deleteQuery, new
+                var result = _connection.Execute(deleteQuery, new
                 {
                     id
                 });

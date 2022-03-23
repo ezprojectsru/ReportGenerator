@@ -13,6 +13,12 @@ namespace ReportGenerator.DataBase.Controls
     /// </summary>
     public class TaskTypeControl
     {
+        private SqlConnection _connection;
+        public TaskTypeControl()
+        {
+            DbConnection db = new DbConnection();
+            _connection = db.GetConnection();
+        }
         /// <summary>
         /// Возвращает список Типов по id Отдела, к которому они относятся
         /// </summary>
@@ -21,14 +27,10 @@ namespace ReportGenerator.DataBase.Controls
         public List<TaskType> GetTaskTypeListByDepartamentId(int id)
         {
             List<TaskType> taskTypes = new List<TaskType>();
-            DbConnection db = new DbConnection();
-            SqlConnection conn = db.GetConnection();
-
-            using (conn)
+            using (_connection)
             {
-                taskTypes = conn.Query<TaskType>("SELECT * FROM types WHERE departamentId = @id", new { id }).ToList();
+                taskTypes = _connection.Query<TaskType>("SELECT * FROM types WHERE departamentId = @id", new { id }).ToList();
             }
-
             return taskTypes;
         }
 
@@ -42,19 +44,14 @@ namespace ReportGenerator.DataBase.Controls
 
             List<string> typeShortNames = new List<string>();
             List<TaskType> taskTypes = new List<TaskType>();
-            DbConnection db = new DbConnection();
-            SqlConnection conn = db.GetConnection();
-
-            using (conn)
+            using (_connection)
             {
-                taskTypes = conn.Query<TaskType>("SELECT * FROM types WHERE departamentId = @id", new { id }).ToList();
+                taskTypes = _connection.Query<TaskType>("SELECT * FROM types WHERE departamentId = @id", new { id }).ToList();
             }
-
             foreach (TaskType task in taskTypes)
             {
                 typeShortNames.Add(task.shortName);
             }
-
             return typeShortNames;
         }
     }

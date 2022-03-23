@@ -13,6 +13,12 @@ namespace ReportGenerator.DataBase.Controls
     /// </summary>
     public class UserControl
     {
+        private SqlConnection _connection;
+        public UserControl()
+        {
+            DbConnection db = new DbConnection();
+            _connection = db.GetConnection();
+        }
         /// <summary>
         /// Возвращает полное имя пользователя по id пользователя
         /// </summary>
@@ -21,14 +27,10 @@ namespace ReportGenerator.DataBase.Controls
         public string GetFullNameById(int id)
         {
             User user = null;
-            DbConnection db = new DbConnection();
-            SqlConnection conn = db.GetConnection();
-
-            using (conn)
+            using (_connection)
             {
-                user = conn.Query<User>("SELECT fullName FROM users WHERE id = @id", new { id }).FirstOrDefault();
+                user = _connection.Query<User>("SELECT fullName FROM users WHERE id = @id", new { id }).FirstOrDefault();
             }
-
             return user.fullName;
         }
 
@@ -40,14 +42,10 @@ namespace ReportGenerator.DataBase.Controls
         public int GetDepartamentIdById(int id)
         {
             User user = new User();
-            DbConnection db = new DbConnection();
-            SqlConnection conn = db.GetConnection();
-
-            using (conn)
+            using (_connection)
             {
-                user = conn.Query<User>("SELECT * FROM users WHERE id = @id", new { id }).FirstOrDefault();
+                user = _connection.Query<User>("SELECT * FROM users WHERE id = @id", new { id }).FirstOrDefault();
             }
-
             return user.departamentId;
         }
 
@@ -59,14 +57,10 @@ namespace ReportGenerator.DataBase.Controls
         public int GetIddByFullName(string fullName)
         {
             User user = new User();
-            DbConnection db = new DbConnection();
-            SqlConnection conn = db.GetConnection();
-
-            using (conn)
+            using (_connection)
             {
-                user = conn.Query<User>("SELECT id FROM users WHERE fullName = @fullName", new { fullName }).FirstOrDefault();
+                user = _connection.Query<User>("SELECT id FROM users WHERE fullName = @fullName", new { fullName }).FirstOrDefault();
             }
-
             return user.id;
         }
 
@@ -77,14 +71,10 @@ namespace ReportGenerator.DataBase.Controls
         public List<User> GetAllUsersList()
         {
             List<User> users = new List<User>();
-            DbConnection db = new DbConnection();
-            SqlConnection conn = db.GetConnection();
-            
-            using (conn)
+            using (_connection)
             {
-                users = conn.Query<User>("Select * From users").ToList();
-            }                
-            
+                users = _connection.Query<User>("Select * From users").ToList();
+            }            
             return users;
         }
 
@@ -96,14 +86,10 @@ namespace ReportGenerator.DataBase.Controls
         public User GetUser(string name)
         {
             User currentUser = null;
-            DbConnection db = new DbConnection();
-            SqlConnection conn = db.GetConnection();
-
-            using (conn)
+            using (_connection)
             {                
-                currentUser = conn.Query<User>("SELECT * FROM Users WHERE username = @name", new { name}).FirstOrDefault();
-            }
-            
+                currentUser = _connection.Query<User>("SELECT * FROM Users WHERE username = @name", new { name}).FirstOrDefault();
+            }            
             return currentUser;
         }
 
@@ -114,20 +100,15 @@ namespace ReportGenerator.DataBase.Controls
         public List<string> GetAllFullNameUsers()
         {
             List<User> users = new List<User>();
-            DbConnection db = new DbConnection();
-            SqlConnection conn = db.GetConnection();
-
-            using (conn)
+            using (_connection)
             {
-                users = conn.Query<User>("Select fullName From users").ToList();
+                users = _connection.Query<User>("Select fullName From users").ToList();
             }
-
             List<string> userFullNames = new List<string>();
             foreach(User user in users)
             {
                 userFullNames.Add(user.fullName);
             }
-
             return userFullNames;
         }
 
@@ -137,13 +118,10 @@ namespace ReportGenerator.DataBase.Controls
         /// <param name="user"></param>
         public void InsertNewUser(User user)
         {
-            DbConnection db = new DbConnection();
-            SqlConnection conn = db.GetConnection();
-
-            using (conn)
+            using (_connection)
             {                
                 string insertQuery = "INSERT INTO users (username, password, create_date, fullName, email, departamentId, roleId, sectorId, groupId) VALUES (@username, @password, @create_date, @fullName, @email, @departamentId, @roleId, @sectorId, @groupId)";
-                var result = conn.Execute(insertQuery, user);
+                var result = _connection.Execute(insertQuery, user);
             }
         }
 
@@ -153,13 +131,10 @@ namespace ReportGenerator.DataBase.Controls
         /// <param name="user"></param>
         public void UpdateCurrentUser(User user)
         {
-            DbConnection db = new DbConnection();
-            SqlConnection conn = db.GetConnection();
-
-            using (conn)
+            using (_connection)
             {
                 string updatetQuery = "UPDATE users SET username = @username, password = @password, create_date = @create_date, fullName = @fullName, email = @email, departamentId = @departamentId, roleId = @roleId, sectorId = @sectorId, groupId = @groupId WHERE id = @id";
-                var result = conn.Execute(updatetQuery, user);
+                var result = _connection.Execute(updatetQuery, user);
             }
         }
 
@@ -169,13 +144,10 @@ namespace ReportGenerator.DataBase.Controls
         /// <param name="id"></param>
         public void DeleteCurrentUser(int id)
         {
-            DbConnection db = new DbConnection();
-            SqlConnection conn = db.GetConnection();
-
-            using (conn)
+            using (_connection)
             {
                 string deleteQuery = "DELETE FROM users WHERE id = @id";
-                var result = conn.Execute(deleteQuery, new
+                var result = _connection.Execute(deleteQuery, new
                 {
                     id
                 });
@@ -190,14 +162,10 @@ namespace ReportGenerator.DataBase.Controls
         public bool ExistsUserName(string name)
         {
             User currentUser = null;
-            DbConnection db = new DbConnection();
-            SqlConnection conn = db.GetConnection();
-
-            using (conn)
+            using (_connection)
             {
-                currentUser = conn.Query<User>("SELECT * FROM Users WHERE username = @name", new { name }).FirstOrDefault();
+                currentUser = _connection.Query<User>("SELECT * FROM Users WHERE username = @name", new { name }).FirstOrDefault();
             }
-
             if(currentUser != null)
             {
                 return true;

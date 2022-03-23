@@ -13,71 +13,56 @@ namespace ReportGenerator.DataBase.Controls
     /// </summary>
     public class DepartamentControl
     {
-        public string GetNameById(int id)
+        private SqlConnection _connection;
+        public DepartamentControl()
         {
-            
-            Departament departament = null;
             DbConnection db = new DbConnection();
-            SqlConnection conn = db.GetConnection();
-
-            using (conn)
+             _connection = db.GetConnection();
+        }
+        public string GetNameById(int id)
+        {            
+            Departament departament = null;
+            using (_connection)
             {
-                departament = conn.Query<Departament>("SELECT name FROM departaments WHERE id = @id", new { id }).FirstOrDefault();
+                departament = _connection.Query<Departament>("SELECT name FROM departaments WHERE id = @id", new { id }).FirstOrDefault();
             }
-
             return departament.name;
-
         }
 
         public List<string> GetAllNameDepartaments()
         {
 
             List<Departament> departaments = new List<Departament>();
-            DbConnection db = new DbConnection();
-            SqlConnection conn = db.GetConnection();
-
-            using (conn)
+            using (_connection)
             {
-                departaments = conn.Query<Departament>("Select name From departaments").ToList();
+                departaments = _connection.Query<Departament>("Select name From departaments").ToList();
             }
-
             List<string> departamentNames = new List<string>();
             foreach (Departament departament in departaments)
             {
                 departamentNames.Add(departament.name);
             }
-
             return departamentNames;
         }
 
         public int GetIddByName(string name)
         {
 
-            Departament departament = new Departament();
-            DbConnection db = new DbConnection();
-            SqlConnection conn = db.GetConnection();
-
-            using (conn)
+            Departament departament = new Departament(); 
+            using (_connection)
             {
-                departament = conn.Query<Departament>("SELECT id FROM departaments WHERE name = @name", new { name }).FirstOrDefault();
+                departament = _connection.Query<Departament>("SELECT id FROM departaments WHERE name = @name", new { name }).FirstOrDefault();
             }
-
             return departament.id;
-
         }
 
         public List<Departament> GetAllDepartamentsList()
         {
-
             List<Departament> departaments = new List<Departament>();
-            DbConnection db = new DbConnection();
-            SqlConnection conn = db.GetConnection();
-
-            using (conn)
+            using (_connection)
             {
-                departaments = conn.Query<Departament>("Select * From departaments").ToList();
+                departaments = _connection.Query<Departament>("Select * From departaments").ToList();
             }
-
             return departaments;
         }
 
@@ -87,13 +72,10 @@ namespace ReportGenerator.DataBase.Controls
         /// <param name="departament"></param>
         public void InsertNewDepartament(Departament departament)
         {
-            DbConnection db = new DbConnection();
-            SqlConnection conn = db.GetConnection();
-
-            using (conn)
+            using (_connection)
             {                
                 string insertQuery = "INSERT INTO departaments (name, shortName, description) VALUES (@name, @shortName, @description)";
-                var result = conn.Execute(insertQuery, departament);
+                var result = _connection.Execute(insertQuery, departament);
             }
         }
 
@@ -103,13 +85,10 @@ namespace ReportGenerator.DataBase.Controls
         /// <param name="departament"></param>
         public void UpdateCurrentDepartament(Departament departament)
         {
-            DbConnection db = new DbConnection();
-            SqlConnection conn = db.GetConnection();
-
-            using (conn)
+            using (_connection)
             {
                 string updatetQuery = "UPDATE departaments SET name = @name, shortName = @shortName, description = @description WHERE id = @id";
-                var result = conn.Execute(updatetQuery, departament);
+                var result = _connection.Execute(updatetQuery, departament);
             }
         }
 
@@ -119,13 +98,10 @@ namespace ReportGenerator.DataBase.Controls
         /// <param name="id"></param>
         public void DeleteCurrentDepartament(int id)
         {
-            DbConnection db = new DbConnection();
-            SqlConnection conn = db.GetConnection();
-
-            using (conn)
+            using (_connection)
             {
                 string deleteQuery = "DELETE FROM departaments WHERE id = @id";
-                var result = conn.Execute(deleteQuery, new
+                var result = _connection.Execute(deleteQuery, new
                 {
                     id
                 });
