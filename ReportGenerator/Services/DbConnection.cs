@@ -3,7 +3,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.IO;
 using System.Text.Json;
-using System.Windows;
+
 
 namespace ReportGenerator.Services
 {
@@ -12,11 +12,11 @@ namespace ReportGenerator.Services
     /// </summary>
     public class DbConnection
     {
-
+        
         public SqlConnection Connection { get; set; }        
         public DbConnection()
         {
-            if (!File.Exists("settings.json"))
+            if (!File.Exists(Constants.SettingsFileName))
             {
                 ConnectConfig config = new ConnectConfig()
                 {
@@ -24,16 +24,17 @@ namespace ReportGenerator.Services
                     DbName = "",
                     Username = "",
                     Password = ""
+                    
                 };
                 string configJson = JsonSerializer.Serialize(config, typeof(ConnectConfig));
-                StreamWriter file = File.CreateText("settings.json");
+                StreamWriter file = File.CreateText(Constants.SettingsFileName);
                 file.WriteLine(configJson);
                 file.Close();
                 
             }
                 try
                 {
-                    string data = File.ReadAllText("settings.json");
+                    string data = File.ReadAllText(Constants.SettingsFileName);
                     ConnectConfig connectConfig = JsonSerializer.Deserialize<ConnectConfig>(data);
 
                     var builder = new SqlConnectionStringBuilder();
@@ -44,9 +45,9 @@ namespace ReportGenerator.Services
                     Connection = new SqlConnection(builder.ToString());                    
                     
                 }
-                catch 
-                {
-                    
+                catch (Exception ex)
+            {
+                    File.AppendAllText(Constants.LogFileName, ex.ToString());
                 }                       
         }
 
@@ -64,6 +65,7 @@ namespace ReportGenerator.Services
             catch (Exception ex)
             {
                 result = false;
+                File.AppendAllText(Constants.LogFileName, ex.ToString());
             }
 
             if (Connection != null && Connection.State != ConnectionState.Closed)
