@@ -16,6 +16,11 @@ namespace ReportGenerator.Services
         public SqlConnection Connection { get; set; }        
         public DbConnection()
         {
+            Init();
+        }
+
+        private void Init()
+        {
             if (!File.Exists(Constants.SettingsFileName))
             {
                 ConnectConfig config = new ConnectConfig()
@@ -24,31 +29,30 @@ namespace ReportGenerator.Services
                     DbName = "",
                     Username = "",
                     Password = ""
-                    
                 };
                 string configJson = JsonSerializer.Serialize(config, typeof(ConnectConfig));
                 StreamWriter file = File.CreateText(Constants.SettingsFileName);
                 file.WriteLine(configJson);
                 file.Close();
-                
-            }
-                try
-                {
-                    string data = File.ReadAllText(Constants.SettingsFileName);
-                    ConnectConfig connectConfig = JsonSerializer.Deserialize<ConnectConfig>(data);
 
-                    var builder = new SqlConnectionStringBuilder();
-                    builder.DataSource = connectConfig.Server;
-                    builder.InitialCatalog = connectConfig.DbName;
-                    builder.UserID = connectConfig.Username;
-                    builder.Password = connectConfig.Password;
-                    Connection = new SqlConnection(builder.ToString());                    
-                    
-                }
-                catch (Exception ex)
+            }
+            try
             {
-                    File.AppendAllText(Constants.LogFileName, ex.ToString());
-                }                       
+                string data = File.ReadAllText(Constants.SettingsFileName);
+                ConnectConfig connectConfig = JsonSerializer.Deserialize<ConnectConfig>(data);
+
+                var builder = new SqlConnectionStringBuilder();
+                builder.DataSource = connectConfig.Server;
+                builder.InitialCatalog = connectConfig.DbName;
+                builder.UserID = connectConfig.Username;
+                builder.Password = connectConfig.Password;
+                Connection = new SqlConnection(builder.ToString());
+
+            }
+            catch (Exception ex)
+            {
+                File.AppendAllText(Constants.LogFileName, ex.ToString());
+            }
         }
 
         /// <summary>
