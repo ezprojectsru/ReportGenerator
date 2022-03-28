@@ -18,13 +18,15 @@ namespace ReportGenerator.ViewModels
         private TaskControl _taskControl = new TaskControl();
         private PlanControl _planControl = new PlanControl();
         private ItemPlan _planSelected;
-        public ItemPlan PlanSelected { 
-            get { return _planSelected; } 
+        public ItemPlan PlanSelected
+        {
+            get { return _planSelected; }
             set
             {
-                _planSelected = value;                
-               if(_planSelected != null) GetTasksFromSelectedPlan(_planSelected.Id);
-            } }
+                _planSelected = value;
+                if (_planSelected != null) GetTasksFromSelectedPlan(_planSelected.Id);
+            }
+        }
 
         private Task _taskSelected;
         public Task TaskSelected
@@ -32,15 +34,15 @@ namespace ReportGenerator.ViewModels
             get { return _taskSelected; }
             set
             {
-                _taskSelected = value;   
-                
+                _taskSelected = value;
+
             }
-        }      
+        }
 
         private Task _newTask;
         private Plan _newPlan;
         private SessionUser _sessionUser;
-        public string Title {get; set;}
+        public string Title { get; set; }
         public List<ItemPlan> Plans { get; set; }
         public List<Task> Tasks { get; set; }
         public PlanWindowViewModel()
@@ -77,7 +79,7 @@ namespace ReportGenerator.ViewModels
             }
         }
 
-       
+
         /// <summary>
         /// Получение планов текущего пользователя
         /// </summary>
@@ -87,11 +89,11 @@ namespace ReportGenerator.ViewModels
             Plans = new List<ItemPlan>();
             foreach (Plan pl in targetPlans)
             {
-                string responsible = _userControl.GetFullNameById(pl.responsibleId);
-                string director = _userControl.GetFullNameById(pl.directorId);
-                ItemPlan item = new ItemPlan(pl.id, pl.name, pl.startDate, pl.finishDate, responsible, director, pl.comment ?? "");
+                ItemPlan item = new ItemPlan(pl.id, pl.name, pl.startDate, pl.finishDate,
+                    _userControl.GetFullNameById(pl.responsibleId),
+                    _userControl.GetFullNameById(pl.directorId), pl.comment ?? "");
                 Plans.Add(item);
-            }            
+            }
         }
 
         /// <summary>
@@ -99,8 +101,8 @@ namespace ReportGenerator.ViewModels
         /// </summary>        
         public void GetTasksFromSelectedPlan(int id)
         {
-            Tasks = _taskControl.GetTaskListByPlanId(id);    
-            
+            Tasks = _taskControl.GetTaskListByPlanId(id);
+
         }
 
         /// <summary>
@@ -108,13 +110,13 @@ namespace ReportGenerator.ViewModels
         /// </summary>
         public ICommand DeleteSelectedtask => new DelegateCommand(() =>
         {
-            if (MessageBox.Show("Вы уверены, что хотите удалить задачу?", "Удаление задачи", 
+            if (MessageBox.Show("Вы уверены, что хотите удалить задачу?", "Удаление задачи",
                 MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
             {
                 Task targetTask = _taskSelected;
                 int planId = _taskSelected.planId;
                 _taskControl.DeleteCurrentTask(_taskSelected);
-                Tasks = _taskControl.GetTaskListByPlanId(planId);                
+                Tasks = _taskControl.GetTaskListByPlanId(planId);
             }
         }, () => _taskSelected != null);
 
@@ -123,9 +125,9 @@ namespace ReportGenerator.ViewModels
         /// </summary>
         public ICommand OpenCreateNewTaskWindow => new DelegateCommand(() =>
         {
-            int planId = _planSelected.Id;            
+            int planId = _planSelected.Id;
             TaskEditWindow taskEditWindow = new TaskEditWindow();
-            MessageService.Send(planId); 
+            MessageService.Send(planId);
             MessageService.Bus += Receive;
 
             if (taskEditWindow.ShowDialog() == true)
@@ -134,11 +136,11 @@ namespace ReportGenerator.ViewModels
                 {
                     _taskControl.InsertNewTask(_newTask);
                     Tasks = _taskControl.GetTaskListByPlanId(_newTask.planId);
-                }                
+                }
             }
             else
             {
-                MessageService.Bus -= Receive;                
+                MessageService.Bus -= Receive;
             }
         }, () => _planSelected != null);
 
@@ -146,9 +148,9 @@ namespace ReportGenerator.ViewModels
         /// Коменда для открытия окна редактирования выбранной задачи
         /// </summary>
         public ICommand OpenEditSelectedTaskWindow => new DelegateCommand(() =>
-        {            
+        {
             Task targetTask = _taskSelected;
-            TaskEditWindow taskEditWindow = new TaskEditWindow();            
+            TaskEditWindow taskEditWindow = new TaskEditWindow();
             MessageService.Send(targetTask);
             MessageService.Bus += Receive;
 
@@ -158,12 +160,12 @@ namespace ReportGenerator.ViewModels
                 {
                     _taskControl.UpdateCurrentTask(_newTask);
                     Tasks = _taskControl.GetTaskListByPlanId(_newTask.planId);
-                }               
+                }
 
             }
             else
             {
-                MessageService.Bus -= Receive;                
+                MessageService.Bus -= Receive;
             }
 
         }, () => _taskSelected != null);
@@ -172,15 +174,15 @@ namespace ReportGenerator.ViewModels
         /// Коменда для открытия окна редактирования выбранного плана
         /// </summary>
         public ICommand OpenEditSelectedPlanWindow => new DelegateCommand(() =>
-        {           
+        {
 
             int responsibleId = _userControl.GetIddByFullName(_planSelected.Responsible);
-            int directorId = _userControl.GetIddByFullName(_planSelected.Director); 
+            int directorId = _userControl.GetIddByFullName(_planSelected.Director);
 
-            Plan currentPlan = new Plan(_planSelected.Id, _planSelected.Name, 
-                _planSelected.StartDate, _planSelected.FinishDate, responsibleId, 
-                directorId, _planSelected.Comment);            
-            
+            Plan currentPlan = new Plan(_planSelected.Id, _planSelected.Name,
+                _planSelected.StartDate, _planSelected.FinishDate, responsibleId,
+                directorId, _planSelected.Comment);
+
             PlanEditWindow planEditWindow = new PlanEditWindow();
             MessageService.Send(currentPlan);
             MessageService.Bus += Receive;
@@ -240,13 +242,13 @@ namespace ReportGenerator.ViewModels
                     }
 
                     _taskSelected = null;
-                    Tasks = null;                    
+                    Tasks = null;
                     _planSelected = null;
                 }
             }
             else
             {
-                 MessageService.Bus -= Receive;
+                MessageService.Bus -= Receive;
             }
         });
 
@@ -255,7 +257,7 @@ namespace ReportGenerator.ViewModels
         /// </summary>
         public ICommand DeleteSelectedPlan => new DelegateCommand(() =>
         {
-            if (MessageBox.Show("Вы уверены, что хотите удалить план? Вместе с планом будут удалены и все его задачи.", 
+            if (MessageBox.Show("Вы уверены, что хотите удалить план? Вместе с планом будут удалены и все его задачи.",
                 "Удаление плана", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
             {
                 _taskControl.DeleteTasksByPlanId(_planSelected.Id);
