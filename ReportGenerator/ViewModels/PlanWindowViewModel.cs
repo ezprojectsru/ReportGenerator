@@ -10,7 +10,7 @@ using System.Windows.Input;
 namespace ReportGenerator.ViewModels
 {
     /// <summary>
-    /// Класс ViewModel страницы Планов
+    /// Класс ViewModel страницы Планов и Задач
     /// </summary>
     public class PlanWindowViewModel : BindableBase
     {
