@@ -43,7 +43,13 @@ namespace ReportGenerator.ViewModels
             User user = _userControl.GetUser(Login);
             if (user != null)
             {
-                if (Password == user.password)
+                bool correctPassword = false;
+                if (PasswordHasher.IsHashSupported(user.password))
+                {
+                    correctPassword = PasswordHasher.Verify(Password, user.password);
+                }
+                
+                if (correctPassword)
                 {                      
 
                     MainWindow mainWindow = new MainWindow();

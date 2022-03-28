@@ -180,16 +180,37 @@ namespace ReportGenerator.DataBase.Controls
         }
 
         /// <summary>
-        /// Обновление текущего пользователя
+        /// Обновление текущего пользователя с новым паролем
         /// </summary>
         /// <param name="user"></param>
-        public void UpdateCurrentUser(User user)
+        public void UpdateCurrentUserWithPassword(User user)
         {
             try
             {
                 SqlConnection connection = _db.GetConnection();
                 string updatetQuery =
                     "UPDATE users SET username = @username, password = @password, create_date = @create_date, fullName = @fullName, email = @email, departamentId = @departamentId, roleId = @roleId, sectorId = @sectorId, groupId = @groupId WHERE id = @id";
+                var result = connection.Execute(updatetQuery, user);
+                connection.Dispose();
+            }
+            catch (Exception ex)
+            {
+                File.AppendAllText(Constants.LogFileName, ex.ToString());
+            }
+
+        }
+
+        /// <summary>
+        /// Обновление текущего пользователя с новым паролем
+        /// </summary>
+        /// <param name="user"></param>
+        public void UpdateCurrentUserWithOutPassword(User user)
+        {
+            try
+            {
+                SqlConnection connection = _db.GetConnection();
+                string updatetQuery =
+                    "UPDATE users SET username = @username, create_date = @create_date, fullName = @fullName, email = @email, departamentId = @departamentId, roleId = @roleId, sectorId = @sectorId, groupId = @groupId WHERE id = @id";
                 var result = connection.Execute(updatetQuery, user);
                 connection.Dispose();
             }

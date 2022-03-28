@@ -25,7 +25,7 @@
                 Text="{Binding Title}" />
             <TextBlock Text="Имя пользователя" />
             <TextBox Text="{Binding Username}" />
-            <TextBlock Text="Пароль" />
+            <TextBlock Text="Новый пароль" />
             <TextBox Text="{Binding Password}" />
             <TextBlock Text="Дата регистрации" />
             <DatePicker SelectedDate="{Binding СreateDate}" />

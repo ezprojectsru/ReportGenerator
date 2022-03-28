@@ -79,7 +79,7 @@ namespace ReportGenerator.ViewModels
                 Id = _user.id;
                 Username = _user.username;
                 oldUsername = Username;
-                Password = _user.password;
+                Password = "";
                 СreateDate = _user.create_date;
                 FullName = _user.fullName;
                 Email = _user.email;
@@ -129,6 +129,7 @@ namespace ReportGenerator.ViewModels
             Groups = _groupControl.GetAllNameGroups();
         }
 
+        
 
         /// <summary>
         /// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -141,7 +142,7 @@ namespace ReportGenerator.ViewModels
         /// </summary>
         public ICommand SendDialogResultUser => new DelegateCommand<object>((currentWindow) =>
         {
-            if (!string.IsNullOrWhiteSpace(Username) && !string.IsNullOrWhiteSpace(Password) && 
+            if (!string.IsNullOrWhiteSpace(Username) && 
             !string.IsNullOrWhiteSpace(FullName) && !string.IsNullOrWhiteSpace(Email))
             {
                 if (Id == 0)

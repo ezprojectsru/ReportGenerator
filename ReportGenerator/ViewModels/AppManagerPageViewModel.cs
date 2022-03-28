@@ -129,7 +129,17 @@ namespace ReportGenerator.ViewModels
             {
                 if (_newUser.id != 0)
                 {
-                    _userControl.UpdateCurrentUser(_newUser);
+                    if (_newUser.password.Length > 0)
+                    {
+                        string hashPassword = PasswordHasher.Hash(_newUser.password);
+                        _newUser.password = hashPassword;
+                        _userControl.UpdateCurrentUserWithPassword(_newUser);
+                    }
+                    else
+                    {
+                        _userControl.UpdateCurrentUserWithOutPassword(_newUser);
+                    }
+
                     ListOfUsers = new List<User>();
                     ListOfUsers = _userControl.GetAllUsersList();
                     Users = new List<ItemUser>();
@@ -158,6 +168,9 @@ namespace ReportGenerator.ViewModels
             {
                 if (_newUser.id == 0)
                 {
+                    string hashPassword = PasswordHasher.Hash(_newUser.password);
+                    _newUser.password = hashPassword;
+
                     _userControl.InsertNewUser(_newUser);
                     ListOfUsers = new List<User>();
                     ListOfUsers = _userControl.GetAllUsersList();
