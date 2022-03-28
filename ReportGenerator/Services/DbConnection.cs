@@ -13,11 +13,7 @@ namespace ReportGenerator.Services
     public class DbConnection
     {
         
-        private SqlConnection _connection { get; set; }        
-        public DbConnection()
-        {
-            Init();
-        }
+        private SqlConnection _connection { get; set; }
 
         private void Init()
         {
@@ -34,7 +30,6 @@ namespace ReportGenerator.Services
                 StreamWriter file = File.CreateText(Constants.SettingsFileName);
                 file.WriteLine(configJson);
                 file.Close();
-
             }
             try
             {
@@ -47,7 +42,6 @@ namespace ReportGenerator.Services
                 builder.UserID = connectConfig.Username;
                 builder.Password = connectConfig.Password;
                 _connection = new SqlConnection(builder.ToString());
-
             }
             catch (Exception ex)
             {
@@ -61,6 +55,7 @@ namespace ReportGenerator.Services
         /// <returns></returns>
         public bool CheckConnect()
         {
+            Init();
             bool result = true;
             try
             {
@@ -85,6 +80,7 @@ namespace ReportGenerator.Services
         /// </summary>        
         public SqlConnection GetConnection()
         {
+            Init();
             return _connection;
         }
 

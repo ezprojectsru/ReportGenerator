@@ -1,8 +1,10 @@
-﻿using Dapper;
+﻿using System;
+using Dapper;
 using ReportGenerator.DataBase.Models;
 using ReportGenerator.Services;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
 
 
@@ -13,12 +15,8 @@ namespace ReportGenerator.DataBase.Controls
     /// </summary>
     public class TaskTypeControl
     {
-        private SqlConnection _connection;
-        public TaskTypeControl()
-        {
-            DbConnection db = new DbConnection();
-            _connection = db.GetConnection();
-        }
+        private readonly DbConnection _db = new DbConnection();
+        
         /// <summary>
         /// Возвращает список Типов по id Отдела, к которому они относятся
         /// </summary>
@@ -26,7 +24,19 @@ namespace ReportGenerator.DataBase.Controls
         /// <returns></returns>
         public List<TaskType> GetTaskTypeListByDepartamentId(int id)
         {
-            List<TaskType> taskTypes = _connection.Query<TaskType>("SELECT * FROM types WHERE departamentId = @id", new { id }).ToList();            
+            List<TaskType> taskTypes = new List<TaskType>();
+            try
+            {
+                SqlConnection connection = _db.GetConnection();
+                taskTypes = connection
+                    .Query<TaskType>("SELECT * FROM types WHERE departamentId = @id", new {id}).ToList();
+                connection.Dispose();
+            }
+            catch (Exception ex)
+            {
+                File.AppendAllText(Constants.LogFileName, ex.ToString());
+            }
+
             return taskTypes;
         }
 
@@ -39,24 +49,62 @@ namespace ReportGenerator.DataBase.Controls
         {
 
             List<string> typeShortNames = new List<string>();
-            List<TaskType> taskTypes = _connection.Query<TaskType>("SELECT * FROM types WHERE departamentId = @id", new { id }).ToList();            
-            foreach (TaskType task in taskTypes)
+            try
             {
-                typeShortNames.Add(task.shortName);
+                SqlConnection connection = _db.GetConnection();
+                List<TaskType> taskTypes = connection
+                    .Query<TaskType>("SELECT * FROM types WHERE departamentId = @id", new {id}).ToList();
+                connection.Dispose();
+                foreach (TaskType task in taskTypes)
+                {
+                    typeShortNames.Add(task.shortName);
+                }
             }
+            catch (Exception ex)
+            {
+                File.AppendAllText(Constants.LogFileName, ex.ToString());
+            }
+
             return typeShortNames;
         }
 
         public string GetShortNameById(int id)
         {
-            TaskType taskType = _connection.Query<TaskType>("SELECT shortName FROM types WHERE id = @id", new { id }).FirstOrDefault();            
-            return taskType.shortName;
+            string shortName = "";
+            try
+            {
+                SqlConnection connection = _db.GetConnection();
+                TaskType taskType = connection.Query<TaskType>("SELECT shortName FROM types WHERE id = @id", new {id})
+                    .FirstOrDefault();
+                shortName = taskType.shortName;
+                connection.Dispose();
+            }
+            catch (Exception ex)
+            {
+                File.AppendAllText(Constants.LogFileName, ex.ToString());
+            }
+
+            return shortName;
         }
 
         public int GetIdByShortName(string shortName)
         {
-            TaskType taskType = _connection.Query<TaskType>("SELECT id FROM types WHERE shortName = @shortName", new { shortName }).FirstOrDefault();
-            return taskType.id;
+            int taskTypeId = 0;
+            try
+            {
+                SqlConnection connection = _db.GetConnection();
+                TaskType taskType = connection
+                    .Query<TaskType>("SELECT id FROM types WHERE shortName = @shortName", new {shortName})
+                    .FirstOrDefault();
+                taskTypeId = taskType.id;
+                connection.Dispose();
+            }
+            catch (Exception ex)
+            {
+                File.AppendAllText(Constants.LogFileName, ex.ToString());
+            }
+
+            return taskTypeId;
         }
     }
 }

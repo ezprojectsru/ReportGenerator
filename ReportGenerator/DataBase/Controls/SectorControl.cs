@@ -1,8 +1,10 @@
-﻿using Dapper;
+﻿using System;
+using Dapper;
 using ReportGenerator.DataBase.Models;
 using ReportGenerator.Services;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
 
 
@@ -13,12 +15,8 @@ namespace ReportGenerator.DataBase.Controls
     /// </summary>
     public class SectorControl
     {
-        private SqlConnection _connection;
-        public SectorControl()
-        {
-            DbConnection db = new DbConnection();
-            _connection = db.GetConnection();
-        }
+        private readonly DbConnection _db = new DbConnection();
+        
         /// <summary>
         /// Возвращает название сектора по его id
         /// </summary>
@@ -26,8 +24,19 @@ namespace ReportGenerator.DataBase.Controls
         /// <returns></returns>
         public string GetNameById(int id)
         {
-            Sector sector = _connection.Query<Sector>("SELECT name FROM sectors WHERE id = @id", new { id }).FirstOrDefault();            
-            return sector.name;
+            string name = "";
+            try
+            {
+                SqlConnection connection = _db.GetConnection();
+                Sector sector = connection.Query<Sector>("SELECT name FROM sectors WHERE id = @id", new { id }).FirstOrDefault();
+                name =  sector.name;
+                connection.Dispose();
+            }
+            catch (Exception ex)
+            {
+                File.AppendAllText(Constants.LogFileName, ex.ToString());
+            }
+            return name;
         }
 
         /// <summary>
@@ -36,11 +45,21 @@ namespace ReportGenerator.DataBase.Controls
         /// <returns></returns>
         public List<string> GetAllNameSectors()
         {
-            List<Sector> sectors = _connection.Query<Sector>("Select name From sectors").ToList();            
             List<string> sectorNames = new List<string>();
-            foreach (Sector sector in sectors)
+            try
             {
-                sectorNames.Add(sector.name);
+                SqlConnection connection = _db.GetConnection();
+                List<Sector> sectors = connection.Query<Sector>("Select name From sectors").ToList();
+                connection.Dispose();
+
+                foreach (Sector sector in sectors)
+                {
+                    sectorNames.Add(sector.name);
+                }
+            }
+            catch (Exception ex)
+            {
+                File.AppendAllText(Constants.LogFileName, ex.ToString());
             }
             return sectorNames;
         }
@@ -52,8 +71,20 @@ namespace ReportGenerator.DataBase.Controls
         /// <returns></returns>
         public int GetIddByName(string name)
         {
-            Sector sector = _connection.Query<Sector>("SELECT id FROM sectors WHERE name = @name", new { name }).FirstOrDefault();            
-            return sector.id;
+            int id = 0;
+            try
+            {
+                SqlConnection connection = _db.GetConnection();
+                Sector sector = connection.Query<Sector>("SELECT id FROM sectors WHERE name = @name", new {name})
+                    .FirstOrDefault();
+                id =  sector.id;
+                connection.Dispose();
+            }
+            catch (Exception ex)
+            {
+                File.AppendAllText(Constants.LogFileName, ex.ToString());
+            }
+            return id;
         }
     }
 }

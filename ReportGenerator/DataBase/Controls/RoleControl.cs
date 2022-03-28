@@ -1,8 +1,10 @@
-﻿using Dapper;
+﻿using System;
+using Dapper;
 using ReportGenerator.DataBase.Models;
 using ReportGenerator.Services;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
 
 
@@ -13,12 +15,8 @@ namespace ReportGenerator.DataBase.Controls
     /// </summary>
     public class RoleControl
     {
-        private SqlConnection _connection;
-        public RoleControl()
-        {
-            DbConnection db = new DbConnection();
-            _connection = db.GetConnection();
-        }
+        private readonly DbConnection _db = new DbConnection();
+        
         /// <summary>
         /// Возвращает название роли по ее id
         /// </summary>
@@ -26,8 +24,20 @@ namespace ReportGenerator.DataBase.Controls
         /// <returns></returns>
         public string GetNameById(int id)
         {
-            Role role = _connection.Query<Role>("SELECT name FROM roles WHERE id = @id", new { id }).FirstOrDefault();            
-            return role.name;
+            string name = "";
+            try
+            {
+                SqlConnection connection = _db.GetConnection();
+                Role role = connection.Query<Role>("SELECT name FROM roles WHERE id = @id", new {id}).FirstOrDefault();
+                connection.Dispose();
+                name = role.name;
+            }
+            catch (Exception ex)
+            {
+                File.AppendAllText(Constants.LogFileName, ex.ToString());
+            }
+
+            return name;
         }
 
         /// <summary>
@@ -36,12 +46,22 @@ namespace ReportGenerator.DataBase.Controls
         /// <returns></returns>
         public List<string> GetAllNameRoles()
         {
-            List<Role> roles = _connection.Query<Role>("Select name From roles").ToList();            
             List<string> roleNames = new List<string>();
-            foreach (Role role in roles)
+            try
             {
-                roleNames.Add(role.name);
+                SqlConnection connection = _db.GetConnection();
+                List<Role> roles = connection.Query<Role>("Select name From roles").ToList();
+                connection.Dispose();
+                foreach (Role role in roles)
+                {
+                    roleNames.Add(role.name);
+                }
             }
+            catch (Exception ex)
+            {
+                File.AppendAllText(Constants.LogFileName, ex.ToString());
+            }
+
             return roleNames;
         }
 
@@ -52,36 +72,86 @@ namespace ReportGenerator.DataBase.Controls
         /// <returns></returns>
         public int GetIddByName(string name)
         {
-            Role role = _connection.Query<Role>("SELECT id FROM roles WHERE name = @name", new { name }).FirstOrDefault();            
-            return role.id;
+            int roleId = 0;
+            try
+            {
+                SqlConnection connection = _db.GetConnection();
+                Role role = connection.Query<Role>("SELECT id FROM roles WHERE name = @name", new {name})
+                    .FirstOrDefault();
+                connection.Dispose();
+                roleId = role.id;
+            }
+            catch (Exception ex)
+            {
+                File.AppendAllText(Constants.LogFileName, ex.ToString());
+            }
+
+            return roleId;
         }
 
         public List<Role> GetAllRolesList()
         {
+            List<Role> roles = new List<Role>();
+            try
+            {
+                SqlConnection connection = _db.GetConnection();
+                roles = connection.Query<Role>("Select * From roles").ToList();
+                connection.Dispose();
+            }
+            catch (Exception ex)
+            {
+                File.AppendAllText(Constants.LogFileName, ex.ToString());
+            }
 
-            List<Role> roles = _connection.Query<Role>("Select * From roles").ToList();            
             return roles;
         }
 
         public void InsertNewRole(Role role)
         {
-            string insertQuery = "INSERT INTO roles (name) VALUES (@name)";
-            var result = _connection.Execute(insertQuery, role);            
+            try
+            {
+                SqlConnection connection = _db.GetConnection();
+                string insertQuery = "INSERT INTO roles (name) VALUES (@name)";
+                var result = connection.Execute(insertQuery, role);
+                connection.Dispose();
+            }
+            catch (Exception ex)
+            {
+                File.AppendAllText(Constants.LogFileName, ex.ToString());
+            }
         }
 
         public void UpdateCurrentRole(Role role)
-        {            
-            string updatetQuery = "UPDATE roles SET name = @name WHERE id = @id";
-            var result = _connection.Execute(updatetQuery, role);            
+        {
+            try
+            {
+                SqlConnection connection = _db.GetConnection();
+                string updatetQuery = "UPDATE roles SET name = @name WHERE id = @id";
+                var result = connection.Execute(updatetQuery, role);
+                connection.Dispose();
+            }
+            catch (Exception ex)
+            {
+                File.AppendAllText(Constants.LogFileName, ex.ToString());
+            }
         }
 
         public void DeleteCurrentRole(int id)
         {
-            string deleteQuery = "DELETE FROM roles WHERE id = @id";
-                var result = _connection.Execute(deleteQuery, new
+            try
+            {
+                SqlConnection connection = _db.GetConnection();
+                string deleteQuery = "DELETE FROM roles WHERE id = @id";
+                var result = connection.Execute(deleteQuery, new
                 {
                     id
-                });            
+                });
+                connection.Dispose();
+            }
+            catch (Exception ex)
+            {
+                File.AppendAllText(Constants.LogFileName, ex.ToString());
+            }
         }
     }
 }

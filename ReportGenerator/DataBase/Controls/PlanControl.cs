@@ -1,8 +1,10 @@
-﻿using Dapper;
+﻿using System;
+using Dapper;
 using ReportGenerator.DataBase.Models;
 using ReportGenerator.Services;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
 
 
@@ -13,12 +15,8 @@ namespace ReportGenerator.DataBase.Controls
     /// </summary>
     public class PlanControl
     {
-        private SqlConnection _connection;
-        public PlanControl()
-        {
-            DbConnection db = new DbConnection();
-            _connection = db.GetConnection();
-        }
+        private readonly DbConnection _db = new DbConnection();
+        
         /// <summary>
         /// Возвращает список Планов, пренадлежащих пользователю с id
         /// </summary>
@@ -26,7 +24,19 @@ namespace ReportGenerator.DataBase.Controls
         /// <returns></returns>
         public List<Plan> GetPlanListByUserId(int id)
         {
-            List<Plan> plans = _connection.Query<Plan>("SELECT * FROM plans WHERE responsibleId = @id", new { id }).ToList();            
+            List<Plan> plans = new List<Plan>();
+            try
+            {
+                SqlConnection connection = _db.GetConnection();
+                plans = connection.Query<Plan>("SELECT * FROM plans WHERE responsibleId = @id", new {id})
+                    .ToList();
+                connection.Dispose();
+            }
+            catch (Exception ex)
+            {
+                File.AppendAllText(Constants.LogFileName, ex.ToString());
+            }
+
             return plans;
         }
 
@@ -37,7 +47,17 @@ namespace ReportGenerator.DataBase.Controls
         /// <returns></returns>
         public Plan GetPlanById(int id)
         {
-            Plan plan = _connection.Query<Plan>("SELECT * FROM plans WHERE id = @id", new { id }).FirstOrDefault();            
+            Plan plan = null;
+            try
+            {
+                SqlConnection connection = _db.GetConnection();
+                plan = connection.Query<Plan>("SELECT * FROM plans WHERE id = @id", new {id}).FirstOrDefault();
+                connection.Dispose();
+            }
+            catch (Exception ex)
+            {
+                File.AppendAllText(Constants.LogFileName, ex.ToString());
+            }
             return plan;
         }
 
@@ -48,8 +68,20 @@ namespace ReportGenerator.DataBase.Controls
         /// <returns></returns>
         public int GetResponsibleIdByPlanId(int id)
         {
-            Plan plan = _connection.Query<Plan>("SELECT * FROM plans WHERE id = @id", new { id }).FirstOrDefault();            
-            return plan.responsibleId;
+            int responsibleId = 0;
+            try
+            {
+                SqlConnection connection = _db.GetConnection();
+                Plan plan = connection.Query<Plan>("SELECT * FROM plans WHERE id = @id", new {id}).FirstOrDefault();
+                responsibleId = plan.responsibleId;
+                connection.Dispose();
+            }
+            catch (Exception ex)
+            {
+                File.AppendAllText(Constants.LogFileName, ex.ToString());
+            }
+
+            return responsibleId;
         }
 
         /// <summary>
@@ -57,9 +89,19 @@ namespace ReportGenerator.DataBase.Controls
         /// </summary>
         /// <param name="plan"></param>
         public void InsertNewPlan(Plan plan)
-        {            
-            string insertQuery = "INSERT INTO plans (name, startDate, finishDate, responsibleId, directorId, comment) VALUES (@name, @startDate, @finishDate, @responsibleId, @directorId, @comment)";
-            var result = _connection.Execute(insertQuery, plan);            
+        {
+            try
+            {
+                SqlConnection connection = _db.GetConnection();
+                string insertQuery =
+                    "INSERT INTO plans (name, startDate, finishDate, responsibleId, directorId, comment) VALUES (@name, @startDate, @finishDate, @responsibleId, @directorId, @comment)";
+                var result = connection.Execute(insertQuery, plan);
+                connection.Dispose();
+            }
+            catch (Exception ex)
+            {
+                File.AppendAllText(Constants.LogFileName, ex.ToString());
+            }
         }
 
         /// <summary>
@@ -67,9 +109,19 @@ namespace ReportGenerator.DataBase.Controls
         /// </summary>
         /// <param name="plan"></param>
         public void UpdateCurrentPlan(Plan plan)
-        {  
-            string updatetQuery = "UPDATE plans SET name = @name, startDate = @startDate, finishDate = @finishDate, responsibleId = @responsibleId, directorId = @directorId, comment = @comment WHERE id = @id";
-            var result = _connection.Execute(updatetQuery, plan);            
+        {
+            try
+            {
+                SqlConnection connection = _db.GetConnection();
+                string updatetQuery =
+                    "UPDATE plans SET name = @name, startDate = @startDate, finishDate = @finishDate, responsibleId = @responsibleId, directorId = @directorId, comment = @comment WHERE id = @id";
+                var result = connection.Execute(updatetQuery, plan);
+                connection.Dispose();
+            }
+            catch (Exception ex)
+            {
+                File.AppendAllText(Constants.LogFileName, ex.ToString());
+            }
         }
 
         /// <summary>
@@ -78,11 +130,20 @@ namespace ReportGenerator.DataBase.Controls
         /// <param name="id"></param>
         public void DeleteCurrentPlan(int id)
         {
-            string deleteQuery = "DELETE FROM plans WHERE id = @id";
-            var result = _connection.Execute(deleteQuery, new
+            try
+            {
+                SqlConnection connection = _db.GetConnection();
+                string deleteQuery = "DELETE FROM plans WHERE id = @id";
+                var result = connection.Execute(deleteQuery, new
                 {
                     id
-                });            
+                });
+                connection.Dispose();
+            }
+            catch (Exception ex)
+            {
+                File.AppendAllText(Constants.LogFileName, ex.ToString());
+            }
         }
     }
 }
