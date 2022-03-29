@@ -36,7 +36,7 @@
                 SelectedItem="{Binding ResponsibleFullName}" />
             <TextBlock Margin="0,5,0,0" Text="Руководитель" />
             <ComboBox
-                ItemsSource="{Binding Users}"
+                ItemsSource="{Binding UsersDirector}"
                 SelectedIndex="0"
                 SelectedItem="{Binding DirectorFullName}" />
             <TextBlock Margin="0,5,0,0" Text="Комментарии" />

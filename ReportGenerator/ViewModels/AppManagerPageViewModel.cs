@@ -44,11 +44,11 @@ namespace ReportGenerator.ViewModels
         public List<User> ListOfUsers { get; set; }
         public List<ItemUser> Users { get; set; }
 
-        private User _newUser;
-        private Departament _newDepartament;
-        private Role _newRole;
+        public User NewUser;
+        public Departament NewDepartament;
+        public Role NewRole;
 
-        private SessionUser _sessionUser;
+        public SessionUser SessionUser;
 
         private ItemUser _userSelected;
         public ItemUser UserSelected
@@ -60,8 +60,12 @@ namespace ReportGenerator.ViewModels
             }
         }
 
-        public AppManagerPageViewModel()
+        public User TargetUser;
+
+        public AppManagerPageViewModel(MainWindowViewModel mainWindowViewModel)
         {
+            SessionUser = mainWindowViewModel.SessionUser;
+
             ListOfUsers = _userControl.GetAllUsersList();
             Users = new List<ItemUser>();
             foreach(User user in ListOfUsers)
@@ -75,45 +79,17 @@ namespace ReportGenerator.ViewModels
             ListRoles = new List<Role>();
             ListRoles = _roleControl.GetAllRolesList();
 
-            MessageService.Bus += Receive;
         }
 
-        /// <summary>
-        /// Принимает объекты, необходимые для работы класса.
-        /// SessionUser - пользователь текущей сесии
-        /// User - пользователь из редактора (окна) пользователей
-        /// Departament - отдел из редактора (окна) отделов
-        /// </summary>        
-        private void Receive(object data)
-        {
-            if (data is SessionUser sessionUser)
-            {
-                _sessionUser = sessionUser;
-                MessageService.Bus -= Receive;
-            }
-            if (data is User user)
-            {
-                _newUser = user;
-                MessageService.Bus -= Receive;
-            }
-            if (data is Departament departament)
-            {
-                _newDepartament = departament;
-                MessageService.Bus -= Receive;
-            }
-            if (data is Role role)
-            {
-                _newRole = role;
-                MessageService.Bus -= Receive;
-            }
-        }
+               
+       
         
         /// <summary>
         /// Команда для открытия окна редактирования выбранного пользователя
         /// </summary>
         public ICommand OpenEditSelectedUserWindow => new DelegateCommand(() =>
         {
-            User targetUser = new User(_userSelected.Id, _userSelected.Username, 
+            TargetUser = new User(_userSelected.Id, _userSelected.Username, 
                 _userSelected.Password, _userSelected.Сreate_Date, 
                 _userSelected.FullName, _userSelected.Email,
                 _departamentControl.GetIddByName(_userSelected.Departament),
@@ -122,22 +98,20 @@ namespace ReportGenerator.ViewModels
                 _groupControl.GetIddByName(_userSelected.Group));
             
             UserEditWindow userEditWindow = new UserEditWindow();
-            MessageService.Send(targetUser);
-            MessageService.Bus += Receive;
 
             if (userEditWindow.ShowDialog() == true)
             {
-                if (_newUser.id != 0)
+                if (NewUser.id != 0)
                 {
-                    if (_newUser.password.Length > 0)
+                    if (NewUser.password.Length > 0)
                     {
-                        string hashPassword = PasswordHasher.Hash(_newUser.password);
-                        _newUser.password = hashPassword;
-                        _userControl.UpdateCurrentUserWithPassword(_newUser);
+                        string hashPassword = PasswordHasher.Hash(NewUser.password);
+                        NewUser.password = hashPassword;
+                        _userControl.UpdateCurrentUserWithPassword(NewUser);
                     }
                     else
                     {
-                        _userControl.UpdateCurrentUserWithOutPassword(_newUser);
+                        _userControl.UpdateCurrentUserWithOutPassword(NewUser);
                     }
 
                     ListOfUsers = new List<User>();
@@ -149,29 +123,27 @@ namespace ReportGenerator.ViewModels
                     } 
                 }
             }
-            else
-            {
-                MessageService.Bus -= Receive;
-            }
+            
         }, () => _userSelected != null);
 
         /// <summary>
         /// Команда для открытия окна создания нового пользователя
         /// </summary>
         public ICommand OpenCreateNewUserWindow => new DelegateCommand(() =>
-        {            
+        {
+            TargetUser = null;
             UserEditWindow userEditWindow = new UserEditWindow();
-            MessageService.Send(0);
-            MessageService.Bus += Receive;
+           // MessageService.Send(0);
+           // MessageService.Bus += Receive;
 
             if (userEditWindow.ShowDialog() == true)
             {
-                if (_newUser.id == 0)
+                if (NewUser.id == 0)
                 {
-                    string hashPassword = PasswordHasher.Hash(_newUser.password);
-                    _newUser.password = hashPassword;
+                    string hashPassword = PasswordHasher.Hash(NewUser.password);
+                    NewUser.password = hashPassword;
 
-                    _userControl.InsertNewUser(_newUser);
+                    _userControl.InsertNewUser(NewUser);
                     ListOfUsers = new List<User>();
                     ListOfUsers = _userControl.GetAllUsersList();
                     Users = new List<ItemUser>();
@@ -181,10 +153,7 @@ namespace ReportGenerator.ViewModels
                     } 
                 }
             }
-            else
-            {
-                 MessageService.Bus -= Receive;
-            }
+            
         });
 
         /// <summary>
@@ -192,7 +161,7 @@ namespace ReportGenerator.ViewModels
         /// </summary>
         public ICommand DeleteSelectedUser => new DelegateCommand(() =>
         {
-            if (_sessionUser.user.id != _userSelected.Id)
+            if (SessionUser.user.id != _userSelected.Id)
             {
                 if (MessageBox.Show("Вы уверены, что хотите удалить пользователя?", 
                     "Удаление пользователя", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
@@ -219,22 +188,18 @@ namespace ReportGenerator.ViewModels
         public ICommand OpenCreateNewDepartamentWindow => new DelegateCommand(() =>
         {
             DepartamentEditWindow departamentEditWindow = new DepartamentEditWindow();
-            MessageService.Send(0);
-            MessageService.Bus += Receive;
+            
 
             if (departamentEditWindow.ShowDialog() == true)
             {
-                if (_newDepartament.id == 0)
+                if (NewDepartament.id == 0)
                 {
-                    _departamentControl.InsertNewDepartament(_newDepartament);
+                    _departamentControl.InsertNewDepartament(NewDepartament);
                     ListDepartaments = new List<Departament>();
                     ListDepartaments = _departamentControl.GetAllDepartamentsList();                    
                 }
             }
-            else
-            {
-                MessageService.Bus -= Receive;
-            }
+            
         });
 
         /// <summary>
@@ -243,22 +208,18 @@ namespace ReportGenerator.ViewModels
         public ICommand OpenEditSelectedDepartamentWindow => new DelegateCommand(() =>
         {
             DepartamentEditWindow departamentEditWindow = new DepartamentEditWindow();
-            MessageService.Send(_departamentSelected);
-            MessageService.Bus += Receive;
+            
 
             if (departamentEditWindow.ShowDialog() == true)
             {
-                if (_newDepartament.id != 0)
+                if (NewDepartament.id != 0)
                 {
-                    _departamentControl.UpdateCurrentDepartament(_newDepartament);
+                    _departamentControl.UpdateCurrentDepartament(NewDepartament);
                     ListDepartaments = new List<Departament>();
                     ListDepartaments = _departamentControl.GetAllDepartamentsList();
                 }
             }
-            else
-            {
-                MessageService.Bus -= Receive;
-            }
+            
         }, () => _departamentSelected != null);
 
         /// <summary>
@@ -278,43 +239,35 @@ namespace ReportGenerator.ViewModels
         public ICommand OpenCreateNewRoleWindow => new DelegateCommand(() =>
         {
             RoleEditWindow roleEditWindow = new RoleEditWindow();
-            MessageService.Send(0);
-            MessageService.Bus += Receive;
+           
 
             if (roleEditWindow.ShowDialog() == true)
             {
-                if (_newRole.id == 0)
+                if (NewRole.id == 0)
                 {
-                    _roleControl.InsertNewRole(_newRole);
+                    _roleControl.InsertNewRole(NewRole);
                     ListRoles = new List<Role>();
                     ListRoles = _roleControl.GetAllRolesList();
                 }
             }
-            else
-            {
-                MessageService.Bus -= Receive;
-            }
+            
         });
 
         public ICommand OpenEditSelectedRoleWindow => new DelegateCommand(() =>
         {
             RoleEditWindow roleEditWindow = new RoleEditWindow();
-            MessageService.Send(_roleSelected);
-            MessageService.Bus += Receive;
+            
 
             if (roleEditWindow.ShowDialog() == true)
             {
-                if (_newRole.id != 0)
+                if (NewRole.id != 0)
                 {
-                    _roleControl.UpdateCurrentRole(_newRole);
+                    _roleControl.UpdateCurrentRole(NewRole);
                     ListRoles = new List<Role>();
                     ListRoles = _roleControl.GetAllRolesList();
                 }
             }
-            else
-            {
-                MessageService.Bus -= Receive;
-            }
+            
         }, () => _roleSelected != null);
 
         public ICommand DeleteSelectedRole=> new DelegateCommand(() =>

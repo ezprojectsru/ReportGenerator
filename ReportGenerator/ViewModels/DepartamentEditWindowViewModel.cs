@@ -13,10 +13,27 @@ namespace ReportGenerator.ViewModels
     {
         public string Title { get; set; }
         public Departament CurrentDepartament { get; set; }
-        public DepartamentEditWindowViewModel()
+        private Departament _departamentEdit { get; set; }
+
+        private AppManagerPageViewModel _appManagerPageViewModel;
+        public DepartamentEditWindowViewModel(AppManagerPageViewModel appManagerPageViewModel)
         {
             Title = "Добавление отдела";
-            MessageService.Bus += Receive;
+
+            _appManagerPageViewModel = appManagerPageViewModel;
+            _departamentEdit = appManagerPageViewModel.DepartamentSelected;
+
+            if (_departamentEdit != null)
+            {
+                CurrentDepartament = _departamentEdit;
+                Title = "Редактирование отдела";
+            }
+            else
+            {
+                CurrentDepartament = new Departament(0, "", "", "");
+            }
+
+           // MessageService.Bus += Receive;
         }
 
         /// <summary>
@@ -24,7 +41,7 @@ namespace ReportGenerator.ViewModels
         /// Departament - отдел со страница настроек и управления
         /// INT - нулевый int, является сигналом, что мы не редактируем существующий отдел, я добавляем новый
         /// </summary> 
-        private void Receive(object dataReceive)
+        /*private void Receive(object dataReceive)
         {
             if (dataReceive is Departament data)
             {
@@ -38,7 +55,7 @@ namespace ReportGenerator.ViewModels
                 CurrentDepartament = new Departament(index, "","","");
                 MessageService.Bus -= Receive;
             }
-        }
+        }*/
         
         /// <summary>
         /// Команда для отправки результата работы окна на страницу запроса
@@ -50,7 +67,8 @@ namespace ReportGenerator.ViewModels
                     try
                     {
                         Departament _resultDepartament = new Departament(CurrentDepartament.id, CurrentDepartament.name, CurrentDepartament.shortName, CurrentDepartament.description);
-                        MessageService.Send(_resultDepartament);
+                        _appManagerPageViewModel.NewDepartament = _resultDepartament;
+                       // MessageService.Send(_resultDepartament);
                         Window wnd = currentWindow as Window;
                         wnd.DialogResult = true;
                         wnd.Close();

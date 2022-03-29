@@ -20,6 +20,9 @@ namespace ReportGenerator.ViewModels
         public string ConnectionStatus { get; set; } = "Проверка подключения к Серверу, подождите...";
         public string Login { get; set; }
         public string Password { get; set; }
+
+        public SessionUser SessionUser = null;
+
         private UserControl _userControl = new UserControl();
 
 
@@ -50,11 +53,10 @@ namespace ReportGenerator.ViewModels
                 }
                 
                 if (correctPassword)
-                {                      
-
+                {
+                    SessionUser = new SessionUser(user);
                     MainWindow mainWindow = new MainWindow();
-                    SessionUser sessionUser = new SessionUser(user);
-                    MessageService.Send(sessionUser);
+                    // MessageService.Send(sessionUser);
                     mainWindow.Show();
                     Application.Current.MainWindow.Close();
                 }

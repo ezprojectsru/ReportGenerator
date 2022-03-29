@@ -18,6 +18,7 @@ namespace ReportGenerator.ViewModels
         public string Title { get; set; }
         private Plan _plan;
         public List<string> Users { get; set; }
+        public List<string> UsersDirector { get; set; }
         public string ResponsibleFullName { get; set; }
         public string DirectorFullName { get; set; }
         private DateTime _startDate;
@@ -37,34 +38,30 @@ namespace ReportGenerator.ViewModels
         public string ResponsibleId { get; set; }
         public string DirectorId { get; set; }
         public string Comment { get; set; }
+        private Plan _planEdit { get; set; }
+        private PlanWindowViewModel _planWindowViewModel;
 
-        public PlanEditWindowViewModel()
+        public PlanEditWindowViewModel(PlanWindowViewModel planWindowViewModel)
         {
             Title = "Создание плана";
-            MessageService.Bus += Receive;
-        }
+            _planWindowViewModel = planWindowViewModel;
+            _planEdit = planWindowViewModel.PlanEdit;
+            
 
-        /// <summary>
-        /// Принимает объекты, необходимые для работы класса.       
-        /// Plan - план со страницы Планов
-        /// INT - нулевый int, является сигналом, что мы не редактируем существующий план, я добавляем новый
-        /// </summary> 
-        private void Receive(object dataReceive)
-        {
-            if (dataReceive is Plan data)
+
+            if (_planEdit != null)
             {
-                _plan = data;
+                _plan = _planEdit;
                 setStrings();
-                MessageService.Bus -= Receive;
             }
-
-            if (dataReceive is int id)
+            else
             {
                 clearStrings();
-                MessageService.Bus -= Receive;
             }
+            
         }
 
+       
         /// <summary>
         /// Инициализируем поля формы в случае редактирования плана
         /// </summary>
@@ -79,9 +76,13 @@ namespace ReportGenerator.ViewModels
                 ResponsibleId = _plan.responsibleId.ToString();
                 DirectorId = _plan.directorId.ToString();
                 Comment = _plan.comment;
-                Title = "Редактирование плана";                
+                Title = "Редактирование плана";   
+                
                 Users = new List<string>();
                 Users = _userControl.GetAllFullNameUsers();
+                UsersDirector = new List<string>();
+                UsersDirector = _userControl.GetAllFullNameUsers();
+
                 ResponsibleFullName = _userControl.GetFullNameById(_plan.responsibleId);
                 DirectorFullName = _userControl.GetFullNameById(_plan.directorId);
             }
@@ -104,6 +105,8 @@ namespace ReportGenerator.ViewModels
             Title = "Создание плана";
             Users = new List<string>();
             Users = _userControl.GetAllFullNameUsers();
+            UsersDirector = new List<string>();
+            UsersDirector = _userControl.GetAllFullNameUsers();
         }
 
         /// <summary>
@@ -116,9 +119,12 @@ namespace ReportGenerator.ViewModels
                 try
                 {
                     int responsibleId = _userControl.GetIddByFullName(ResponsibleFullName);
+
                     int directorId = _userControl.GetIddByFullName(DirectorFullName);
+
                     Plan _resultPlan= new Plan(Id, Name, StartDate, FinishDate, responsibleId, directorId, Comment);
-                    MessageService.Send(_resultPlan);
+                    _planWindowViewModel.NewPlan = _resultPlan;
+                    
                     Window wnd = currentWindow as Window;
                     wnd.DialogResult = true;
                     wnd.Close();

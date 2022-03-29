@@ -58,7 +58,7 @@ namespace ReportGenerator.Views {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/ReportGenerator;component/views/authorization.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/ReportGenerator;V1.0.0.0;component/views/authorization.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\..\Views\Authorization.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

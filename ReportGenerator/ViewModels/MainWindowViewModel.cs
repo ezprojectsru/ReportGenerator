@@ -1,4 +1,5 @@
-﻿using DevExpress.Mvvm;
+﻿using System.Windows;
+using DevExpress.Mvvm;
 using ReportGenerator.DataBase.Controls;
 using ReportGenerator.DataBase.Models;
 using ReportGenerator.Services;
@@ -14,8 +15,7 @@ namespace ReportGenerator.ViewModels
     public class MainWindowViewModel : BindableBase
     {
         private RoleControl _roleControl = new RoleControl();
-        private SessionUser _sessionUser;
-
+        public SessionUser SessionUser;
         private readonly PageNavigationService _navigation;
         public Page CurrentPage { get; set; }
         public string FullName { get; set; }
@@ -23,28 +23,13 @@ namespace ReportGenerator.ViewModels
         public string Role { get; set; }
 
         private DepartamentControl _departamentControl = new DepartamentControl();
-
-        public MainWindowViewModel(PageNavigationService navigation)
+        public MainWindowViewModel(PageNavigationService navigation, AuthorizationViewModel authorizationViewModel)
         {
-
-            MessageService.Bus += Receive;
+            SessionUser = authorizationViewModel.SessionUser;
             _navigation = navigation;
+            setStrings();
             navigation.OnPageChanged += page => CurrentPage = page;
-            navigation.Navigate(new PlanWindow());          
-
-        }
-
-        /// <summary>
-        /// Получение объекта спользователя с данными для текущей сессии
-        /// </summary>        
-        private void Receive(object data)
-        {
-            if (data is SessionUser sessionUser)
-            {
-                _sessionUser = sessionUser;
-                setStrings();
-                MessageService.Bus -= Receive;
-            }            
+            navigation.Navigate(new PlanWindow());
         }
 
         /// <summary>
@@ -52,9 +37,9 @@ namespace ReportGenerator.ViewModels
         /// </summary>
         private void setStrings()
         {
-            FullName = _sessionUser.user.fullName;
-            Departament = _departamentControl.GetNameById(_sessionUser.user.departamentId);
-            Role = _roleControl.GetNameById(_sessionUser.user.roleId);
+            FullName = SessionUser.user.fullName;
+            Departament = _departamentControl.GetNameById(SessionUser.user.departamentId);
+            Role = _roleControl.GetNameById(SessionUser.user.roleId);
         }
 
         /// <summary>
@@ -62,9 +47,7 @@ namespace ReportGenerator.ViewModels
         /// </summary>
         public ICommand OpenPlansPage => new DelegateCommand(() =>
         {
-                                          
             _navigation.Navigate(new PlanWindow());
-            MessageService.Send(_sessionUser);            
         });
 
         /// <summary>
@@ -73,7 +56,6 @@ namespace ReportGenerator.ViewModels
         public ICommand OpenAppManagerPage => new DelegateCommand(() =>
         {
             _navigation.Navigate(new AppManagerPage());
-            MessageService.Send(_sessionUser);            
         });
 
     }

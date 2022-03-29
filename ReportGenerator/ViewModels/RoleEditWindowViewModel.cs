@@ -10,28 +10,28 @@ namespace ReportGenerator.ViewModels
     {
         public string Title { get; set; }
         public Role CurrentRole{ get; set; }
+        private Role _roletEdit { get; set; }
 
-        public RoleEditWindowViewModel()
+        private AppManagerPageViewModel _appManagerPageViewModel;
+
+        public RoleEditWindowViewModel(AppManagerPageViewModel appManagerPageViewModel)
         {
             Title = "Добавление роли";
-            MessageService.Bus += Receive;
-        }
+            _appManagerPageViewModel = appManagerPageViewModel;
+            _roletEdit = appManagerPageViewModel.RoleSelected;
 
-        private void Receive(object dataReceive)
-        {
-            if (dataReceive is Role data)
+            if (_roletEdit != null)
             {
-                CurrentRole = data;
+                CurrentRole = _roletEdit;
                 Title = "Редактирование роли";
-                MessageService.Bus -= Receive;
             }
-
-            if (dataReceive is int index)
+            else
             {
-                CurrentRole = new Role(index, "");
-                MessageService.Bus -= Receive;
+                CurrentRole = new Role(0, "");
             }
         }
+
+        
 
         public ICommand SendDialogResultRole => new DelegateCommand<object>((currentWindow) =>
         {
@@ -40,7 +40,8 @@ namespace ReportGenerator.ViewModels
                 try
                 {
                     Role _resultRole = new Role(CurrentRole.id, CurrentRole.name);
-                    MessageService.Send(_resultRole);
+                    _appManagerPageViewModel.NewRole = _resultRole;
+                    
                     Window wnd = currentWindow as Window;
                     wnd.DialogResult = true;
                     wnd.Close();

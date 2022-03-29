@@ -39,53 +39,31 @@ namespace ReportGenerator.ViewModels
             }
         }
 
-        private Task _newTask;
-        private Plan _newPlan;
-        private SessionUser _sessionUser;
+        public Task NewTask;
+        public Plan NewPlan;
+        public SessionUser SessionUser;
         public string Title { get; set; }
         public List<ItemPlan> Plans { get; set; }
         public List<Task> Tasks { get; set; }
-        public PlanWindowViewModel()
+        public int TaskEditPlanId { get; set; }
+        public  Task TaskEdit { get; set; }
+        public  Plan PlanEdit { get; set; }
+
+
+        public PlanWindowViewModel(AuthorizationViewModel authorizationViewModel)
         {
+            SessionUser = authorizationViewModel.SessionUser;
+            getPlansList();
             Title = "Список планов";
-            MessageService.Bus += Receive;
+            
         }
-
-        /// <summary>
-        /// Принимает объекты, необходимые для работы класса.
-        /// SessionUser - пользователь текущей сесии
-        /// Task - задача из редактора (окна) задач
-        /// Plan - план из редактора (окна) планов
-        /// </summary>        
-        private void Receive(object data)
-        {
-            if (data is SessionUser sessionUser)
-            {
-                _sessionUser = sessionUser;
-                getPlansList();
-                MessageService.Bus -= Receive;
-            }
-            if (data is Task task)
-            {
-                _newTask = task;
-                MessageService.Bus -= Receive;
-
-            }
-            if (data is Plan plan)
-            {
-                _newPlan = plan;
-                MessageService.Bus -= Receive;
-
-            }
-        }
-
 
         /// <summary>
         /// Получение планов текущего пользователя
         /// </summary>
         private void getPlansList()
         {
-            List<Plan> targetPlans = _planControl.GetPlanListByUserId(_sessionUser.user.id);
+            List<Plan> targetPlans = _planControl.GetPlanListByUserId(SessionUser.user.id);
             Plans = new List<ItemPlan>();
             foreach (Plan pl in targetPlans)
             {
@@ -125,22 +103,25 @@ namespace ReportGenerator.ViewModels
         /// </summary>
         public ICommand OpenCreateNewTaskWindow => new DelegateCommand(() =>
         {
+            TaskEditPlanId = _planSelected.Id;
+            TaskEdit = null;
+
             int planId = _planSelected.Id;
             TaskEditWindow taskEditWindow = new TaskEditWindow();
-            MessageService.Send(planId);
-            MessageService.Bus += Receive;
+            //MessageService.Send(planId);
+           // MessageService.Bus += Receive;
 
             if (taskEditWindow.ShowDialog() == true)
             {
-                if (_newTask.id == 0)
+                if (NewTask.id == 0)
                 {
-                    _taskControl.InsertNewTask(_newTask);
-                    Tasks = _taskControl.GetTaskListByPlanId(_newTask.planId);
+                    _taskControl.InsertNewTask(NewTask);
+                    Tasks = _taskControl.GetTaskListByPlanId(NewTask.planId);
                 }
             }
             else
             {
-                MessageService.Bus -= Receive;
+                //MessageService.Bus -= Receive;
             }
         }, () => _planSelected != null);
 
@@ -149,23 +130,26 @@ namespace ReportGenerator.ViewModels
         /// </summary>
         public ICommand OpenEditSelectedTaskWindow => new DelegateCommand(() =>
         {
-            Task targetTask = _taskSelected;
+            TaskEditPlanId = 0;
+            TaskEdit = _taskSelected;
+
+           // Task targetTask = _taskSelected;
             TaskEditWindow taskEditWindow = new TaskEditWindow();
-            MessageService.Send(targetTask);
-            MessageService.Bus += Receive;
+           // MessageService.Send(targetTask);
+          //  MessageService.Bus += Receive;
 
             if (taskEditWindow.ShowDialog() == true)
             {
-                if (_newTask.id != 0)
+                if (NewTask.id != 0)
                 {
-                    _taskControl.UpdateCurrentTask(_newTask);
-                    Tasks = _taskControl.GetTaskListByPlanId(_newTask.planId);
+                    _taskControl.UpdateCurrentTask(NewTask);
+                    Tasks = _taskControl.GetTaskListByPlanId(NewTask.planId);
                 }
 
             }
             else
             {
-                MessageService.Bus -= Receive;
+                //MessageService.Bus -= Receive;
             }
 
         }, () => _taskSelected != null);
@@ -179,21 +163,19 @@ namespace ReportGenerator.ViewModels
             int responsibleId = _userControl.GetIddByFullName(_planSelected.Responsible);
             int directorId = _userControl.GetIddByFullName(_planSelected.Director);
 
-            Plan currentPlan = new Plan(_planSelected.Id, _planSelected.Name,
+            PlanEdit = new Plan(_planSelected.Id, _planSelected.Name,
                 _planSelected.StartDate, _planSelected.FinishDate, responsibleId,
                 directorId, _planSelected.Comment);
 
             PlanEditWindow planEditWindow = new PlanEditWindow();
-            MessageService.Send(currentPlan);
-            MessageService.Bus += Receive;
 
             if (planEditWindow.ShowDialog() == true)
             {
-                if (_newPlan.id != 0)
+                if (NewPlan.id != 0)
                 {
-                    _planControl.UpdateCurrentPlan(_newPlan);
+                    _planControl.UpdateCurrentPlan(NewPlan);
 
-                    List<Plan> targetPlans = _planControl.GetPlanListByUserId(_sessionUser.user.id);
+                    List<Plan> targetPlans = _planControl.GetPlanListByUserId(SessionUser.user.id);
                     Plans = new List<ItemPlan>();
                     foreach (Plan pl in targetPlans)
                     {
@@ -207,10 +189,6 @@ namespace ReportGenerator.ViewModels
                     Tasks = null;
                     _planSelected = null;
                 }
-            }
-            else
-            {
-                MessageService.Bus -= Receive;
             }
 
         }, () => _planSelected != null);
@@ -221,17 +199,15 @@ namespace ReportGenerator.ViewModels
         public ICommand OpenCreateNewPlanWindow => new DelegateCommand(() =>
         {
             PlanEditWindow planEditWindow = new PlanEditWindow();
-            MessageService.Send(0);
-            MessageService.Bus += Receive;
+            PlanEdit = null;
 
             if (planEditWindow.ShowDialog() == true)
             {
-
-                if (_newPlan.id == 0)
+                if (NewPlan.id == 0)
                 {
-                    _planControl.InsertNewPlan(_newPlan);
+                    _planControl.InsertNewPlan(NewPlan);
 
-                    List<Plan> targetPlans = _planControl.GetPlanListByUserId(_sessionUser.user.id);
+                    List<Plan> targetPlans = _planControl.GetPlanListByUserId(SessionUser.user.id);
                     Plans = new List<ItemPlan>();
                     foreach (Plan pl in targetPlans)
                     {
@@ -246,10 +222,7 @@ namespace ReportGenerator.ViewModels
                     _planSelected = null;
                 }
             }
-            else
-            {
-                MessageService.Bus -= Receive;
-            }
+            
         });
 
         /// <summary>
@@ -264,7 +237,7 @@ namespace ReportGenerator.ViewModels
 
                 _planControl.DeleteCurrentPlan(_planSelected.Id);
 
-                List<Plan> targetPlans = _planControl.GetPlanListByUserId(_sessionUser.user.id);
+                List<Plan> targetPlans = _planControl.GetPlanListByUserId(SessionUser.user.id);
                 Plans = new List<ItemPlan>();
                 foreach (Plan pl in targetPlans)
                 {

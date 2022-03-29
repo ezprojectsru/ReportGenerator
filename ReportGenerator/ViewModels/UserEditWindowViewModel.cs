@@ -36,16 +36,32 @@ namespace ReportGenerator.ViewModels
         public string Group { get; set; }
         private string oldUsername;
 
+        private User _userEdit { get; set; }
+        private AppManagerPageViewModel _appManagerPageViewModel;
+
         private UserControl _userControl = new UserControl();
         private DepartamentControl _departamentControl = new DepartamentControl();
         private GroupControl _groupControl = new GroupControl();
         private RoleControl _roleControl = new RoleControl();
         private SectorControl _sectorControl = new SectorControl();
 
-        public UserEditWindowViewModel()
+        public UserEditWindowViewModel(AppManagerPageViewModel appManagerPageViewModel)
         {
             Title = "Добавление пользователя";
-            MessageService.Bus += Receive;
+
+            _appManagerPageViewModel = appManagerPageViewModel;
+            _userEdit = appManagerPageViewModel.TargetUser;
+
+            if (_userEdit != null)
+            {
+                _user = _userEdit;
+                setStrings();
+            }
+            else
+            {
+                clearStrings();
+            }
+           
         }
 
         /// <summary>
@@ -53,7 +69,7 @@ namespace ReportGenerator.ViewModels
         /// User - потльзователь со страницы Управления и настроек
         /// INT - нулевый int, является сигналом, что мы не редактируем существующего пользователя, я добавляем нового
         /// </summary>
-        private void Receive(object dataReceive)
+       /* private void Receive(object dataReceive)
         {
             if (dataReceive is User data)
             {
@@ -67,7 +83,7 @@ namespace ReportGenerator.ViewModels
                 clearStrings();
                 MessageService.Bus -= Receive;
             }
-        }
+        }*/
 
         /// <summary>
         /// Инициализация полей формы в случае с редактированием существующего пользователя
@@ -136,9 +152,6 @@ namespace ReportGenerator.ViewModels
         /// 
         ///      ТУТ ВСЕ ПЕРЕДЕЛАЮ !!!!
         ///      
-        ///      в 00.00 нашел случайно багу, но сил совсем не осталось :))
-        ///      Пофиксил пока так...
-        ///      
         /// </summary>
         public ICommand SendDialogResultUser => new DelegateCommand<object>((currentWindow) =>
         {
@@ -158,7 +171,8 @@ namespace ReportGenerator.ViewModels
                             int groupId = _groupControl.GetIddByName(Group);
                             User _resultUser = new User(Id, Username, Password, СreateDate, FullName, 
                                 Email, departamentId, roleId, sectorId, groupId);
-                            MessageService.Send(_resultUser);
+                            _appManagerPageViewModel.NewUser = _resultUser;
+                           // MessageService.Send(_resultUser);
                             Window wnd = currentWindow as Window;
                             wnd.DialogResult = true;
                             wnd.Close();
@@ -188,7 +202,8 @@ namespace ReportGenerator.ViewModels
                                 int groupId = _groupControl.GetIddByName(Group);
                                 User _resultUser = new User(Id, Username, Password, СreateDate, 
                                     FullName, Email, departamentId, roleId, sectorId, groupId);
-                                MessageService.Send(_resultUser);
+                                _appManagerPageViewModel.NewUser = _resultUser;
+                               // MessageService.Send(_resultUser);
                                 Window wnd = currentWindow as Window;
                                 wnd.DialogResult = true;
                                 wnd.Close();
@@ -214,7 +229,8 @@ namespace ReportGenerator.ViewModels
                             int groupId = _groupControl.GetIddByName(Group);
                             User _resultUser = new User(Id, Username, Password, СreateDate, 
                                 FullName, Email, departamentId, roleId, sectorId, groupId);
-                            MessageService.Send(_resultUser);
+                            _appManagerPageViewModel.NewUser = _resultUser;
+                            //MessageService.Send(_resultUser);
                             Window wnd = currentWindow as Window;
                             wnd.DialogResult = true;
                             wnd.Close();
