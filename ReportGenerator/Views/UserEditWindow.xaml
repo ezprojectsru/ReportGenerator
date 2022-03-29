@@ -24,15 +24,15 @@
                 FontWeight="Bold"
                 Text="{Binding Title}" />
             <TextBlock Text="Имя пользователя" />
-            <TextBox Text="{Binding Username}" />
+            <TextBox Text="{Binding User.username}" />
             <TextBlock Text="Новый пароль" />
-            <TextBox Text="{Binding Password}" />
+            <TextBox Text="{Binding User.password}" />
             <TextBlock Text="Дата регистрации" />
-            <DatePicker SelectedDate="{Binding СreateDate}" />
+            <DatePicker SelectedDate="{Binding User.create_date}" />
             <TextBlock Text="Фамилия и имя" />
-            <TextBox Text="{Binding FullName}" />
+            <TextBox Text="{Binding User.fullName}" />
             <TextBlock Text="Электронная почта" />
-            <TextBox Text="{Binding Email}" />
+            <TextBox Text="{Binding User.email}" />
             <TextBlock Text="Отдел" />
             <ComboBox
                 ItemsSource="{Binding Departaments}"
