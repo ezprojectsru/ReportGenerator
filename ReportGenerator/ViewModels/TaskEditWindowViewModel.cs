@@ -25,8 +25,7 @@ namespace ReportGenerator.ViewModels
         private int Id;
         public string Name { get; set; }   
         public int PlanId { get; set; }
-        public string Priority { get; set; }
-        public int SelectPriority { get; set; }
+        public int Priority { get; set; }
         public int TaskTypeId { get; set; }
         public string TaskTypeName { get; set; }
         public string Intensity { get; set; }
@@ -37,14 +36,18 @@ namespace ReportGenerator.ViewModels
         private Task _taskEdit { get; set; }
         private PlanWindowViewModel _planWindowViewModel;
 
-
-
+        public List<int> PriorityList { get; set; }
 
         public TaskEditWindowViewModel(PlanWindowViewModel planWindowViewModel)
         {
             _planWindowViewModel = planWindowViewModel;
             _taskEdit = planWindowViewModel.TaskEdit;
             _taskEditPlanId = planWindowViewModel.TaskEditPlanId;
+            PriorityList = new List<int>();
+            for (int i = 0; i < 11; i++)
+            {
+                PriorityList.Add(i);
+            }
 
             if (_taskEdit != null && _taskEditPlanId == 0)
             {
@@ -57,29 +60,10 @@ namespace ReportGenerator.ViewModels
             }
 
             Title = "Создание задачи";            
-            //MessageService.Bus += Receive;            
+                       
         }
 
-        /// <summary>
-        /// Принимает объекты, необходимые для работы класса.       
-        /// Task - задача со страницы Планов
-        /// INT - нулевый int, является сигналом, что мы не редактируем существующую задачу, я добавляем новую
-        /// </summary> 
-        /*private void Receive(object dataReceive)
-        {
-            if (dataReceive is Task data)
-            {
-                _task = data;
-                setStrings();                
-                MessageService.Bus -= Receive;
-            }
-
-            if (dataReceive is int id)
-            {
-                clearStrings(id);
-                MessageService.Bus -= Receive;
-            }
-        }*/
+        
 
         /// <summary>
         /// Инициализация combobox'ов
@@ -102,8 +86,7 @@ namespace ReportGenerator.ViewModels
                 Id = _task.id;
                 Name = _task.name;
                 PlanId = _task.planId;
-                Priority = _task.priority.ToString();
-                SelectPriority = _task.priority - 1;
+                Priority = _task.priority;
                 TaskTypeId = _task.typeId; 
                 TaskTypeName = _taskTypeControl.GetShortNameById(TaskTypeId);
                 Intensity = _task.intensity.ToString();
@@ -123,8 +106,7 @@ namespace ReportGenerator.ViewModels
             Id = 0;
             Name = "";
             PlanId = id;
-            Priority = "1";
-            SelectPriority = 0;
+            Priority = 0;
             TaskTypeId = 0;
             if (TaskTypeId == 0)
             {
@@ -142,13 +124,10 @@ namespace ReportGenerator.ViewModels
             setTypes(PlanId);
         }
 
-        /// <summary>
-        /// Команда для отправки результата работы окна
-        /// </summary>
-        public ICommand SendDialogResultTask => new DelegateCommand<object>((currentWindow) =>
+        private void SendDialogResultTaskMethod(object currentWindow)
         {
-            if (!string.IsNullOrWhiteSpace(Name) && !string.IsNullOrWhiteSpace(Intensity) && 
-            !string.IsNullOrWhiteSpace(StartCompletion) && !string.IsNullOrWhiteSpace(PlanCompletion))
+            if (!string.IsNullOrWhiteSpace(Name) && !string.IsNullOrWhiteSpace(Intensity) &&
+                !string.IsNullOrWhiteSpace(StartCompletion) && !string.IsNullOrWhiteSpace(PlanCompletion))
             {
                 try
                 {
@@ -156,15 +135,15 @@ namespace ReportGenerator.ViewModels
                     _resultTask.id = Id;
                     _resultTask.name = Name;
                     _resultTask.planId = PlanId;
-                    _resultTask.priority = Int32.Parse(Priority);
-                    _resultTask.typeId = _taskTypeControl.GetIdByShortName(TaskTypeName); // < ================= 2
+                    _resultTask.priority = Priority;
+                    _resultTask.typeId = _taskTypeControl.GetIdByShortName(TaskTypeName);
                     _resultTask.intensity = Int32.Parse(Intensity);
                     _resultTask.startCompletion = Int32.Parse(StartCompletion);
                     _resultTask.planCompletion = Int32.Parse(PlanCompletion);
                     _resultTask.comment = Comment;
 
                     _planWindowViewModel.NewTask = _resultTask;
-                    //MessageService.Send(_resultTask);
+
                     Window wnd = currentWindow as Window;
                     wnd.DialogResult = true;
                     wnd.Close();
@@ -178,6 +157,14 @@ namespace ReportGenerator.ViewModels
             {
                 MessageBox.Show("Не все поля заполнены!", "Ошибка");
             }
+        }
+
+        /// <summary>
+        /// Команда для отправки результата работы окна
+        /// </summary>
+        public ICommand SendDialogResultTask => new DelegateCommand<object>((currentWindow) =>
+        {
+            SendDialogResultTaskMethod(currentWindow);
         });
     }
 }

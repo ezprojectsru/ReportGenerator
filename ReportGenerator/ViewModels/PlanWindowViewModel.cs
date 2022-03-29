@@ -83,34 +83,27 @@ namespace ReportGenerator.ViewModels
 
         }
 
-        /// <summary>
-        /// Коменда для удаления выбранной задачи
-        /// </summary>
-        public ICommand DeleteSelectedtask => new DelegateCommand(() =>
+
+
+        #region METHODS FOR COMMANDS
+        private void DeleteSelectedtaskMethod()
         {
             if (MessageBox.Show("Вы уверены, что хотите удалить задачу?", "Удаление задачи",
-                MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
+                    MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
             {
                 Task targetTask = _taskSelected;
                 int planId = _taskSelected.planId;
                 _taskControl.DeleteCurrentTask(_taskSelected);
                 Tasks = _taskControl.GetTaskListByPlanId(planId);
             }
-        }, () => _taskSelected != null);
+        }
 
-        /// <summary>
-        /// Коменда для открытия окна создания новой задачи
-        /// </summary>
-        public ICommand OpenCreateNewTaskWindow => new DelegateCommand(() =>
+        private void OpenCreateNewTaskWindowMethod()
         {
             TaskEditPlanId = _planSelected.Id;
             TaskEdit = null;
-
             int planId = _planSelected.Id;
             TaskEditWindow taskEditWindow = new TaskEditWindow();
-            //MessageService.Send(planId);
-           // MessageService.Bus += Receive;
-
             if (taskEditWindow.ShowDialog() == true)
             {
                 if (NewTask.id == 0)
@@ -119,25 +112,13 @@ namespace ReportGenerator.ViewModels
                     Tasks = _taskControl.GetTaskListByPlanId(NewTask.planId);
                 }
             }
-            else
-            {
-                //MessageService.Bus -= Receive;
-            }
-        }, () => _planSelected != null);
+        }
 
-        /// <summary>
-        /// Коменда для открытия окна редактирования выбранной задачи
-        /// </summary>
-        public ICommand OpenEditSelectedTaskWindow => new DelegateCommand(() =>
+        private void OpenEditSelectedTaskWindowMethod()
         {
             TaskEditPlanId = 0;
             TaskEdit = _taskSelected;
-
-           // Task targetTask = _taskSelected;
             TaskEditWindow taskEditWindow = new TaskEditWindow();
-           // MessageService.Send(targetTask);
-          //  MessageService.Bus += Receive;
-
             if (taskEditWindow.ShowDialog() == true)
             {
                 if (NewTask.id != 0)
@@ -145,21 +126,11 @@ namespace ReportGenerator.ViewModels
                     _taskControl.UpdateCurrentTask(NewTask);
                     Tasks = _taskControl.GetTaskListByPlanId(NewTask.planId);
                 }
-
             }
-            else
-            {
-                //MessageService.Bus -= Receive;
-            }
+        }
 
-        }, () => _taskSelected != null);
-
-        /// <summary>
-        /// Коменда для открытия окна редактирования выбранного плана
-        /// </summary>
-        public ICommand OpenEditSelectedPlanWindow => new DelegateCommand(() =>
+        private void OpenEditSelectedPlanWindowMethod()
         {
-
             int responsibleId = _userControl.GetIddByFullName(_planSelected.Responsible);
             int directorId = _userControl.GetIddByFullName(_planSelected.Director);
 
@@ -190,13 +161,9 @@ namespace ReportGenerator.ViewModels
                     _planSelected = null;
                 }
             }
+        }
 
-        }, () => _planSelected != null);
-
-        /// <summary>
-        /// Коменда для открытия окна создания нового плана
-        /// </summary>
-        public ICommand OpenCreateNewPlanWindow => new DelegateCommand(() =>
+        private void OpenCreateNewPlanWindowMethod()
         {
             PlanEditWindow planEditWindow = new PlanEditWindow();
             PlanEdit = null;
@@ -222,16 +189,12 @@ namespace ReportGenerator.ViewModels
                     _planSelected = null;
                 }
             }
-            
-        });
+        }
 
-        /// <summary>
-        /// Коменда для удаления выбранного плана и всех его задач
-        /// </summary>
-        public ICommand DeleteSelectedPlan => new DelegateCommand(() =>
+        private void DeleteSelectedPlanMethod()
         {
             if (MessageBox.Show("Вы уверены, что хотите удалить план? Вместе с планом будут удалены и все его задачи.",
-                "Удаление плана", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
+                    "Удаление плана", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
             {
                 _taskControl.DeleteTasksByPlanId(_planSelected.Id);
 
@@ -251,7 +214,58 @@ namespace ReportGenerator.ViewModels
                 Tasks = null;
                 _planSelected = null;
             }
+        }
+        #endregion
+
+        #region COMMANDS
+        /// <summary>
+        /// Коменда для удаления выбранной задачи
+        /// </summary>
+        public ICommand DeleteSelectedtask => new DelegateCommand(() =>
+        {
+            DeleteSelectedtaskMethod();
+        }, () => _taskSelected != null);
+
+        /// <summary>
+        /// Коменда для открытия окна создания новой задачи
+        /// </summary>
+        public ICommand OpenCreateNewTaskWindow => new DelegateCommand(() =>
+        {
+            OpenCreateNewTaskWindowMethod();
         }, () => _planSelected != null);
+
+        /// <summary>
+        /// Коменда для открытия окна редактирования выбранной задачи
+        /// </summary>
+        public ICommand OpenEditSelectedTaskWindow => new DelegateCommand(() =>
+        {
+            OpenEditSelectedTaskWindowMethod();
+        }, () => _taskSelected != null);
+
+        /// <summary>
+        /// Коменда для открытия окна редактирования выбранного плана
+        /// </summary>
+        public ICommand OpenEditSelectedPlanWindow => new DelegateCommand(() =>
+        {
+            OpenEditSelectedPlanWindowMethod();
+        }, () => _planSelected != null);
+
+        /// <summary>
+        /// Коменда для открытия окна создания нового плана
+        /// </summary>
+        public ICommand OpenCreateNewPlanWindow => new DelegateCommand(() =>
+        {
+            OpenCreateNewPlanWindowMethod();
+        });
+
+        /// <summary>
+        /// Коменда для удаления выбранного плана и всех его задач
+        /// </summary>
+        public ICommand DeleteSelectedPlan => new DelegateCommand(() =>
+        {
+            DeleteSelectedPlanMethod();
+        }, () => _planSelected != null); 
+        #endregion
 
     }
 }

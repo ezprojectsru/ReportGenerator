@@ -46,8 +46,6 @@ namespace ReportGenerator.ViewModels
             Title = "Создание плана";
             _planWindowViewModel = planWindowViewModel;
             _planEdit = planWindowViewModel.PlanEdit;
-            
-
 
             if (_planEdit != null)
             {
@@ -109,10 +107,7 @@ namespace ReportGenerator.ViewModels
             UsersDirector = _userControl.GetAllFullNameUsers();
         }
 
-        /// <summary>
-        /// Команда для отправки результата работы окна
-        /// </summary>
-        public ICommand SendDialogResultPlan => new DelegateCommand<object>((currentWindow) =>
+        private void SendDialogResultPlanMethod(object currentWindow)
         {
             if (!string.IsNullOrWhiteSpace(Name))
             {
@@ -122,9 +117,9 @@ namespace ReportGenerator.ViewModels
 
                     int directorId = _userControl.GetIddByFullName(DirectorFullName);
 
-                    Plan _resultPlan= new Plan(Id, Name, StartDate, FinishDate, responsibleId, directorId, Comment);
+                    Plan _resultPlan = new Plan(Id, Name, StartDate, FinishDate, responsibleId, directorId, Comment);
                     _planWindowViewModel.NewPlan = _resultPlan;
-                    
+
                     Window wnd = currentWindow as Window;
                     wnd.DialogResult = true;
                     wnd.Close();
@@ -138,6 +133,14 @@ namespace ReportGenerator.ViewModels
             {
                 MessageBox.Show("Не все поля заполнены!", "Ошибка");
             }
+        }
+
+        /// <summary>
+        /// Команда для отправки результата работы окна
+        /// </summary>
+        public ICommand SendDialogResultPlan => new DelegateCommand<object>((currentWindow) =>
+        {
+            SendDialogResultPlanMethod(currentWindow);
         });
     }
 }

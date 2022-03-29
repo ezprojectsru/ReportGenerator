@@ -65,27 +65,6 @@ namespace ReportGenerator.ViewModels
         }
 
         /// <summary>
-        /// Принимает объекты, необходимые для работы класса.       
-        /// User - потльзователь со страницы Управления и настроек
-        /// INT - нулевый int, является сигналом, что мы не редактируем существующего пользователя, я добавляем нового
-        /// </summary>
-       /* private void Receive(object dataReceive)
-        {
-            if (dataReceive is User data)
-            {
-                _user = data;
-                setStrings();
-                MessageService.Bus -= Receive;
-            }
-
-            if (dataReceive is int id)
-            {
-                clearStrings();
-                MessageService.Bus -= Receive;
-            }
-        }*/
-
-        /// <summary>
         /// Инициализация полей формы в случае с редактированием существующего пользователя
         /// </summary>
         private void setStrings()
@@ -145,17 +124,10 @@ namespace ReportGenerator.ViewModels
             Groups = _groupControl.GetAllNameGroups();
         }
 
-        
 
-        /// <summary>
-        /// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        /// 
-        ///      ТУТ ВСЕ ПЕРЕДЕЛАЮ !!!!
-        ///      
-        /// </summary>
-        public ICommand SendDialogResultUser => new DelegateCommand<object>((currentWindow) =>
+        private void SendDialogResultUserMethod(object currentWindow)
         {
-            if (!string.IsNullOrWhiteSpace(Username) && 
+            if (!string.IsNullOrWhiteSpace(Username) &&
             !string.IsNullOrWhiteSpace(FullName) && !string.IsNullOrWhiteSpace(Email))
             {
                 if (Id == 0)
@@ -169,10 +141,10 @@ namespace ReportGenerator.ViewModels
                             int roleId = _roleControl.GetIddByName(Role);
                             int sectorId = _sectorControl.GetIddByName(Sector);
                             int groupId = _groupControl.GetIddByName(Group);
-                            User _resultUser = new User(Id, Username, Password, СreateDate, FullName, 
+                            User _resultUser = new User(Id, Username, Password, СreateDate, FullName,
                                 Email, departamentId, roleId, sectorId, groupId);
                             _appManagerPageViewModel.NewUser = _resultUser;
-                           // MessageService.Send(_resultUser);
+                            // MessageService.Send(_resultUser);
                             Window wnd = currentWindow as Window;
                             wnd.DialogResult = true;
                             wnd.Close();
@@ -200,10 +172,10 @@ namespace ReportGenerator.ViewModels
                                 int roleId = _roleControl.GetIddByName(Role);
                                 int sectorId = _sectorControl.GetIddByName(Sector);
                                 int groupId = _groupControl.GetIddByName(Group);
-                                User _resultUser = new User(Id, Username, Password, СreateDate, 
+                                User _resultUser = new User(Id, Username, Password, СreateDate,
                                     FullName, Email, departamentId, roleId, sectorId, groupId);
                                 _appManagerPageViewModel.NewUser = _resultUser;
-                               // MessageService.Send(_resultUser);
+                                // MessageService.Send(_resultUser);
                                 Window wnd = currentWindow as Window;
                                 wnd.DialogResult = true;
                                 wnd.Close();
@@ -227,7 +199,7 @@ namespace ReportGenerator.ViewModels
                             int roleId = _roleControl.GetIddByName(Role);
                             int sectorId = _sectorControl.GetIddByName(Sector);
                             int groupId = _groupControl.GetIddByName(Group);
-                            User _resultUser = new User(Id, Username, Password, СreateDate, 
+                            User _resultUser = new User(Id, Username, Password, СreateDate,
                                 FullName, Email, departamentId, roleId, sectorId, groupId);
                             _appManagerPageViewModel.NewUser = _resultUser;
                             //MessageService.Send(_resultUser);
@@ -241,13 +213,19 @@ namespace ReportGenerator.ViewModels
                         }
                     }
                 }
-                
-                
+
+
             }
             else
             {
                 MessageBox.Show("Не все поля заполнены!", "Ошибка");
             }
+        }
+
+
+        public ICommand SendDialogResultUser => new DelegateCommand<object>((currentWindow) =>
+        {
+            SendDialogResultUserMethod(currentWindow);
         });
     }
 }

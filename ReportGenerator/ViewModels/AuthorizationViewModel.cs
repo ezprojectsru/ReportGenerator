@@ -36,12 +36,8 @@ namespace ReportGenerator.ViewModels
             _thread.Start(_tokenSource.Token);
         }
 
-        
-
-        /// <summary>
-        /// Команда для проверки введеных Логина и Пароля. При успехе переадресовывает на основную страницу приложения.
-        /// </summary>
-        public ICommand LoginUser => new DelegateCommand(() =>
+        #region METHODS FOR COMMANDS
+        private void LoginUserMethod()
         {
             User user = _userControl.GetUser(Login);
             if (user != null)
@@ -51,7 +47,7 @@ namespace ReportGenerator.ViewModels
                 {
                     correctPassword = PasswordHasher.Verify(Password, user.password);
                 }
-                
+
                 if (correctPassword)
                 {
                     SessionUser = new SessionUser(user);
@@ -60,26 +56,21 @@ namespace ReportGenerator.ViewModels
                     mainWindow.Show();
                     Application.Current.MainWindow.Close();
                 }
-                else 
+                else
                 {
                     MessageBox.Show("Вы ввели неправильный Логин или Пароль!");
                 }
-                
+
             }
             else
-            { 
-                MessageBox.Show("Вы ввели неправильный Логин или Пароль!"); 
-            }            
-            
-            
-        }, ()=> !string.IsNullOrWhiteSpace(Login) && !string.IsNullOrWhiteSpace(Password)&& isConnected);
+            {
+                MessageBox.Show("Вы ввели неправильный Логин или Пароль!");
+            }
 
-        /// <summary>
-        /// Команда для открытия окна настроек подключения к серверу
-        /// </summary>
-        public ICommand OpenSettingsWindow => new DelegateCommand(() =>
-        {             
+        }
 
+        private void OpenSettingsWindowMethod()
+        {
             SettingsWindow settingsWindow = new SettingsWindow();
             if (settingsWindow.ShowDialog() == true)
             {
@@ -87,20 +78,14 @@ namespace ReportGenerator.ViewModels
                 ConnectionStatus = "Проверка подключения к Серверу, подождите...";
                 Init();
             }
+        }
 
-        });
-
-        
-        /// <summary>
-        /// Команда для проверки подключения к серверу
-        /// </summary>
-        public ICommand CheckConnection => new DelegateCommand(() =>
+        private void CheckConnectionMethod()
         {
             _tokenSource = new CancellationTokenSource();
             _thread = new Thread(Worker) { IsBackground = true };
-            _thread.Start(_tokenSource.Token);            
-
-        }, () => _thread == null);
+            _thread.Start(_tokenSource.Token);
+        }
 
         private void Worker(object state)
         {
@@ -117,5 +102,35 @@ namespace ReportGenerator.ViewModels
                 ConnectionStatus = "Подключение к Серверу отсутствует!";
             }
         }
+        #endregion
+
+        #region COMMANDS
+        /// <summary>
+        /// Команда для проверки введеных Логина и Пароля. При успехе переадресовывает на основную страницу приложения.
+        /// </summary>
+        public ICommand LoginUser => new DelegateCommand(() =>
+        {
+            LoginUserMethod();
+        }, () => !string.IsNullOrWhiteSpace(Login) && !string.IsNullOrWhiteSpace(Password) && isConnected);
+
+        /// <summary>
+        /// Команда для открытия окна настроек подключения к серверу
+        /// </summary>
+        public ICommand OpenSettingsWindow => new DelegateCommand(() =>
+        {
+            OpenSettingsWindowMethod();
+        });
+
+
+        /// <summary>
+        /// Команда для проверки подключения к серверу
+        /// </summary>
+        public ICommand CheckConnection => new DelegateCommand(() =>
+        {
+            CheckConnectionMethod();
+        }, () => _thread == null); 
+        #endregion
+
+
     }
 }

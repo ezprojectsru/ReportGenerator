@@ -31,9 +31,7 @@ namespace ReportGenerator.ViewModels
             }
         }
 
-        
-
-        public ICommand SendDialogResultRole => new DelegateCommand<object>((currentWindow) =>
+        private void SendDialogResultRoleMethod(object currentWindow)
         {
             if (!string.IsNullOrWhiteSpace(CurrentRole.name))
             {
@@ -41,7 +39,7 @@ namespace ReportGenerator.ViewModels
                 {
                     Role _resultRole = new Role(CurrentRole.id, CurrentRole.name);
                     _appManagerPageViewModel.NewRole = _resultRole;
-                    
+
                     Window wnd = currentWindow as Window;
                     wnd.DialogResult = true;
                     wnd.Close();
@@ -56,6 +54,11 @@ namespace ReportGenerator.ViewModels
             {
                 MessageBox.Show("Не все поля заполнены!", "Ошибка");
             }
+        }
+
+        public ICommand SendDialogResultRole => new DelegateCommand<object>((currentWindow) =>
+        {
+            SendDialogResultRoleMethod(currentWindow);
         });
     }
 }

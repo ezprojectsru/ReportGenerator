@@ -81,22 +81,17 @@ namespace ReportGenerator.ViewModels
 
         }
 
-               
-       
-        
-        /// <summary>
-        /// Команда для открытия окна редактирования выбранного пользователя
-        /// </summary>
-        public ICommand OpenEditSelectedUserWindow => new DelegateCommand(() =>
+        #region METHODS FOR COMMANDS
+        private void OpenEditSelectedUserWindowMethod()
         {
-            TargetUser = new User(_userSelected.Id, _userSelected.Username, 
-                _userSelected.Password, _userSelected.Сreate_Date, 
+            TargetUser = new User(_userSelected.Id, _userSelected.Username,
+                _userSelected.Password, _userSelected.Сreate_Date,
                 _userSelected.FullName, _userSelected.Email,
                 _departamentControl.GetIddByName(_userSelected.Departament),
                 _roleControl.GetIddByName(_userSelected.Role),
                 _sectorControl.GetIddByName(_userSelected.Sector),
                 _groupControl.GetIddByName(_userSelected.Group));
-            
+
             UserEditWindow userEditWindow = new UserEditWindow();
 
             if (userEditWindow.ShowDialog() == true)
@@ -120,21 +115,15 @@ namespace ReportGenerator.ViewModels
                     foreach (User user in ListOfUsers)
                     {
                         Users.Add(new ItemUser(user));
-                    } 
+                    }
                 }
             }
-            
-        }, () => _userSelected != null);
+        }
 
-        /// <summary>
-        /// Команда для открытия окна создания нового пользователя
-        /// </summary>
-        public ICommand OpenCreateNewUserWindow => new DelegateCommand(() =>
+        private void OpenCreateNewUserWindowMethod()
         {
             TargetUser = null;
             UserEditWindow userEditWindow = new UserEditWindow();
-           // MessageService.Send(0);
-           // MessageService.Bus += Receive;
 
             if (userEditWindow.ShowDialog() == true)
             {
@@ -150,21 +139,17 @@ namespace ReportGenerator.ViewModels
                     foreach (User user in ListOfUsers)
                     {
                         Users.Add(new ItemUser(user));
-                    } 
+                    }
                 }
             }
-            
-        });
+        }
 
-        /// <summary>
-        /// Команда для удаления выбранного пользователя
-        /// </summary>
-        public ICommand DeleteSelectedUser => new DelegateCommand(() =>
+        private void DeleteSelectedUserMethod()
         {
             if (SessionUser.user.id != _userSelected.Id)
             {
-                if (MessageBox.Show("Вы уверены, что хотите удалить пользователя?", 
-                    "Удаление пользователя", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
+                if (MessageBox.Show("Вы уверены, что хотите удалить пользователя?",
+                        "Удаление пользователя", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
                 {
                     _userControl.DeleteCurrentUser(_userSelected.Id);
                     ListOfUsers = new List<User>();
@@ -178,17 +163,13 @@ namespace ReportGenerator.ViewModels
             }
             else
             {
-                MessageBox.Show("Вы не можете удалить пользователя текущей сессии!","Ошибка");
+                MessageBox.Show("Вы не можете удалить пользователя текущей сессии!", "Ошибка");
             }
-        }, () => _userSelected != null);
+        }
 
-        /// <summary>
-        /// Команда для открытия окна создания нового отдела
-        /// </summary>
-        public ICommand OpenCreateNewDepartamentWindow => new DelegateCommand(() =>
+        private void OpenCreateNewDepartamentWindowMethod()
         {
             DepartamentEditWindow departamentEditWindow = new DepartamentEditWindow();
-            
 
             if (departamentEditWindow.ShowDialog() == true)
             {
@@ -196,20 +177,14 @@ namespace ReportGenerator.ViewModels
                 {
                     _departamentControl.InsertNewDepartament(NewDepartament);
                     ListDepartaments = new List<Departament>();
-                    ListDepartaments = _departamentControl.GetAllDepartamentsList();                    
+                    ListDepartaments = _departamentControl.GetAllDepartamentsList();
                 }
             }
-            
-        });
+        }
 
-        /// <summary>
-        /// Командя для открытия окна редактирования отдела
-        /// </summary>
-        public ICommand OpenEditSelectedDepartamentWindow => new DelegateCommand(() =>
+        private void OpenEditSelectedDepartamentWindowMethod()
         {
             DepartamentEditWindow departamentEditWindow = new DepartamentEditWindow();
-            
-
             if (departamentEditWindow.ShowDialog() == true)
             {
                 if (NewDepartament.id != 0)
@@ -219,28 +194,22 @@ namespace ReportGenerator.ViewModels
                     ListDepartaments = _departamentControl.GetAllDepartamentsList();
                 }
             }
-            
-        }, () => _departamentSelected != null);
+        }
 
-        /// <summary>
-        /// Команда для удаления выбранного отдела
-        /// </summary>
-        public ICommand DeleteSelectedDepartament => new DelegateCommand(() =>
+        private void DeleteSelectedDepartamentMethod()
         {
-                if (MessageBox.Show("Вы уверены, что хотите удалить отдел?", "Удаление отдела", 
+            if (MessageBox.Show("Вы уверены, что хотите удалить отдел?", "Удаление отдела",
                     MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
-                {
+            {
                 _departamentControl.DeleteCurrentDepartament(_departamentSelected.id);
-                    ListDepartaments = new List<Departament>();
-                    ListDepartaments = _departamentControl.GetAllDepartamentsList();
-                 }
-        }, () => _departamentSelected != null);
+                ListDepartaments = new List<Departament>();
+                ListDepartaments = _departamentControl.GetAllDepartamentsList();
+            }
+        }
 
-        public ICommand OpenCreateNewRoleWindow => new DelegateCommand(() =>
+        private void OpenCreateNewRoleWindowMethod()
         {
             RoleEditWindow roleEditWindow = new RoleEditWindow();
-           
-
             if (roleEditWindow.ShowDialog() == true)
             {
                 if (NewRole.id == 0)
@@ -250,14 +219,11 @@ namespace ReportGenerator.ViewModels
                     ListRoles = _roleControl.GetAllRolesList();
                 }
             }
-            
-        });
+        }
 
-        public ICommand OpenEditSelectedRoleWindow => new DelegateCommand(() =>
+        private void OpenEditSelectedRoleWindowMethod()
         {
             RoleEditWindow roleEditWindow = new RoleEditWindow();
-            
-
             if (roleEditWindow.ShowDialog() == true)
             {
                 if (NewRole.id != 0)
@@ -267,18 +233,83 @@ namespace ReportGenerator.ViewModels
                     ListRoles = _roleControl.GetAllRolesList();
                 }
             }
-            
-        }, () => _roleSelected != null);
+        }
 
-        public ICommand DeleteSelectedRole=> new DelegateCommand(() =>
+        private void DeleteSelectedRoleMethod()
         {
-            if (MessageBox.Show("Вы уверены, что хотите удалить роль?", "Удаление роли", 
-                MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
+            if (MessageBox.Show("Вы уверены, что хотите удалить роль?", "Удаление роли",
+                    MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
             {
                 _roleControl.DeleteCurrentRole(_roleSelected.id);
                 ListRoles = new List<Role>();
                 ListRoles = _roleControl.GetAllRolesList();
             }
+        }
+        #endregion
+
+        #region COMMANDS
+        /// <summary>
+        /// Команда для открытия окна редактирования выбранного пользователя
+        /// </summary>
+        public ICommand OpenEditSelectedUserWindow => new DelegateCommand(() =>
+        {
+            OpenEditSelectedUserWindowMethod();
+        }, () => _userSelected != null);
+
+        /// <summary>
+        /// Команда для открытия окна создания нового пользователя
+        /// </summary>
+        public ICommand OpenCreateNewUserWindow => new DelegateCommand(() =>
+        {
+            OpenCreateNewUserWindowMethod();
+        });
+
+        /// <summary>
+        /// Команда для удаления выбранного пользователя
+        /// </summary>
+        public ICommand DeleteSelectedUser => new DelegateCommand(() =>
+        {
+            DeleteSelectedUserMethod();
+        }, () => _userSelected != null);
+
+        /// <summary>
+        /// Команда для открытия окна создания нового отдела
+        /// </summary>
+        public ICommand OpenCreateNewDepartamentWindow => new DelegateCommand(() =>
+        {
+            OpenCreateNewDepartamentWindowMethod();
+        });
+
+        /// <summary>
+        /// Командя для открытия окна редактирования отдела
+        /// </summary>
+        public ICommand OpenEditSelectedDepartamentWindow => new DelegateCommand(() =>
+        {
+            OpenEditSelectedDepartamentWindowMethod();
+        }, () => _departamentSelected != null);
+
+        /// <summary>
+        /// Команда для удаления выбранного отдела
+        /// </summary>
+        public ICommand DeleteSelectedDepartament => new DelegateCommand(() =>
+        {
+            DeleteSelectedDepartamentMethod();
+        }, () => _departamentSelected != null);
+
+        public ICommand OpenCreateNewRoleWindow => new DelegateCommand(() =>
+        {
+            OpenCreateNewRoleWindowMethod();
+        });
+
+        public ICommand OpenEditSelectedRoleWindow => new DelegateCommand(() =>
+        {
+            OpenEditSelectedRoleWindowMethod();
         }, () => _roleSelected != null);
+
+        public ICommand DeleteSelectedRole => new DelegateCommand(() =>
+        {
+            DeleteSelectedRoleMethod();
+        }, () => _roleSelected != null); 
+        #endregion
     }
 }

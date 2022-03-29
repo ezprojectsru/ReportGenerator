@@ -34,10 +34,7 @@ namespace ReportGenerator.ViewModels
             
         }
 
-        /// <summary>
-        /// Команда для созранения настроек
-        /// </summary>
-        public ICommand SaveSettings => new DelegateCommand<object>((currentWindow) =>
+        private void SaveSettingsMethod(object currentWindow)
         {
             ConnectConfig config = new ConnectConfig()
             {
@@ -54,9 +51,14 @@ namespace ReportGenerator.ViewModels
             Window wnd = currentWindow as Window;
             wnd.DialogResult = true;
             wnd.Close();
+        }
 
-
-
+        /// <summary>
+        /// Команда для созранения настроек
+        /// </summary>
+        public ICommand SaveSettings => new DelegateCommand<object>((currentWindow) =>
+        {
+            SaveSettingsMethod(currentWindow);
         });
 
         

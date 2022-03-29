@@ -36,53 +36,37 @@ namespace ReportGenerator.ViewModels
            // MessageService.Bus += Receive;
         }
 
-        /// <summary>
-        /// Принимает объекты, необходимые для работы класса.       
-        /// Departament - отдел со страница настроек и управления
-        /// INT - нулевый int, является сигналом, что мы не редактируем существующий отдел, я добавляем новый
-        /// </summary> 
-        /*private void Receive(object dataReceive)
+        private void SendDialogResultDepartamentMethod(object currentWindow)
         {
-            if (dataReceive is Departament data)
+            if (!string.IsNullOrWhiteSpace(CurrentDepartament.name) && !string.IsNullOrWhiteSpace(CurrentDepartament.shortName))
             {
-                CurrentDepartament = data;
-                Title = "Редактирование отдела";
-                MessageService.Bus -= Receive;
+                try
+                {
+                    Departament _resultDepartament = new Departament(CurrentDepartament.id, CurrentDepartament.name, CurrentDepartament.shortName, CurrentDepartament.description);
+                    _appManagerPageViewModel.NewDepartament = _resultDepartament;
+                    // MessageService.Send(_resultDepartament);
+                    Window wnd = currentWindow as Window;
+                    wnd.DialogResult = true;
+                    wnd.Close();
+                }
+                catch
+                {
+                    MessageBox.Show("Поля заполнены не корректно!", "Ошибка");
+                }
             }
 
-            if (dataReceive is int index)
+            else
             {
-                CurrentDepartament = new Departament(index, "","","");
-                MessageService.Bus -= Receive;
+                MessageBox.Show("Не все поля заполнены!", "Ошибка");
             }
-        }*/
-        
+        }
+
         /// <summary>
         /// Команда для отправки результата работы окна на страницу запроса
         /// </summary>
         public ICommand SendDialogResultDepartament => new DelegateCommand<object>((currentWindow) =>
         {
-            if (!string.IsNullOrWhiteSpace(CurrentDepartament.name) && !string.IsNullOrWhiteSpace(CurrentDepartament.shortName))
-            {
-                    try
-                    {
-                        Departament _resultDepartament = new Departament(CurrentDepartament.id, CurrentDepartament.name, CurrentDepartament.shortName, CurrentDepartament.description);
-                        _appManagerPageViewModel.NewDepartament = _resultDepartament;
-                       // MessageService.Send(_resultDepartament);
-                        Window wnd = currentWindow as Window;
-                        wnd.DialogResult = true;
-                        wnd.Close();
-                    }
-                    catch
-                    {
-                        MessageBox.Show("Поля заполнены не корректно!", "Ошибка");
-                    }
-                }               
-            
-            else
-            {
-                MessageBox.Show("Не все поля заполнены!", "Ошибка");
-            }
+            SendDialogResultDepartamentMethod(currentWindow);
         });
     }
 }
