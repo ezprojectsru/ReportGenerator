@@ -11,6 +11,7 @@
     DataContext="{Binding Source={StaticResource VmLocator}, Path=TaskEditWindowViewModel}"
     WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
+
     <Grid>
         <StackPanel
             Width="300"
@@ -24,27 +25,27 @@
                 FontWeight="Bold"
                 Text="{Binding Title}" />
             <TextBlock Text="Название" />
-            <TextBox Text="{Binding Name}" />
+            <TextBox Text="{Binding Task.name}" />
             <TextBlock Margin="0,5,0,0" Text="Приоритет" />
             <ComboBox
                 ItemsSource="{Binding PriorityList}"
                 SelectedIndex="0"
-                SelectedItem="{Binding Priority}" />
+                SelectedItem="{Binding Task.priority}" />
             <TextBlock Margin="0,5,0,0" Text="Тип" />
             <ComboBox
                 ItemsSource="{Binding Types}"
                 SelectedIndex="0"
                 SelectedItem="{Binding TaskTypeName}" />
             <TextBlock Margin="0,5,0,0" Text="Час (план)" />
-            <TextBox Text="{Binding Intensity}" />
+            <TextBox Text="{Binding Task.intensity}" />
             <TextBlock Margin="0,5,0,0" Text="Процент выполнения задачи на начало" />
-            <TextBox Text="{Binding StartCompletion}" />
+            <TextBox Text="{Binding Task.startCompletion}" />
             <TextBlock Margin="0,5,0,0" Text="Плановый процент выполнения задачи к концу" />
-            <TextBox Text="{Binding PlanCompletion}" />
+            <TextBox Text="{Binding Task.planCompletion}" />
             <TextBlock Margin="0,5,0,0" Text="Комментарии" />
             <TextBox
                 Height="60"
-                Text="{Binding Comment}"
+                Text="{Binding Task.comment}"
                 TextWrapping="Wrap" />
             <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
                 <Button

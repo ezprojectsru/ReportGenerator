@@ -24,11 +24,11 @@
                 FontWeight="Bold"
                 Text="{Binding Title}" />
             <TextBlock Text="Название" />
-            <TextBox Text="{Binding Name}" />
+            <TextBox Text="{Binding Plan.name}" />
             <TextBlock Text="Начало" />
-            <DatePicker SelectedDate="{Binding StartDate}" />
+            <DatePicker SelectedDate="{Binding Plan.startDate}" />
             <TextBlock Text="Окончание" />
-            <DatePicker SelectedDate="{Binding FinishDate}" />
+            <DatePicker SelectedDate="{Binding Plan.finishDate}" />
             <TextBlock Margin="0,5,0,0" Text="Ответственный" />
             <ComboBox
                 ItemsSource="{Binding Users}"
@@ -42,7 +42,7 @@
             <TextBlock Margin="0,5,0,0" Text="Комментарии" />
             <TextBox
                 Height="60"
-                Text="{Binding Comment}"
+                Text="{Binding Plan.comment}"
                 TextWrapping="Wrap" />
             <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
                 <Button

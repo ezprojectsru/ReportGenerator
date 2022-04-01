@@ -5,7 +5,9 @@ using ReportGenerator.Services;
 using System;
 using System.Collections.Generic;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
+using UserControl = ReportGenerator.DataBase.Controls.UserControl;
 
 namespace ReportGenerator.ViewModels
 {
@@ -17,26 +19,19 @@ namespace ReportGenerator.ViewModels
         private UserControl _userControl = new UserControl();
         private PlanControl _planControl = new PlanControl();
         private TaskTypeControl _taskTypeControl = new TaskTypeControl();
-        public string Title { get; set; }
-        private Task _task;
-        private int _departamentId;
-        private int _responsibleId;
-        public List<string> Types { get; set; }
-        private int Id;
-        public string Name { get; set; }   
-        public int PlanId { get; set; }
-        public int Priority { get; set; }
-        public int TaskTypeId { get; set; }
-        public string TaskTypeName { get; set; }
-        public string Intensity { get; set; }
-        public string StartCompletion { get; set; }
-        public string PlanCompletion { get; set; }
-        public string Comment { get; set; }
-        private int _taskEditPlanId { get; set; }
-        private Task _taskEdit { get; set; }
         private PlanWindowViewModel _planWindowViewModel;
 
+        private int _departamentId;
+        private int _responsibleId;
+        public string Title { get; set; }
+        public Task Task { get; set; }
+        public List<string> Types { get; set; }
+        public string TaskTypeName { get; set; }
+        private int _taskEditPlanId { get; set; }
+        private Task _taskEdit { get; set; }
         public List<int> PriorityList { get; set; }
+
+        
 
         public TaskEditWindowViewModel(PlanWindowViewModel planWindowViewModel)
         {
@@ -51,7 +46,7 @@ namespace ReportGenerator.ViewModels
 
             if (_taskEdit != null && _taskEditPlanId == 0)
             {
-                _task = _taskEdit;
+                Task = new Task(_taskEdit);
                 setStrings();
             }
             else
@@ -64,6 +59,8 @@ namespace ReportGenerator.ViewModels
         }
 
         
+
+
 
         /// <summary>
         /// Инициализация combobox'ов
@@ -81,20 +78,11 @@ namespace ReportGenerator.ViewModels
         /// </summary>
         private void setStrings()
         {
-            if (_task != null)
+            if (Task != null)
             {
-                Id = _task.id;
-                Name = _task.name;
-                PlanId = _task.planId;
-                Priority = _task.priority;
-                TaskTypeId = _task.typeId; 
-                TaskTypeName = _taskTypeControl.GetShortNameById(TaskTypeId);
-                Intensity = _task.intensity.ToString();
-                StartCompletion = _task.startCompletion.ToString();
-                PlanCompletion = _task.planCompletion.ToString();
-                Comment = _task.comment;
+                TaskTypeName = _taskTypeControl.GetShortNameById(Task.typeId);
                 Title = "Редактирование задачи";
-                setTypes(PlanId);
+                setTypes(Task.planId);
             }
         }
 
@@ -103,47 +91,28 @@ namespace ReportGenerator.ViewModels
         /// </summary>
         private void clearStrings(int id)
         {
-            Id = 0;
-            Name = "";
-            PlanId = id;
-            Priority = 0;
-            TaskTypeId = 0;
-            if (TaskTypeId == 0)
+            Task = new Task(0,"",id,0,0,0,0,0,"");
+            if (Task.typeId == 0)
             {
                 TaskTypeName = "";
             }
             else
             {
-                TaskTypeName = _taskTypeControl.GetShortNameById(TaskTypeId);
+                TaskTypeName = _taskTypeControl.GetShortNameById(Task.typeId);
             }
-            Intensity = "";
-            StartCompletion = "";
-            PlanCompletion = "";
-            Comment = "";
+           
             Title = "Создание задачи";
-            setTypes(PlanId);
+            setTypes(Task.planId);
         }
 
         private void SendDialogResultTaskMethod(object currentWindow)
         {
-            if (!string.IsNullOrWhiteSpace(Name) && !string.IsNullOrWhiteSpace(Intensity) &&
-                !string.IsNullOrWhiteSpace(StartCompletion) && !string.IsNullOrWhiteSpace(PlanCompletion))
+            if (!string.IsNullOrWhiteSpace(Task.name))
             {
                 try
                 {
-                    Task _resultTask = new Task();
-                    _resultTask.id = Id;
-                    _resultTask.name = Name;
-                    _resultTask.planId = PlanId;
-                    _resultTask.priority = Priority;
-                    _resultTask.typeId = _taskTypeControl.GetIdByShortName(TaskTypeName);
-                    _resultTask.intensity = Int32.Parse(Intensity);
-                    _resultTask.startCompletion = Int32.Parse(StartCompletion);
-                    _resultTask.planCompletion = Int32.Parse(PlanCompletion);
-                    _resultTask.comment = Comment;
-
-                    _planWindowViewModel.NewTask = _resultTask;
-
+                    Task.typeId = _taskTypeControl.GetIdByShortName(TaskTypeName);
+                    _planWindowViewModel.NewTask = Task;
                     Window wnd = currentWindow as Window;
                     wnd.DialogResult = true;
                     wnd.Close();

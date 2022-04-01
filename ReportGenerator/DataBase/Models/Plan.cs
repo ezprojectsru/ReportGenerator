@@ -31,6 +31,17 @@ namespace ReportGenerator.DataBase.Models
             this.comment = comment;
         }
 
+        public Plan(Plan plan)
+        {
+            this.id = plan.id;
+            this.name = plan.name;
+            this.startDate = plan.startDate;
+            this.finishDate = plan.finishDate;
+            this.responsibleId = plan.responsibleId;
+            this.directorId = plan.directorId;
+            this.comment = plan.comment;
+        }
+
     }
 
 }

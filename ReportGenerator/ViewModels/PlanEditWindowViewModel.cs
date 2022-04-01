@@ -16,28 +16,11 @@ namespace ReportGenerator.ViewModels
     {
         private UserControl _userControl = new UserControl();
         public string Title { get; set; }
-        private Plan _plan;
+        public Plan Plan { get; set; }
         public List<string> Users { get; set; }
         public List<string> UsersDirector { get; set; }
         public string ResponsibleFullName { get; set; }
         public string DirectorFullName { get; set; }
-        private DateTime _startDate;
-        private DateTime _finishDate; 
-        public int Id;
-        public string Name { get; set; }
-        public DateTime StartDate
-        {
-            get { return _startDate; }
-            set { _startDate = value; }
-        }
-        public DateTime FinishDate
-        {
-            get { return _finishDate; }
-            set { _finishDate = value; }
-        }
-        public string ResponsibleId { get; set; }
-        public string DirectorId { get; set; }
-        public string Comment { get; set; }
         private Plan _planEdit { get; set; }
         private PlanWindowViewModel _planWindowViewModel;
 
@@ -49,7 +32,7 @@ namespace ReportGenerator.ViewModels
 
             if (_planEdit != null)
             {
-                _plan = _planEdit;
+                Plan = new Plan(_planEdit);
                 setStrings();
             }
             else
@@ -65,15 +48,9 @@ namespace ReportGenerator.ViewModels
         /// </summary>
         private void setStrings()
         {
-            if (_plan != null)
+            if (Plan != null)
             {
-                Id = _plan.id;
-                Name = _plan.name;
-                StartDate = _plan.startDate;
-                FinishDate = _plan.finishDate;
-                ResponsibleId = _plan.responsibleId.ToString();
-                DirectorId = _plan.directorId.ToString();
-                Comment = _plan.comment;
+                
                 Title = "Редактирование плана";   
                 
                 Users = new List<string>();
@@ -81,8 +58,8 @@ namespace ReportGenerator.ViewModels
                 UsersDirector = new List<string>();
                 UsersDirector = _userControl.GetAllFullNameUsers();
 
-                ResponsibleFullName = _userControl.GetFullNameById(_plan.responsibleId);
-                DirectorFullName = _userControl.GetFullNameById(_plan.directorId);
+                ResponsibleFullName = _userControl.GetFullNameById(Plan.responsibleId);
+                DirectorFullName = _userControl.GetFullNameById(Plan.directorId);
             }
         }
 
@@ -91,13 +68,7 @@ namespace ReportGenerator.ViewModels
         /// </summary>
         private void clearStrings()
         {
-            Id = 0;
-            Name = "";            
-            StartDate = DateTime.Now;
-            FinishDate = DateTime.Now;
-            ResponsibleId = "";
-            DirectorId = "";
-            Comment = "";
+            Plan = new Plan(0,"", DateTime.Now, DateTime.Now,0,0,"");
             ResponsibleFullName = "";
             DirectorFullName = "";
             Title = "Создание плана";
@@ -109,16 +80,15 @@ namespace ReportGenerator.ViewModels
 
         private void SendDialogResultPlanMethod(object currentWindow)
         {
-            if (!string.IsNullOrWhiteSpace(Name))
+            if (!string.IsNullOrWhiteSpace(Plan.name))
             {
                 try
                 {
-                    int responsibleId = _userControl.GetIddByFullName(ResponsibleFullName);
+                    Plan.responsibleId = _userControl.GetIddByFullName(ResponsibleFullName);
+                    Plan.directorId = _userControl.GetIddByFullName(DirectorFullName);
 
-                    int directorId = _userControl.GetIddByFullName(DirectorFullName);
-
-                    Plan _resultPlan = new Plan(Id, Name, StartDate, FinishDate, responsibleId, directorId, Comment);
-                    _planWindowViewModel.NewPlan = _resultPlan;
+                    
+                    _planWindowViewModel.NewPlan = Plan;
 
                     Window wnd = currentWindow as Window;
                     wnd.DialogResult = true;

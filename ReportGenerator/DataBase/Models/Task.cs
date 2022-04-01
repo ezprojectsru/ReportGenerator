@@ -17,5 +17,35 @@ namespace ReportGenerator.DataBase.Models
         public int startCompletion { get; set; }
         public int planCompletion { get; set; }
         public string comment { get; set; }
+
+        public Task()
+        {
+        }
+
+        public Task(Task task)
+        {
+            this.id = task.id;
+            this.name = task.name;
+            this.planId = task.planId;
+            this.priority = task.priority;
+            this.typeId = task.typeId;
+            this.intensity = task.intensity;
+            this.startCompletion = task.startCompletion;
+            this.planCompletion = task.planCompletion;
+            this.comment = task.comment;
+        }
+
+        public Task(int id, string name, int planId, int priority, int typeId, int intensity, int startCompletion, int planCompletion, string comment)
+        {
+            this.id = id;
+            this.name = name;
+            this.planId = planId;
+            this.priority = priority;
+            this.typeId = typeId;
+            this.intensity = intensity;
+            this.startCompletion = startCompletion;
+            this.planCompletion = planCompletion;
+            this.comment = comment;
+        }
     }
 }
