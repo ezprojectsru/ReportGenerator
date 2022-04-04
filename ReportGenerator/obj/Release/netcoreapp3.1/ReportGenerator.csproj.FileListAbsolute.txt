@@ -6,8 +6,6 @@ D:\LGT\GITHUB\ReportGenerator\bin\Release\netcoreapp3.1\ReportGenerator.runtimec
 D:\LGT\GITHUB\ReportGenerator\bin\Release\netcoreapp3.1\ReportGenerator.dll
 D:\LGT\GITHUB\ReportGenerator\bin\Release\netcoreapp3.1\ReportGenerator.pdb
 D:\LGT\GITHUB\ReportGenerator\bin\Release\netcoreapp3.1\Dapper.dll
-D:\LGT\GITHUB\ReportGenerator\bin\Release\netcoreapp3.1\DevExpress.Mvvm.UI.dll
-D:\LGT\GITHUB\ReportGenerator\bin\Release\netcoreapp3.1\DevExpress.Mvvm.dll
 D:\LGT\GITHUB\ReportGenerator\bin\Release\netcoreapp3.1\Microsoft.Extensions.DependencyInjection.dll
 D:\LGT\GITHUB\ReportGenerator\bin\Release\netcoreapp3.1\Microsoft.Extensions.DependencyInjection.Abstractions.dll
 D:\LGT\GITHUB\ReportGenerator\bin\Release\netcoreapp3.1\Microsoft.Xaml.Behaviors.dll
@@ -53,3 +51,18 @@ D:\LGT\GITHUB\ReportGenerator\obj\Release\netcoreapp3.1\ReportGenerator.pdb
 D:\LGT\GITHUB\ReportGenerator\obj\Release\netcoreapp3.1\ReportGenerator.genruntimeconfig.cache
 D:\LGT\GITHUB\ReportGenerator\obj\Release\netcoreapp3.1\Views\RoleEditWindow.baml
 D:\LGT\GITHUB\ReportGenerator\obj\Release\netcoreapp3.1\Views\RoleEditWindow.g.cs
+D:\LGT\GITHUB\ReportGenerator\bin\Release\netcoreapp3.1\DevExpress.Data.v21.2.dll
+D:\LGT\GITHUB\ReportGenerator\bin\Release\netcoreapp3.1\DevExpress.Data.Desktop.v21.2.dll
+D:\LGT\GITHUB\ReportGenerator\bin\Release\netcoreapp3.1\DevExpress.Mvvm.v21.2.dll
+D:\LGT\GITHUB\ReportGenerator\bin\Release\netcoreapp3.1\DevExpress.Pdf.v21.2.Core.dll
+D:\LGT\GITHUB\ReportGenerator\bin\Release\netcoreapp3.1\DevExpress.Pdf.v21.2.Drawing.dll
+D:\LGT\GITHUB\ReportGenerator\bin\Release\netcoreapp3.1\DevExpress.Printing.v21.2.Core.dll
+D:\LGT\GITHUB\ReportGenerator\bin\Release\netcoreapp3.1\DevExpress.Xpf.Core.v21.2.dll
+D:\LGT\GITHUB\ReportGenerator\bin\Release\netcoreapp3.1\DevExpress.Xpf.Grid.v21.2.Core.dll
+D:\LGT\GITHUB\ReportGenerator\bin\Release\netcoreapp3.1\DevExpress.Xpf.Grid.v21.2.Extensions.dll
+D:\LGT\GITHUB\ReportGenerator\bin\Release\netcoreapp3.1\DevExpress.Xpf.Grid.v21.2.dll
+D:\LGT\GITHUB\ReportGenerator\bin\Release\netcoreapp3.1\DevExpress.Xpf.Themes.Office2019Colorful.v21.2.dll
+D:\LGT\GITHUB\ReportGenerator\bin\Release\netcoreapp3.1\System.Private.ServiceModel.dll
+D:\LGT\GITHUB\ReportGenerator\bin\Release\netcoreapp3.1\System.ServiceModel.Http.dll
+D:\LGT\GITHUB\ReportGenerator\bin\Release\netcoreapp3.1\System.ServiceModel.Primitives.dll
+D:\LGT\GITHUB\ReportGenerator\bin\Release\netcoreapp3.1\System.ServiceModel.dll

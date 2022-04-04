@@ -40,6 +40,24 @@ namespace ReportGenerator.DataBase.Controls
             return plans;
         }
 
+        public List<Plan> GetPlanListBetweenDatesByUserId(int id, DateTime start, DateTime end)
+        {
+            List<Plan> plans = new List<Plan>();
+            try
+            {
+                SqlConnection connection = _db.GetConnection();
+                plans = connection.Query<Plan>("SELECT * FROM plans WHERE responsibleId = @id and startDate >= @start and startDate <= @end", new { id, start, end })
+                    .ToList();
+                connection.Dispose();
+            }
+            catch (Exception ex)
+            {
+                File.AppendAllText(Constants.LogFileName, ex.ToString());
+            }
+
+            return plans;
+        }
+
         /// <summary>
         /// Возвращает План по его id
         /// </summary>

@@ -49,10 +49,6 @@
               "target": "Package",
               "version": "[2.0.123, )"
             },
-            "DevExpressMvvm": {
-              "target": "Package",
-              "version": "[21.1.5, )"
-            },
             "Microsoft.Extensions.DependencyInjection": {
               "target": "Package",
               "version": "[6.0.0, )"
@@ -70,6 +66,10 @@
             "System.Data.SqlClient": {
               "target": "Package",
               "version": "[4.8.3, )"
+            },
+            "devexpress.wpf.grid.core": {
+              "target": "Package",
+              "version": "[21.2.3, )"
             }
           },
           "imports": [
@@ -85,6 +85,9 @@
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
+            },
+            "Microsoft.WindowsDesktop.App": {
+              "privateAssets": "none"
             },
             "Microsoft.WindowsDesktop.App.WPF": {
               "privateAssets": "none"

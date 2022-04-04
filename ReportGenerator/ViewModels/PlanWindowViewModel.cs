@@ -1,4 +1,5 @@
-﻿using DevExpress.Mvvm;
+﻿using System;
+using DevExpress.Mvvm;
 using ReportGenerator.DataBase.Controls;
 using ReportGenerator.DataBase.Models;
 using ReportGenerator.Services;
@@ -17,6 +18,7 @@ namespace ReportGenerator.ViewModels
         private UserControl _userControl = new UserControl();
         private TaskControl _taskControl = new TaskControl();
         private PlanControl _planControl = new PlanControl();
+        private WorkCalendarControl _workCalendarControl = new WorkCalendarControl();
         private ItemPlan _planSelected;
         public ItemPlan PlanSelected
         {
@@ -49,12 +51,31 @@ namespace ReportGenerator.ViewModels
         public  Task TaskEdit { get; set; }
         public  Plan PlanEdit { get; set; }
 
+        public int SelectWCPos { get; set; }
+        private WorkCalendar _workCalendar;
+        public WorkCalendar WorkCalendar
+        {
+            get { return _workCalendar; }
+            set
+            {
+                _workCalendar = value;
+                getPlansList();
+            }
+        }
+        public List<WorkCalendar> WorkCalendars { get; set; }
+       // public List<string> WorkCalendarsStrings { get; set; } = new List<string>();
+
 
         public PlanWindowViewModel(AuthorizationViewModel authorizationViewModel)
         {
             SessionUser = authorizationViewModel.SessionUser;
+            WorkCalendars = new List<WorkCalendar>();
+            WorkCalendars = _workCalendarControl.GetAllWeeksInYear(DateTime.Now.Year);
+            _workCalendar = _workCalendarControl.GetCurrentWeek(DateTime.Now);
+            SelectWCPos = WorkCalendars.FindIndex(x => x.Id == WorkCalendar.Id);
+
             getPlansList();
-            Title = "Список планов";
+            Title = "Личные планы";
             
         }
 
@@ -63,7 +84,12 @@ namespace ReportGenerator.ViewModels
         /// </summary>
         private void getPlansList()
         {
-            List<Plan> targetPlans = _planControl.GetPlanListByUserId(SessionUser.user.id);
+            
+            
+            // WorkCalendarsStrings = _workCalendarControl.GetAllWeeksStringsInYear(DateTime.Now.Year);
+
+            //List<Plan> targetPlans = _planControl.GetPlanListByUserId(SessionUser.user.id);
+            List<Plan> targetPlans = _planControl.GetPlanListBetweenDatesByUserId(SessionUser.user.id, WorkCalendar.StartWeek, WorkCalendar.EndWeek);
             Plans = new List<ItemPlan>();
             foreach (Plan pl in targetPlans)
             {
@@ -72,6 +98,13 @@ namespace ReportGenerator.ViewModels
                     _userControl.GetFullNameById(pl.directorId), pl.comment ?? "");
                 Plans.Add(item);
             }
+
+            _taskSelected = null;
+            Tasks = null;
+            _planSelected = null;
+
+
+
         }
 
         /// <summary>
@@ -146,27 +179,16 @@ namespace ReportGenerator.ViewModels
                 {
                     _planControl.UpdateCurrentPlan(NewPlan);
 
-                    List<Plan> targetPlans = _planControl.GetPlanListByUserId(SessionUser.user.id);
-                    Plans = new List<ItemPlan>();
-                    foreach (Plan pl in targetPlans)
-                    {
-                        ItemPlan item = new ItemPlan(pl.id, pl.name, pl.startDate, pl.finishDate,
-                            _userControl.GetFullNameById(pl.responsibleId),
-                            _userControl.GetFullNameById(pl.directorId), pl.comment ?? "");
-                        Plans.Add(item);
-                    }
-
-                    _taskSelected = null;
-                    Tasks = null;
-                    _planSelected = null;
+                    getPlansList();
                 }
             }
         }
 
         private void OpenCreateNewPlanWindowMethod()
         {
-            PlanEditWindow planEditWindow = new PlanEditWindow();
             PlanEdit = null;
+            PlanEditWindow planEditWindow = new PlanEditWindow();
+            
 
             if (planEditWindow.ShowDialog() == true)
             {
@@ -174,19 +196,9 @@ namespace ReportGenerator.ViewModels
                 {
                     _planControl.InsertNewPlan(NewPlan);
 
-                    List<Plan> targetPlans = _planControl.GetPlanListByUserId(SessionUser.user.id);
-                    Plans = new List<ItemPlan>();
-                    foreach (Plan pl in targetPlans)
-                    {
-                        ItemPlan item = new ItemPlan(pl.id, pl.name, pl.startDate, pl.finishDate,
-                            _userControl.GetFullNameById(pl.responsibleId),
-                            _userControl.GetFullNameById(pl.directorId), pl.comment ?? "");
-                        Plans.Add(item);
-                    }
+                    getPlansList();
 
-                    _taskSelected = null;
-                    Tasks = null;
-                    _planSelected = null;
+                    
                 }
             }
         }
@@ -200,24 +212,23 @@ namespace ReportGenerator.ViewModels
 
                 _planControl.DeleteCurrentPlan(_planSelected.Id);
 
-                List<Plan> targetPlans = _planControl.GetPlanListByUserId(SessionUser.user.id);
-                Plans = new List<ItemPlan>();
-                foreach (Plan pl in targetPlans)
-                {
-                    ItemPlan item = new ItemPlan(pl.id, pl.name, pl.startDate, pl.finishDate,
-                        _userControl.GetFullNameById(pl.responsibleId),
-                        _userControl.GetFullNameById(pl.directorId), pl.comment ?? "");
-                    Plans.Add(item);
-                }
-
-                _taskSelected = null;
-                Tasks = null;
-                _planSelected = null;
+                getPlansList();
             }
         }
         #endregion
 
         #region COMMANDS
+
+        public ICommand GoToNextWeek => new DelegateCommand(() =>
+        {
+            SelectWCPos += 1;
+        }, () => SelectWCPos < WorkCalendars.Count-1);
+
+        public ICommand GoToLastWeek => new DelegateCommand(() =>
+        {
+            SelectWCPos -= 1;
+        }, () => SelectWCPos > 0);
+
         /// <summary>
         /// Коменда для удаления выбранной задачи
         /// </summary>

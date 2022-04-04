@@ -17,8 +17,11 @@
   </PropertyGroup>
   <ImportGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
     <Import Project="$(NuGetPackageRoot)propertychanged.fody\3.4.0\build\PropertyChanged.Fody.props" Condition="Exists('$(NuGetPackageRoot)propertychanged.fody\3.4.0\build\PropertyChanged.Fody.props')" />
+    <Import Project="C:\Program Files (x86)\DevExpress 21.2\Components\Offline Packages\devexpress.data.desktop\21.2.3\build\netcoreapp3.0\DevExpress.Data.Desktop.props" Condition="Exists('C:\Program Files (x86)\DevExpress 21.2\Components\Offline Packages\devexpress.data.desktop\21.2.3\build\netcoreapp3.0\DevExpress.Data.Desktop.props')" />
   </ImportGroup>
   <PropertyGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
     <PkgMicrosoft_Xaml_Behaviors_Wpf Condition=" '$(PkgMicrosoft_Xaml_Behaviors_Wpf)' == '' ">C:\Users\Евгений\.nuget\packages\microsoft.xaml.behaviors.wpf\1.1.39</PkgMicrosoft_Xaml_Behaviors_Wpf>
+    <PkgDevExpress_Wpf_Core Condition=" '$(PkgDevExpress_Wpf_Core)' == '' ">C:\Program Files (x86)\DevExpress 21.2\Components\Offline Packages\devexpress.wpf.core\21.2.3</PkgDevExpress_Wpf_Core>
+    <PkgDevExpress_Wpf_Grid_Core Condition=" '$(PkgDevExpress_Wpf_Grid_Core)' == '' ">C:\Program Files (x86)\DevExpress 21.2\Components\Offline Packages\devexpress.wpf.grid.core\21.2.3</PkgDevExpress_Wpf_Grid_Core>
   </PropertyGroup>
 </Project>

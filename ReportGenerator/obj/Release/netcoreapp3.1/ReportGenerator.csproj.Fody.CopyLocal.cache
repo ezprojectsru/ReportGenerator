@@ -1,11 +1,24 @@
 C:\Users\Евгений\.nuget\packages\dapper\2.0.123\lib\netstandard2.0\Dapper.dll
-C:\Users\Евгений\.nuget\packages\devexpressmvvm\21.1.5\lib\netcoreapp3.0\DevExpress.Mvvm.UI.dll
-C:\Users\Евгений\.nuget\packages\devexpressmvvm\21.1.5\lib\netcoreapp3.0\DevExpress.Mvvm.dll
+C:\Program Files (x86)\DevExpress 21.2\Components\Offline Packages\devexpress.data\21.2.3\lib\netstandard2.0\DevExpress.Data.v21.2.dll
+C:\Program Files (x86)\DevExpress 21.2\Components\Offline Packages\devexpress.data.desktop\21.2.3\lib\netcoreapp3.0\DevExpress.Data.Desktop.v21.2.dll
+C:\Program Files (x86)\DevExpress 21.2\Components\Offline Packages\devexpress.mvvm\21.2.3\lib\netcoreapp3.0\DevExpress.Mvvm.v21.2.dll
+C:\Program Files (x86)\DevExpress 21.2\Components\Offline Packages\devexpress.pdf.core\21.2.3\lib\netstandard2.0\DevExpress.Pdf.v21.2.Core.dll
+C:\Program Files (x86)\DevExpress 21.2\Components\Offline Packages\devexpress.pdf.drawing\21.2.3\lib\netstandard2.0\DevExpress.Pdf.v21.2.Drawing.dll
+C:\Program Files (x86)\DevExpress 21.2\Components\Offline Packages\devexpress.printing.core\21.2.3\lib\netstandard2.0\DevExpress.Printing.v21.2.Core.dll
+C:\Program Files (x86)\DevExpress 21.2\Components\Offline Packages\devexpress.wpf.core\21.2.3\lib\netcoreapp3.0\DevExpress.Xpf.Core.v21.2.dll
+C:\Program Files (x86)\DevExpress 21.2\Components\Offline Packages\devexpress.wpf.grid.core\21.2.3\lib\netcoreapp3.0\DevExpress.Xpf.Grid.v21.2.Core.dll
+C:\Program Files (x86)\DevExpress 21.2\Components\Offline Packages\devexpress.wpf.grid.core\21.2.3\lib\netcoreapp3.0\DevExpress.Xpf.Grid.v21.2.Extensions.dll
+C:\Program Files (x86)\DevExpress 21.2\Components\Offline Packages\devexpress.wpf.grid.core\21.2.3\lib\netcoreapp3.0\DevExpress.Xpf.Grid.v21.2.dll
+C:\Program Files (x86)\DevExpress 21.2\Components\Offline Packages\devexpress.wpf.themes.office2019colorful\21.2.3\lib\netcoreapp3.0\DevExpress.Xpf.Themes.Office2019Colorful.v21.2.dll
 C:\Users\Евгений\.nuget\packages\microsoft.extensions.dependencyinjection\6.0.0\lib\netstandard2.1\Microsoft.Extensions.DependencyInjection.dll
 C:\Users\Евгений\.nuget\packages\microsoft.extensions.dependencyinjection.abstractions\6.0.0\lib\netstandard2.1\Microsoft.Extensions.DependencyInjection.Abstractions.dll
 C:\Users\Евгений\.nuget\packages\microsoft.xaml.behaviors.wpf\1.1.39\lib\netcoreapp3.1\Microsoft.Xaml.Behaviors.dll
 C:\Users\Евгений\.nuget\packages\system.data.sqlclient\4.8.3\lib\netcoreapp2.1\System.Data.SqlClient.dll
+C:\Users\Евгений\.nuget\packages\system.private.servicemodel\4.6.0\lib\netstandard2.0\System.Private.ServiceModel.dll
 C:\Users\Евгений\.nuget\packages\system.runtime.compilerservices.unsafe\6.0.0\lib\netcoreapp3.1\System.Runtime.CompilerServices.Unsafe.dll
+C:\Users\Евгений\.nuget\packages\system.servicemodel.http\4.5.3\lib\netstandard2.0\System.ServiceModel.Http.dll
+C:\Users\Евгений\.nuget\packages\system.servicemodel.primitives\4.6.0\lib\netcoreapp2.1\System.ServiceModel.Primitives.dll
+C:\Users\Евгений\.nuget\packages\system.servicemodel.primitives\4.6.0\lib\netcoreapp2.1\System.ServiceModel.dll
 C:\Users\Евгений\.nuget\packages\runtime.win-arm64.runtime.native.system.data.sqlclient.sni\4.4.0\runtimes\win-arm64\native\sni.dll
 C:\Users\Евгений\.nuget\packages\runtime.win-x64.runtime.native.system.data.sqlclient.sni\4.4.0\runtimes\win-x64\native\sni.dll
 C:\Users\Евгений\.nuget\packages\runtime.win-x86.runtime.native.system.data.sqlclient.sni\4.4.0\runtimes\win-x86\native\sni.dll
