@@ -66,3 +66,5 @@ D:\LGT\GITHUB\ReportGenerator\bin\Debug\netcoreapp3.1\System.Private.ServiceMode
 D:\LGT\GITHUB\ReportGenerator\bin\Debug\netcoreapp3.1\System.ServiceModel.Http.dll
 D:\LGT\GITHUB\ReportGenerator\bin\Debug\netcoreapp3.1\System.ServiceModel.Primitives.dll
 D:\LGT\GITHUB\ReportGenerator\bin\Debug\netcoreapp3.1\System.ServiceModel.dll
+D:\LGT\GITHUB\ReportGenerator\obj\Debug\netcoreapp3.1\Views\ProjectEditWindow.g.cs
+D:\LGT\GITHUB\ReportGenerator\obj\Debug\netcoreapp3.1\Views\ProjectEditWindow.baml

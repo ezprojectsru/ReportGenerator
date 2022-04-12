@@ -2,13 +2,15 @@
     x:Class="ReportGenerator.Views.TaskEditWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:c="clr-namespace:ReportGenerator.DataBase.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    Name="Window"
+    x:Name="Window"
     Title="Редактор задачи"
     Width="400"
     Height="450"
-    DataContext="{Binding Source={StaticResource VmLocator}, Path=TaskEditWindowViewModel}"
+    DataContext="{Binding TaskEditWindowViewModel, Source={StaticResource VmLocator}}"
     WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
 
@@ -26,22 +28,76 @@
                 Text="{Binding Title}" />
             <TextBlock Text="Название" />
             <TextBox Text="{Binding Task.name}" />
-            <TextBlock Margin="0,5,0,0" Text="Приоритет" />
-            <ComboBox
+            <Grid Margin="0,5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="1*" />
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="1" HorizontalAlignment="Center">
+                    <TextBlock Width="80" Text="Приоритет" />
+                    <dxe:SpinEdit
+                        Width="80"
+                        Increment="1"
+                        MaxValue="10"
+                        MinValue="0"
+                        Value="{Binding Task.priority, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                </StackPanel>
+                <!--<ComboBox Width="100"
                 ItemsSource="{Binding PriorityList}"
                 SelectedIndex="0"
-                SelectedItem="{Binding Task.priority}" />
-            <TextBlock Margin="0,5,0,0" Text="Тип" />
-            <ComboBox
-                ItemsSource="{Binding Types}"
-                SelectedIndex="0"
-                SelectedItem="{Binding TaskTypeName}" />
-            <TextBlock Margin="0,5,0,0" Text="Час (план)" />
-            <TextBox Text="{Binding Task.intensity}" />
-            <TextBlock Margin="0,5,0,0" Text="Процент выполнения задачи на начало" />
-            <TextBox Text="{Binding Task.startCompletion}" />
-            <TextBlock Margin="0,5,0,0" Text="Плановый процент выполнения задачи к концу" />
-            <TextBox Text="{Binding Task.planCompletion}" />
+                SelectedItem="{Binding Task.priority}" />-->
+                <StackPanel Grid.Column="0" HorizontalAlignment="Left">
+                    <StackPanel.Resources>
+                        <c:TaskTypeConverter x:Key="TaskTypeConverter" />
+
+                    </StackPanel.Resources>
+                    <TextBlock Width="80" Text="Тип" />
+                    <ComboBox
+                        Width="80"
+                        DisplayMemberPath="shortName"
+                        ItemsSource="{Binding TaskTypes}"
+                        SelectedIndex="{Binding TaskTypeIndex}"
+                        SelectedItem="{Binding Task.typeId, Converter={StaticResource TaskTypeConverter}}" />
+                </StackPanel>
+                <StackPanel Grid.Column="2" HorizontalAlignment="Right">
+                    <TextBlock Width="80" Text="Час (план)" />
+                    <dxe:SpinEdit
+                        Width="80"
+                        Increment="1"
+                        MaxValue="40"
+                        MinValue="0"
+                        Value="{Binding Task.intensity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                </StackPanel>
+            </Grid>
+
+            <Grid Margin="0,5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="1*" />
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0" HorizontalAlignment="Left">
+                    <TextBlock Width="140" Text="Начальный процент" />
+                    <dxe:SpinEdit
+                        Width="140"
+                        DisplayFormatString="{}{0}%"
+                        Increment="5"
+                        MaxValue="100"
+                        MinValue="0"
+                        Value="{Binding Task.startCompletion, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                </StackPanel>
+                <StackPanel Grid.Column="1" HorizontalAlignment="Right">
+                    <TextBlock Width="140" Text="Фактический процент" />
+                    <dxe:SpinEdit
+                        Width="140"
+                        DisplayFormatString="{}{0}%"
+                        Increment="5"
+                        MaxValue="100"
+                        MinValue="0"
+                        Value="{Binding Task.planCompletion, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                </StackPanel>
+            </Grid>
             <TextBlock Margin="0,5,0,0" Text="Комментарии" />
             <TextBox
                 Height="60"
@@ -56,11 +112,12 @@
                 <Button
                     Margin="2"
                     Padding="5"
-                    Command="{Binding Path=SendDialogResultTask}"
+                    Command="{Binding SendDialogResultTask}"
                     CommandParameter="{Binding ElementName=Window}"
                     Content="Сохранить"
                     IsDefault="True" />
             </StackPanel>
+
         </StackPanel>
     </Grid>
 </Window>

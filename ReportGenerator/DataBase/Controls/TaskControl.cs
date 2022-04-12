@@ -49,7 +49,7 @@ namespace ReportGenerator.DataBase.Controls
             {
                 SqlConnection connection = _db.GetConnection();
                 string updatetQuery =
-                    "UPDATE tasks SET name = @name, priority = @priority, typeId = @typeId, intensity = @intensity, startCompletion = @startCompletion, planCompletion = @planCompletion, comment = @comment WHERE id = @id";
+                    "UPDATE tasks SET name = @name, priority = @priority, typeId = @typeId, intensity = @intensity, startCompletion = @startCompletion, planCompletion = @planCompletion, reportId = @reportId, comment = @comment WHERE id = @id";
                 var result = connection.Execute(updatetQuery, task);
                 connection.Dispose();
             }
@@ -69,7 +69,7 @@ namespace ReportGenerator.DataBase.Controls
             {
                 SqlConnection connection = _db.GetConnection();
                 string insertQuery =
-                    "INSERT INTO tasks (name, planId, priority, typeId, intensity, startCompletion, planCompletion, comment) VALUES (@name, @planId, @priority, @typeId, @intensity, @startCompletion, @planCompletion, @comment)";
+                    "INSERT INTO tasks (name, planId, priority, typeId, intensity, startCompletion, planCompletion, reportId, comment) VALUES (@name, @planId, @priority, @typeId, @intensity, @startCompletion, @planCompletion, @reportId, @comment)";
                 var result = connection.Execute(insertQuery, task);
                 connection.Dispose();
             }
@@ -123,6 +123,43 @@ namespace ReportGenerator.DataBase.Controls
                 File.AppendAllText(Constants.LogFileName, ex.ToString());
             }
 
+        }
+
+        public void DeleteTasksByReportId(int id)
+        {
+            try
+            {
+                SqlConnection connection = _db.GetConnection();
+                string deleteQuery = "DELETE FROM tasks WHERE reportId = @id";
+                var result = connection.Execute(deleteQuery, new
+                {
+                    id
+                });
+                connection.Dispose();
+            }
+            catch (Exception ex)
+            {
+                File.AppendAllText(Constants.LogFileName, ex.ToString());
+            }
+
+        }
+
+        public int GetLastIndex()
+        {
+            //SELECT IDENT_CURRENT ('Person.Address')
+            int result = 0;
+            try
+            {
+                SqlConnection connection = _db.GetConnection();
+                result = connection.Query<int>("SELECT IDENT_CURRENT ('tasks')").FirstOrDefault();
+                connection.Dispose();
+            }
+            catch (Exception ex)
+            {
+                File.AppendAllText(Constants.LogFileName, ex.ToString());
+            }
+
+            return result;
         }
     }
 }

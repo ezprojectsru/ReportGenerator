@@ -40,6 +40,42 @@ namespace ReportGenerator.DataBase.Controls
             return plans;
         }
 
+        public List<Plan> GetWeekPlanListByProjectId(int id, DateTime start, DateTime end)
+        {
+            List<Plan> plans = new List<Plan>();
+            try
+            {
+                SqlConnection connection = _db.GetConnection();
+                plans = connection.Query<Plan>("SELECT * FROM plans WHERE projectId = @id and startDate >= @start and finishDate <= @end", new { id, start, end })
+                    .ToList();
+                connection.Dispose();
+            }
+            catch (Exception ex)
+            {
+                File.AppendAllText(Constants.LogFileName, ex.ToString());
+            }
+
+            return plans;
+        }
+
+        public List<Plan> GetPlanListByProjectId(int id)
+        {
+            List<Plan> plans = new List<Plan>();
+            try
+            {
+                SqlConnection connection = _db.GetConnection();
+                plans = connection.Query<Plan>("SELECT * FROM plans WHERE projectId = @id", new { id })
+                    .ToList();
+                connection.Dispose();
+            }
+            catch (Exception ex)
+            {
+                File.AppendAllText(Constants.LogFileName, ex.ToString());
+            }
+
+            return plans;
+        }
+
         public List<Plan> GetPlanListBetweenDatesByUserId(int id, DateTime start, DateTime end)
         {
             List<Plan> plans = new List<Plan>();
@@ -112,7 +148,7 @@ namespace ReportGenerator.DataBase.Controls
             {
                 SqlConnection connection = _db.GetConnection();
                 string insertQuery =
-                    "INSERT INTO plans (name, startDate, finishDate, responsibleId, directorId, comment) VALUES (@name, @startDate, @finishDate, @responsibleId, @directorId, @comment)";
+                    "INSERT INTO plans (name, startDate, finishDate, projectId, responsibleId, directorId, comment) VALUES (@name, @startDate, @finishDate, @projectId, @responsibleId, @directorId, @comment)";
                 var result = connection.Execute(insertQuery, plan);
                 connection.Dispose();
             }
@@ -132,7 +168,7 @@ namespace ReportGenerator.DataBase.Controls
             {
                 SqlConnection connection = _db.GetConnection();
                 string updatetQuery =
-                    "UPDATE plans SET name = @name, startDate = @startDate, finishDate = @finishDate, responsibleId = @responsibleId, directorId = @directorId, comment = @comment WHERE id = @id";
+                    "UPDATE plans SET name = @name, startDate = @startDate, finishDate = @finishDate, projectId = @projectId, responsibleId = @responsibleId, directorId = @directorId, comment = @comment WHERE id = @id";
                 var result = connection.Execute(updatetQuery, plan);
                 connection.Dispose();
             }

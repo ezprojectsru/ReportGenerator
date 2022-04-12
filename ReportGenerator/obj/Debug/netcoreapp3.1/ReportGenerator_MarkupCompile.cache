@@ -10,11 +10,11 @@ none
 false
 TRACE;DEBUG;NETCOREAPP;NETCOREAPP3_1;
 D:\LGT\GITHUB\ReportGenerator\App.xaml
-101624676216
+11-1063995972
 
-55-314032083
+74-840332352
 219-190175467
-Views\AppManagerPage.xaml;Views\Authorization.xaml;Views\DepartamentEditWindow.xaml;Views\MainWindow.xaml;Views\PlanEditWindow.xaml;Views\PlanWindow.xaml;Views\RoleEditWindow.xaml;Views\SettingsWindow.xaml;Views\TaskEditWindow.xaml;Views\UserEditWindow.xaml;
+Views\AppManagerPage.xaml;Views\Authorization.xaml;Views\DepartamentEditWindow.xaml;Views\MainWindow.xaml;Views\PlanEditWindow.xaml;Views\PlanWindow.xaml;Views\ProjectEditWindow.xaml;Views\RoleEditWindow.xaml;Views\SettingsWindow.xaml;Views\TaskEditWindow.xaml;Views\UserEditWindow.xaml;
 
 False
 

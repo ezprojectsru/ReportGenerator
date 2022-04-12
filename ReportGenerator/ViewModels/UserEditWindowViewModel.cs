@@ -14,7 +14,17 @@ namespace ReportGenerator.ViewModels
     /// </summary>
     public class UserEditWindowViewModel : BindableBase
     {
-        public User User { get; set; }
+        
+        private User _user;
+        public User User
+        {
+            get { return _user; }
+            set
+            {
+                _user = value;
+                oldUsername = _user.username;
+            }
+        }
         public string Title { get; set; }
         public List<string> Departaments{ get; set; }
         public string Departament { get; set; }

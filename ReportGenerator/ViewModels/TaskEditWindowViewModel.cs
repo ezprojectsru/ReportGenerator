@@ -21,15 +21,14 @@ namespace ReportGenerator.ViewModels
         private TaskTypeControl _taskTypeControl = new TaskTypeControl();
         private PlanWindowViewModel _planWindowViewModel;
 
-        private int _departamentId;
-        private int _responsibleId;
+        
         public string Title { get; set; }
         public Task Task { get; set; }
-        public List<string> Types { get; set; }
-        public string TaskTypeName { get; set; }
-        private int _taskEditPlanId { get; set; }
-        private Task _taskEdit { get; set; }
-        public List<int> PriorityList { get; set; }
+        public List<TaskType> TaskTypes { get; set; }
+        public int TaskTypeIndex { get; set; }
+        private Task _taskEdit;
+        private Task _reportEdit;
+       
 
         
 
@@ -37,73 +36,32 @@ namespace ReportGenerator.ViewModels
         {
             _planWindowViewModel = planWindowViewModel;
             _taskEdit = planWindowViewModel.TaskEdit;
-            _taskEditPlanId = planWindowViewModel.TaskEditPlanId;
-            PriorityList = new List<int>();
-            for (int i = 0; i < 11; i++)
-            {
-                PriorityList.Add(i);
-            }
+            _reportEdit = planWindowViewModel.ReportEdit;
 
-            if (_taskEdit != null && _taskEditPlanId == 0)
+           // _taskEditPlanId = planWindowViewModel.TaskEditPlanId;
+            int planId = _reportEdit == null ? _taskEdit.planId : _reportEdit.planId;
+            int responsibleId = _planControl.GetResponsibleIdByPlanId(planId);
+            int departamentId = _userControl.GetDepartamentIdById(responsibleId);
+            TaskTypes = _taskTypeControl.GetTaskTypeListByDepartamentId(departamentId);
+
+            int typeId = _reportEdit == null ? _taskEdit.typeId : _reportEdit.typeId;
+            TaskType tt = _taskTypeControl.GetTaskTypeById(typeId);
+            TaskTypeIndex = TaskTypes.FindIndex(x => x.id == tt.id);
+
+            Task = _reportEdit == null ? new Task(_taskEdit) : new Task(_reportEdit);
+            if (_reportEdit == null)
             {
-                Task = new Task(_taskEdit);
-                setStrings();
+                Title = _taskEdit.id == 0 ? "Создание задачи" : "Редактирование задачи";
             }
             else
             {
-                clearStrings(_taskEditPlanId);
+                Title = _reportEdit.id == 0 ? "Создание отчета" : "Редактирование отчета";
             }
-
-            Title = "Создание задачи";            
+                      
                        
         }
 
-        
 
-
-
-        /// <summary>
-        /// Инициализация combobox'ов
-        /// </summary>        
-        private void setTypes(int planId)
-        {
-            Types = new List<string>();
-            _responsibleId = _planControl.GetResponsibleIdByPlanId(planId);
-            _departamentId = _userControl.GetDepartamentIdById(_responsibleId);            
-            Types = _taskTypeControl.GetTaskShortNamesListByDepartamentId(_departamentId);
-        }
-
-        /// <summary>
-        /// Инициализация полей формы в случае с редактированием существующей задачи
-        /// </summary>
-        private void setStrings()
-        {
-            if (Task != null)
-            {
-                TaskTypeName = _taskTypeControl.GetShortNameById(Task.typeId);
-                Title = "Редактирование задачи";
-                setTypes(Task.planId);
-            }
-        }
-
-        /// <summary>
-        /// Инициализация полей формы в случае с созданием новой задачи
-        /// </summary>
-        private void clearStrings(int id)
-        {
-            Task = new Task(0,"",id,0,0,0,0,0,"");
-            if (Task.typeId == 0)
-            {
-                TaskTypeName = "";
-            }
-            else
-            {
-                TaskTypeName = _taskTypeControl.GetShortNameById(Task.typeId);
-            }
-           
-            Title = "Создание задачи";
-            setTypes(Task.planId);
-        }
 
         private void SendDialogResultTaskMethod(object currentWindow)
         {
@@ -111,8 +69,15 @@ namespace ReportGenerator.ViewModels
             {
                 try
                 {
-                    Task.typeId = _taskTypeControl.GetIdByShortName(TaskTypeName);
-                    _planWindowViewModel.NewTask = Task;
+                    if (_reportEdit == null)
+                    {
+                        _planWindowViewModel.NewTask = Task;
+                    }
+                    else
+                    {
+                        _planWindowViewModel.NewReport = Task;
+                    }
+
                     Window wnd = currentWindow as Window;
                     wnd.DialogResult = true;
                     wnd.Close();

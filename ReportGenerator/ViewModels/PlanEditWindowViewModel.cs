@@ -17,66 +17,37 @@ namespace ReportGenerator.ViewModels
         private UserControl _userControl = new UserControl();
         public string Title { get; set; }
         public Plan Plan { get; set; }
-        public List<string> Users { get; set; }
-        public List<string> UsersDirector { get; set; }
-        public string ResponsibleFullName { get; set; }
-        public string DirectorFullName { get; set; }
+        public List<Project> Projects { get; set; }
+        public int ItemIndex { get; set; }
+        public int ResponsibleIndex { get; set; }
+        public int DirectorIndex { get; set; }
+        public List<User> Users { get; set; }
+        public List<User> UsersDirector { get; set; }
         private Plan _planEdit { get; set; }
         private PlanWindowViewModel _planWindowViewModel;
+        private ProjectControl _projectControl = new ProjectControl();
 
         public PlanEditWindowViewModel(PlanWindowViewModel planWindowViewModel)
         {
-            Title = "Создание плана";
             _planWindowViewModel = planWindowViewModel;
             _planEdit = planWindowViewModel.PlanEdit;
 
-            if (_planEdit != null)
-            {
-                Plan = new Plan(_planEdit);
-                setStrings();
-            }
-            else
-            {
-                clearStrings();
-            }
-            
+            Plan = new Plan(_planEdit);
+            Users = new List<User>();
+            Users = _userControl.GetAllUsersList();
+            UsersDirector = new List<User>();
+            UsersDirector = _userControl.GetAllUsersList();
+            int serviceId = _projectControl.GetServiceIdByProjectId(_planEdit.projectId);
+            Projects = _projectControl.GetAllProjectsByServiceId(serviceId);
+            Project pr = _projectControl.GetProjectById(_planEdit.projectId);
+            ItemIndex = Projects.FindIndex(x => x.Id == pr.Id);
+            User resp = _userControl.GetUserById(_planEdit.responsibleId);
+            ResponsibleIndex = Users.FindIndex(x => x.id == resp.id);
+            User director = _userControl.GetUserById(_planEdit.directorId);
+            DirectorIndex = Users.FindIndex(x => x.id == director.id);
+            Title = _planEdit.id != 0 ? "Редактирование плана" : "Создание плана";
         }
 
-       
-        /// <summary>
-        /// Инициализируем поля формы в случае редактирования плана
-        /// </summary>
-        private void setStrings()
-        {
-            if (Plan != null)
-            {
-                
-                Title = "Редактирование плана";   
-                
-                Users = new List<string>();
-                Users = _userControl.GetAllFullNameUsers();
-                UsersDirector = new List<string>();
-                UsersDirector = _userControl.GetAllFullNameUsers();
-
-                ResponsibleFullName = _userControl.GetFullNameById(Plan.responsibleId);
-                DirectorFullName = _userControl.GetFullNameById(Plan.directorId);
-            }
-        }
-
-        /// <summary>
-        /// Инициализируем поля формы в случае создания плана
-        /// </summary>
-        private void clearStrings()
-        {
-            Plan = new Plan(0,"", DateTime.Now, DateTime.Now,0,0,"");
-            ResponsibleFullName = "";
-            DirectorFullName = "";
-            Title = "Создание плана";
-            Users = new List<string>();
-            Users = _userControl.GetAllFullNameUsers();
-            UsersDirector = new List<string>();
-            UsersDirector = _userControl.GetAllFullNameUsers();
-        }
 
         private void SendDialogResultPlanMethod(object currentWindow)
         {
@@ -84,12 +55,7 @@ namespace ReportGenerator.ViewModels
             {
                 try
                 {
-                    Plan.responsibleId = _userControl.GetIddByFullName(ResponsibleFullName);
-                    Plan.directorId = _userControl.GetIddByFullName(DirectorFullName);
-
-                    
                     _planWindowViewModel.NewPlan = Plan;
-
                     Window wnd = currentWindow as Window;
                     wnd.DialogResult = true;
                     wnd.Close();

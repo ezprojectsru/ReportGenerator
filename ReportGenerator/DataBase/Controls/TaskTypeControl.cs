@@ -87,6 +87,24 @@ namespace ReportGenerator.DataBase.Controls
             return shortName;
         }
 
+        public TaskType GetTaskTypeById(int id)
+        {
+            TaskType tt = new TaskType();
+            try
+            {
+                SqlConnection connection = _db.GetConnection();
+                tt = connection.Query<TaskType>("SELECT * FROM types WHERE id = @id", new { id })
+                    .FirstOrDefault();
+                connection.Dispose();
+            }
+            catch (Exception ex)
+            {
+                File.AppendAllText(Constants.LogFileName, ex.ToString());
+            }
+
+            return tt;
+        }
+
         public int GetIdByShortName(string shortName)
         {
             int taskTypeId = 0;

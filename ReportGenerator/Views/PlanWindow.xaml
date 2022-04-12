@@ -5,23 +5,106 @@
     xmlns:c="clr-namespace:ReportGenerator.DataBase.Converters"
     xmlns:core="http://schemas.devexpress.com/winfx/2008/xaml/core"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
     xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    x:Name="Page"
     Title="PlanWindow"
     d:DesignHeight="550"
     d:DesignWidth="800"
     DataContext="{Binding PlanWindowViewModel, Source={StaticResource VmLocator}}"
     mc:Ignorable="d">
+
+
+
     <Grid>
         <Rectangle Fill="White" />
         <TabControl Margin="10">
             <TabItem x:Name="ownPlans">
                 <TabItem.Header>
-                    <TextBlock Margin="3">Личные планы</TextBlock>
+                    <TextBlock Margin="3"><Run Text="Личные планы" /></TextBlock>
                 </TabItem.Header>
-                <TabItem.Content>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="220" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
 
-                    <Grid>
+                    <dxe:ListBoxEdit
+                        Grid.Column="0"
+                        Margin="5,0"
+                        Padding="3"
+                        ItemsSource="{Binding WorkServices}"
+                        SelectedItem="{Binding WorkServiceSelected}"
+                        SelectionMode="Single">
+
+                        <dxe:ListBoxEdit.ItemTemplate>
+                            <DataTemplate>
+
+                                <Grid Margin="0,5,0,0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="175" />
+                                        <ColumnDefinition Width="10" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock
+                                        Grid.Column="0"
+                                        Height="auto"
+                                        Text="{Binding Name}"
+                                        TextWrapping="WrapWithOverflow" />
+                                    <TextBlock
+                                        Grid.Column="1"
+                                        Margin="0,0,3,0"
+                                        HorizontalAlignment="Right"
+                                        VerticalAlignment="Center"
+                                        Text="{Binding Projects.Count}" />
+
+                                </Grid>
+
+                            </DataTemplate>
+                        </dxe:ListBoxEdit.ItemTemplate>
+                    </dxe:ListBoxEdit>
+
+
+
+
+                    <!-- <ListBox
+                            Grid.Column="0"
+                            Margin="5,0"
+                            Padding="0,5"
+                            ItemsSource="{Binding WorkServices}"
+                            SelectedItem="{Binding WorkServiceSelected}">
+
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <Border
+                                        Padding="3"
+                                        Background="White"
+                                        BorderBrush="Gainsboro"
+                                        BorderThickness="1">
+                                        <Grid Margin="0,5,0,0">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="177" />
+                                                <ColumnDefinition Width="10" />
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock
+                                                Grid.Column="0"
+                                                Height="auto"
+                                                Text="{Binding Name}"
+                                                TextWrapping="WrapWithOverflow" />
+                                            <TextBlock
+                                                Grid.Column="1"
+                                                Margin="0,0,3,0"
+                                                HorizontalAlignment="Right"
+                                                VerticalAlignment="Center"
+                                                Text="{Binding Projects.Count}" />
+
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>-->
+
+                    <Grid Grid.Column="1">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="400" MaxHeight="400" />
                             <RowDefinition Height="*" />
@@ -33,7 +116,7 @@
                                 BorderThickness="1">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="300" />
+                                        <ColumnDefinition Width="200" />
                                         <ColumnDefinition Width="*" />
                                     </Grid.ColumnDefinitions>
 
@@ -49,61 +132,98 @@
                                         Grid.Column="1"
                                         HorizontalAlignment="Right"
                                         Orientation="Horizontal">
-                                        
-                                        <Button Content="&lt;" Width="20" Height="40" Margin="5" Command="{Binding GoToLastWeek}"/>
-                                        <ComboBox HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+
+                                        <Button
+                                            Width="20"
+                                            Height="40"
+                                            Margin="5"
+                                            Command="{Binding GoToLastWeek}"
+                                            Content="&lt;" />
+                                        <ComboBox
                                             Width="205"
                                             Height="40"
                                             Margin="5"
+                                            HorizontalContentAlignment="Center"
+                                            VerticalContentAlignment="Center"
                                             ItemsSource="{Binding WorkCalendars}"
-                                            SelectedItem="{Binding WorkCalendar}"
-                                            SelectedIndex="{Binding SelectWCPos}">
+                                            SelectedIndex="{Binding SelectWCPos}"
+                                            SelectedItem="{Binding WorkCalendar}">
 
                                             <ComboBox.ItemTemplate>
                                                 <DataTemplate>
                                                     <StackPanel Orientation="Horizontal">
-                                                        <TextBlock Text="{Binding Path=WeekNumber}" />
+                                                        <TextBlock Text="{Binding WeekNumber}" />
                                                         <TextBlock Text=" НЕД. | " />
-                                                        <TextBlock Text="{Binding Path=StartWeek, StringFormat='dd.MM.yyyy'}" />
+                                                        <TextBlock Text="{Binding StartWeek, StringFormat=dd.MM.yyyy}" />
                                                         <TextBlock Text=" - " />
-                                                        <TextBlock Text="{Binding Path=EndWeek, StringFormat='dd.MM.yyyy'}" />
+                                                        <TextBlock Text="{Binding EndWeek, StringFormat=dd.MM.yyyy}" />
                                                         <TextBlock Text=" (" />
-                                                        <TextBlock Text="{Binding Path=WorkDays}" />
+                                                        <TextBlock Text="{Binding WorkDays}" />
                                                         <TextBlock Text=" раб. дней)" />
                                                     </StackPanel>
                                                 </DataTemplate>
                                             </ComboBox.ItemTemplate>
                                         </ComboBox>
-                                        <Button Content="&gt;" Width="20" Height="40" Margin="5 0 20 0" Command="{Binding GoToNextWeek}"/>
+                                        <Button
+                                            Width="20"
+                                            Height="40"
+                                            Margin="5,0,20,0"
+                                            Command="{Binding GoToNextWeek}"
+                                            Content="&gt;" />
 
-                                        <Button
-                                            Width="105"
-                                            Height="40"
-                                            Margin="0,0,5,0"
-                                            Padding="10"
-                                            Content="Создать отчет"
-                                            IsEnabled="False" />
-                                        <Button
-                                            Width="105"
-                                            Height="40"
-                                            Margin="0,0,5,0"
-                                            Padding="10"
-                                            Command="{Binding OpenCreateNewPlanWindow}"
-                                            Content="+ Добавить" />
-                                        <Button
-                                            Width="105"
-                                            Height="40"
-                                            Margin="0,0,5,0"
-                                            Padding="10"
-                                            Command="{Binding OpenEditSelectedPlanWindow}"
-                                            Content="Редактировать" />
-                                        <Button
-                                            Width="105"
-                                            Height="40"
-                                            Margin="0,0,5,0"
-                                            Padding="10"
-                                            Command="{Binding DeleteSelectedPlan}"
-                                            Content="Удалить" />
+                                        <GroupBox Header="Проекты">
+                                            <StackPanel Orientation="Horizontal">
+                                                <Button
+                                                    Width="50"
+                                                    Height="40"
+                                                    Margin="0,0,5,0"
+                                                    Padding="10"
+                                                    Command="{Binding OpenCreateNewProjectWindow}"
+                                                    Content="Add" />
+                                                <Button
+                                                    Width="50"
+                                                    Height="40"
+                                                    Margin="0,0,5,0"
+                                                    Padding="10"
+                                                    Command="{Binding OpenEditSelectedProjectWindow}"
+                                                    Content="Edit" />
+                                                <Button
+                                                    Width="50"
+                                                    Height="40"
+                                                    Margin="0,0,5,0"
+                                                    Padding="10"
+                                                    Command="{Binding DeleteSelectedProject}"
+                                                    Content="Del" />
+                                            </StackPanel>
+                                        </GroupBox>
+
+
+
+                                        <GroupBox Header="Планы">
+                                            <StackPanel Orientation="Horizontal">
+                                                <Button
+                                                    Width="50"
+                                                    Height="40"
+                                                    Margin="0,0,5,0"
+                                                    Padding="10"
+                                                    Command="{Binding OpenCreateNewPlanWindow}"
+                                                    Content="Add" />
+                                                <Button
+                                                    Width="50"
+                                                    Height="40"
+                                                    Margin="0,0,5,0"
+                                                    Padding="10"
+                                                    Command="{Binding OpenEditSelectedPlanWindow}"
+                                                    Content="Edit" />
+                                                <Button
+                                                    Width="50"
+                                                    Height="40"
+                                                    Margin="0,0,5,0"
+                                                    Padding="10"
+                                                    Command="{Binding DeleteSelectedPlan}"
+                                                    Content="Del" />
+                                            </StackPanel>
+                                        </GroupBox>
                                     </StackPanel>
                                 </Grid>
                             </Border>
@@ -145,73 +265,222 @@
                         </GridView>
                     </ListView.View>
                 </ListView>-->
+                            <!-- <dxg:GridControl
+                                    Height="150"
+                                    MinWidth="700"
+                                    MaxHeight="150"
+                                    HorizontalAlignment="Stretch"
+                                    VerticalAlignment="Stretch"
+                                    core:ThemeManager.ThemeName="Office2019Colorful"
+                                    ItemsSource="{Binding Plans}"
+                                    SelectedItem="{Binding PlanSelected}"
+                                    SelectionMode="Row">
+
+                                    <dxg:GridControl.View>
+                                        <dxg:TableView ShowGroupPanel="False" VerticalScrollbarVisibility="Auto" />
+                                    </dxg:GridControl.View>
+
+                                    <dxg:GridControl.Columns>
+                                        <dxg:GridColumn
+                                            Width="auto"
+                                            MinWidth="150"
+                                            AllowEditing="False"
+                                            AllowFocus="False"
+                                            Binding="{Binding Name}"
+                                            Header="Проект / Категория"
+                                            IsSmart="False"
+                                            SortMode="Default" />
+                                        <dxg:GridColumn
+                                            AllowEditing="False"
+                                            AllowFocus="False"
+                                            Binding="{Binding StartDate, StringFormat='dd.MM.yyyy'}"
+                                            Header="Старт"
+                                            IsSmart="False"
+                                            SortMode="Default" />
+                                        <dxg:GridColumn
+                                            AllowEditing="False"
+                                            AllowFocus="False"
+                                            Binding="{Binding FinishDate, StringFormat='dd.MM.yyyy'}"
+                                            Header="План"
+                                            IsSmart="False"
+                                            SortMode="Default" />
+                                        <dxg:GridColumn
+                                            Width="auto"
+                                            MinWidth="150"
+                                            AllowEditing="False"
+                                            AllowFocus="False"
+                                            Binding="{Binding Responsible}"
+                                            Header="Ответственный"
+                                            IsSmart="False"
+                                            SortMode="Default" />
+                                        <dxg:GridColumn
+                                            Width="auto"
+                                            MinWidth="150"
+                                            AllowEditing="False"
+                                            AllowFocus="False"
+                                            Binding="{Binding Director}"
+                                            Header="Руководитель"
+                                            IsSmart="False"
+                                            SortMode="Default" />
+                                        <dxg:GridColumn
+                                            Width="1*"
+                                            MinWidth="150"
+                                            AllowEditing="False"
+                                            AllowFocus="False"
+                                            Binding="{Binding Comment}"
+                                            Header="Комментарии"
+                                            IsSmart="False"
+                                            SortMode="Default" />
+                                    </dxg:GridControl.Columns>
+                                </dxg:GridControl>-->
+
                             <dxg:GridControl
+                                x:Name="GP"
                                 Height="330"
-                                MinWidth="700"
                                 MaxHeight="330"
-                                HorizontalAlignment="Stretch"
-                                VerticalAlignment="Stretch"
                                 core:ThemeManager.ThemeName="Office2019Colorful"
-                                ItemsSource="{Binding Plans}"
-                                SelectedItem="{Binding PlanSelected}"
+                                AutoPopulateColumns="True"
+                                ItemsSource="{Binding MyProjects}"
+                                SelectedItem="{Binding MyProjectSelected}"
                                 SelectionMode="Row">
 
+                                <dxg:GridControl.Resources>
+                                    <c:ProjectStatusConverter x:Key="IdStatusConverter" />
+                                </dxg:GridControl.Resources>
+
                                 <dxg:GridControl.View>
-                                    <dxg:TableView ShowGroupPanel="False" VerticalScrollbarVisibility="Auto" />
+                                    <dxg:TableView
+                                        AllowEditing="False"
+                                        ShowGroupPanel="False"
+                                        VerticalScrollbarVisibility="Auto" />
                                 </dxg:GridControl.View>
 
-                                <dxg:GridControl.Columns>
-                                    <dxg:GridColumn
-                                        Width="auto"
-                                        MinWidth="150"
-                                        AllowEditing="False"
-                                        AllowFocus="False"
-                                        Binding="{Binding Name}"
-                                        Header="Проект / Категория"
-                                        IsSmart="False"
-                                        SortMode="Default" />
-                                    <dxg:GridColumn
-                                        AllowEditing="False"
-                                        AllowFocus="False"
-                                        Binding="{Binding StartDate, StringFormat='dd.MM.yyyy'}"
-                                        Header="Старт"
-                                        IsSmart="False"
-                                        SortMode="Default" />
-                                    <dxg:GridColumn
-                                        AllowEditing="False"
-                                        AllowFocus="False"
-                                        Binding="{Binding FinishDate, StringFormat='dd.MM.yyyy'}"
-                                        Header="План"
-                                        IsSmart="False"
-                                        SortMode="Default" />
-                                    <dxg:GridColumn
-                                        Width="auto"
-                                        MinWidth="150"
-                                        AllowEditing="False"
-                                        AllowFocus="False"
-                                        Binding="{Binding Responsible}"
-                                        Header="Ответственный"
-                                        IsSmart="False"
-                                        SortMode="Default" />
-                                    <dxg:GridColumn
-                                        Width="auto"
-                                        MinWidth="150"
-                                        AllowEditing="False"
-                                        AllowFocus="False"
-                                        Binding="{Binding Director}"
-                                        Header="Руководитель"
-                                        IsSmart="False"
-                                        SortMode="Default" />
-                                    <dxg:GridColumn
-                                        Width="1*"
-                                        MinWidth="150"
-                                        AllowEditing="False"
-                                        AllowFocus="False"
-                                        Binding="{Binding Comment}"
-                                        Header="Комментарии"
-                                        IsSmart="False"
-                                        SortMode="Default" />
-                                </dxg:GridControl.Columns>
+                                <dxg:GridControl.DetailDescriptor>
+                                    <dxg:DataControlDetailDescriptor ItemsSourceBinding="{Binding ProjectPlans}">
+
+                                        <dxg:GridControl
+                                            Height="150"
+                                            MinWidth="700"
+                                            MaxHeight="150"
+                                            HorizontalAlignment="Stretch"
+                                            VerticalAlignment="Stretch"
+                                            core:ThemeManager.ThemeName="Office2019Colorful"
+                                            SelectedItem="{Binding CurrentPlanSelected}"
+                                            SelectionMode="Row">
+
+                                            <dxg:GridControl.Resources>
+                                                <c:UserIdFullNameConverter x:Key="UserIdFullNameConverter" />
+                                            </dxg:GridControl.Resources>
+
+                                            <dxg:GridControl.View>
+                                                <dxg:TableView
+                                                    AllowEditing="False"
+                                                    ShowGroupPanel="False"
+                                                    VerticalScrollbarVisibility="Auto" />
+                                            </dxg:GridControl.View>
+
+                                            <dxg:GridColumn
+                                                Width="auto"
+                                                MinWidth="150"
+                                                AllowEditing="False"
+                                                AllowFocus="False"
+                                                Binding="{Binding name}"
+                                                Header="Проект / Категория"
+                                                IsSmart="False"
+                                                SortMode="Default" />
+                                            <dxg:GridColumn
+                                                AllowEditing="False"
+                                                AllowFocus="False"
+                                                Binding="{Binding startDate, StringFormat=dd.MM.yyyy}"
+                                                Header="Старт"
+                                                IsSmart="False"
+                                                SortMode="Default" />
+                                            <dxg:GridColumn
+                                                AllowEditing="False"
+                                                AllowFocus="False"
+                                                Binding="{Binding finishDate, StringFormat=dd.MM.yyyy}"
+                                                Header="План"
+                                                IsSmart="False"
+                                                SortMode="Default" />
+                                            <dxg:GridColumn
+                                                Width="auto"
+                                                MinWidth="150"
+                                                AllowEditing="False"
+                                                AllowFocus="False"
+                                                Binding="{Binding responsibleId, Converter={StaticResource UserIdFullNameConverter}}"
+                                                Header="Ответственный"
+                                                IsSmart="False"
+                                                SortMode="Default" />
+                                            <dxg:GridColumn
+                                                Width="auto"
+                                                MinWidth="150"
+                                                AllowEditing="False"
+                                                AllowFocus="False"
+                                                Binding="{Binding directorId, Converter={StaticResource UserIdFullNameConverter}}"
+                                                Header="Руководитель"
+                                                IsSmart="False"
+                                                SortMode="Default" />
+                                            <dxg:GridColumn
+                                                Width="1*"
+                                                MinWidth="150"
+                                                AllowEditing="False"
+                                                AllowFocus="False"
+                                                Binding="{Binding comment}"
+                                                Header="Комментарии"
+                                                IsSmart="False"
+                                                SortMode="Default" />
+                                        </dxg:GridControl>
+                                    </dxg:DataControlDetailDescriptor>
+                                </dxg:GridControl.DetailDescriptor>
+                                <dxg:GridColumn
+                                    Width="3*"
+                                    MinWidth="400"
+                                    AllowEditing="False"
+                                    AllowFocus="False"
+                                    Binding="{Binding Name}"
+                                    Header="Название проекта"
+                                    IsSmart="False"
+                                    SortMode="Default" />
+
+                                <dxg:GridColumn
+                                    Width="100"
+                                    MinWidth="100"
+                                    AllowEditing="False"
+                                    AllowFocus="False"
+                                    Binding="{Binding StatusPercent}"
+                                    Header="Прогресс"
+                                    IsSmart="False"
+                                    SortMode="Default">
+                                    <dxg:GridColumn.DisplayTemplate>
+                                        <ControlTemplate>
+                                            <ProgressBar
+                                                Maximum="100"
+                                                Minimum="0"
+                                                Value="{Binding Value, Mode=OneWay}" />
+                                        </ControlTemplate>
+                                    </dxg:GridColumn.DisplayTemplate>
+                                </dxg:GridColumn>
+
+                                <dxg:GridColumn
+                                    Width="100"
+                                    MinWidth="100"
+                                    AllowEditing="False"
+                                    AllowFocus="False"
+                                    Binding="{Binding ProjectStatusId, Converter={StaticResource IdStatusConverter}}"
+                                    Header="Статус"
+                                    IsSmart="False"
+                                    SortMode="Default" />
+                                <dxg:GridColumn
+                                    Width="2*"
+                                    MinWidth="150"
+                                    AllowEditing="False"
+                                    AllowFocus="False"
+                                    Binding="{Binding Description}"
+                                    Header="Комментарии"
+                                    IsSmart="False"
+                                    SortMode="Default" />
+
+
                             </dxg:GridControl>
                         </StackPanel>
                         <StackPanel Grid.Row="1" Orientation="Vertical">
@@ -230,32 +499,40 @@
                                         HorizontalAlignment="Left"
                                         FontSize="16"
                                         FontWeight="Bold"
-                                        Text="Личные задачи" />
+                                        Text="Задачи" />
                                     <StackPanel
                                         Grid.Column="1"
                                         HorizontalAlignment="Right"
                                         Orientation="Horizontal">
-                                        <Button
-                                            Width="105"
-                                            Height="40"
-                                            Margin="0,0,5,0"
-                                            Padding="10"
-                                            Command="{Binding OpenCreateNewTaskWindow}"
-                                            Content="+ Добавить" />
-                                        <Button
-                                            Width="105"
-                                            Height="40"
-                                            Margin="0,0,5,0"
-                                            Padding="10"
-                                            Command="{Binding OpenEditSelectedTaskWindow}"
-                                            Content="Радактировать" />
-                                        <Button
-                                            Width="105"
-                                            Height="40"
-                                            Margin="0,0,5,0"
-                                            Padding="10"
-                                            Command="{Binding DeleteSelectedtask}"
-                                            Content="Удалить" />
+                                        
+                                        <GroupBox Width="180" Header="Задачи">
+                                            <StackPanel
+                                                Grid.Column="1"
+                                                HorizontalAlignment="Right"
+                                                Orientation="Horizontal">
+                                                <Button
+                                                    Width="50"
+                                                    Height="40"
+                                                    Margin="0,0,5,0"
+                                                    Padding="10"
+                                                    Command="{Binding OpenCreateNewTaskWindow}"
+                                                    Content="Add" />
+                                                <Button
+                                                    Width="50"
+                                                    Height="40"
+                                                    Margin="0,0,5,0"
+                                                    Padding="10"
+                                                    Command="{Binding OpenEditSelectedTaskWindow}"
+                                                    Content="Edit" />
+                                                <Button
+                                                    Width="50"
+                                                    Height="40"
+                                                    Margin="0,0,5,0"
+                                                    Padding="10"
+                                                    Command="{Binding DeleteSelectedtask}"
+                                                    Content="Del" />
+                                            </StackPanel>
+                                        </GroupBox>
                                     </StackPanel>
                                 </Grid>
                             </Border>
@@ -311,99 +588,113 @@
                                 SelectedItem="{Binding TaskSelected}"
                                 SelectionMode="Row">
 
-                                <dxg:GridControl.View>
-                                    <dxg:TableView ShowGroupPanel="False"/>
-                                </dxg:GridControl.View>
                                 <dxg:GridControl.Resources>
                                     <c:TaskTypeIdConverter x:Key="IdConverter" />
+                                    <c:ReportConverter x:Key="ReportConverter" />
                                 </dxg:GridControl.Resources>
 
-                                <dxg:GridControl.Columns>
-                                    <dxg:GridColumn
-                                        Width="auto"
-                                        MinWidth="200"
-                                        AllowEditing="False"
-                                        AllowFocus="False"
-                                        Binding="{Binding name}"
-                                        Header="Задача"
-                                        IsSmart="False"
-                                        SortMode="Default" />
-                                    <dxg:GridColumn
-                                        Width="auto"
-                                        MinWidth="70"
-                                        AllowEditing="False"
-                                        AllowFocus="False"
-                                        Binding="{Binding priority}"
-                                        Header="Приоритет"
-                                        IsSmart="False"
-                                        SortMode="Default" />
-                                    <dxg:GridColumn
-                                        Width="auto"
-                                        MinWidth="70"
-                                        AllowEditing="False"
-                                        AllowFocus="False"
-                                        Binding="{Binding typeId, Converter={StaticResource IdConverter}}"
-                                        Header="Тип"
-                                        IsSmart="False"
-                                        SortMode="Default" />
-                                    <dxg:GridColumn
-                                        Width="auto"
-                                        MinWidth="50"
-                                        AllowEditing="False"
-                                        AllowFocus="False"
-                                        Binding="{Binding intensity}"
-                                        Header="Часы"
-                                        IsSmart="False"
-                                        SortMode="Default" />
-                                    <dxg:GridColumn
-                                        Width="auto"
-                                        MinWidth="50"
-                                        AllowEditing="False"
-                                        AllowFocus="False"
-                                        Binding="{Binding startCompletion}"
-                                        Header="Старт"
-                                        IsSmart="False"
-                                        SortMode="Default" />
-                                    <dxg:GridColumn
-                                        Width="auto"
-                                        MinWidth="50"
-                                        AllowEditing="False"
-                                        AllowFocus="False"
-                                        Binding="{Binding planCompletion}"
-                                        Header="План"
-                                        IsSmart="False"
-                                        SortMode="Default" />
-                                    <dxg:GridColumn
-                                        Width="1*"
-                                        MinWidth="150"
-                                        AllowEditing="False"
-                                        AllowFocus="False"
-                                        Binding="{Binding comment}"
-                                        Header="Комментарии"
-                                        IsSmart="False"
-                                        SortMode="Default" />
-                                </dxg:GridControl.Columns>
+                                <dxg:GridControl.View>
+                                    <dxg:TreeListView
+                                        Name="treeListView"
+                                        AutoWidth="True"
+                                        KeyFieldName="id"
+                                        ParentFieldName="reportId"
+                                        TreeDerivationMode="Selfreference" />
+                                </dxg:GridControl.View>
+
+                                <dxg:GridColumn
+                                    Width="70"
+                                    
+                                    AllowEditing="False"
+                                    AllowFocus="False"
+                                    Binding="{Binding reportId, Converter={StaticResource ReportConverter} }"
+                                    Header="План/Факт"
+                                    IsSmart="False"
+                                    SortMode="Default" />
+
+                                <dxg:GridColumn
+                                    Width="auto"
+                                    MinWidth="150"
+                                    AllowEditing="False"
+                                    AllowFocus="False"
+                                    Binding="{Binding name}"
+                                    Header="Задача"
+                                    IsSmart="False"
+                                    SortMode="Default" />
+                                <dxg:GridColumn
+                                    Width="auto"
+                                    MinWidth="70"
+                                    AllowEditing="False"
+                                    AllowFocus="False"
+                                    Binding="{Binding priority}"
+                                    Header="Приоритет"
+                                    IsSmart="False"
+                                    SortMode="Default" />
+                                <dxg:GridColumn
+                                    Width="auto"
+                                    MinWidth="35"
+                                    AllowEditing="False"
+                                    AllowFocus="False"
+                                    Binding="{Binding typeId, Converter={StaticResource IdConverter}}"
+                                    Header="Тип"
+                                    IsSmart="False"
+                                    SortMode="Default" />
+                                <dxg:GridColumn
+                                    Width="auto"
+                                    MinWidth="35"
+                                    AllowEditing="False"
+                                    AllowFocus="False"
+                                    Binding="{Binding intensity}"
+                                    Header="Часы"
+                                    IsSmart="False"
+                                    SortMode="Default" />
+                                <dxg:GridColumn
+                                    Width="auto"
+                                    MinWidth="40"
+                                    AllowEditing="False"
+                                    AllowFocus="False"
+                                    Binding="{Binding startCompletion}"
+                                    Header="Старт"
+                                    IsSmart="False"
+                                    SortMode="Default" />
+                                <dxg:GridColumn
+                                    Width="auto"
+                                    MinWidth="40"
+                                    AllowEditing="False"
+                                    AllowFocus="False"
+                                    Binding="{Binding planCompletion}"
+                                    Header="План"
+                                    IsSmart="False"
+                                    SortMode="Default" />
+                                <dxg:GridColumn
+                                    Width="1*"
+                                    MinWidth="150"
+                                    AllowEditing="False"
+                                    AllowFocus="False"
+                                    Binding="{Binding comment}"
+                                    Header="Комментарии"
+                                    IsSmart="False"
+                                    SortMode="Default" />
                             </dxg:GridControl>
+
                         </StackPanel>
                     </Grid>
-                </TabItem.Content>
+                </Grid>
             </TabItem>
             <TabItem x:Name="departamentPlans">
                 <TabItem.Header>
-                    <TextBlock Margin="3">Планы отдела</TextBlock>
+                    <TextBlock Margin="3"><Run Text="Планы отдела" /></TextBlock>
                 </TabItem.Header>
-                <TabItem.Content>
-                    <TextBlock HorizontalAlignment="Center" Text="Отдел" />
-                </TabItem.Content>
+                <TextBlock HorizontalAlignment="Center" Text="Отдел" />
             </TabItem>
             <TabItem x:Name="allPlans">
                 <TabItem.Header>
-                    <TextBlock Margin="3">Все планы</TextBlock>
+                    <TextBlock Margin="3"><Run Text="Все планы" /></TextBlock>
                 </TabItem.Header>
-                <TabItem.Content>
-                    <TextBlock HorizontalAlignment="Center" Text="Все" />
-                </TabItem.Content>
+                <TextBlock HorizontalAlignment="Center" Text="Все" />
             </TabItem>
         </TabControl>
     </Grid>
+
+
 </Page>

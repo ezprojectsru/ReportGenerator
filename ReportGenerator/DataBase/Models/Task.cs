@@ -16,6 +16,7 @@ namespace ReportGenerator.DataBase.Models
         public int intensity { get; set; }
         public int startCompletion { get; set; }
         public int planCompletion { get; set; }
+        public int reportId { get; set; }
         public string comment { get; set; }
 
         public Task()
@@ -32,10 +33,11 @@ namespace ReportGenerator.DataBase.Models
             this.intensity = task.intensity;
             this.startCompletion = task.startCompletion;
             this.planCompletion = task.planCompletion;
+            this.reportId = task.reportId;
             this.comment = task.comment;
         }
 
-        public Task(int id, string name, int planId, int priority, int typeId, int intensity, int startCompletion, int planCompletion, string comment)
+        public Task(int id, string name, int planId, int priority, int typeId, int intensity, int startCompletion, int planCompletion, int reportId, string comment)
         {
             this.id = id;
             this.name = name;
@@ -45,6 +47,7 @@ namespace ReportGenerator.DataBase.Models
             this.intensity = intensity;
             this.startCompletion = startCompletion;
             this.planCompletion = planCompletion;
+            this.reportId = reportId;
             this.comment = comment;
         }
     }

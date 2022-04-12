@@ -1,0 +1,75 @@
+﻿<Window
+    x:Name="Window"
+    x:Class="ReportGenerator.Views.ProjectEditWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:c="clr-namespace:ReportGenerator.DataBase.Converters"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:ReportGenerator.Views"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+    Title="ProjectEditWindow"
+    Width="400"
+    Height="450"
+    DataContext="{Binding Source={StaticResource VmLocator}, Path=ProjectEditWindowViewModel}"
+    WindowStartupLocation="CenterScreen"
+    mc:Ignorable="d">
+    <Grid>
+        <StackPanel
+            Width="300"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Orientation="Vertical">
+            <StackPanel.Resources>
+                <c:WorkServiceConverter x:Key="WorkServiceConverter" />
+                <c:ProjectStatusListConverter x:Key="ProjectStatusListConverter" />
+            </StackPanel.Resources>
+            <TextBlock
+                Margin="10"
+                HorizontalAlignment="Center"
+                FontSize="18"
+                FontWeight="Bold"
+                Text="{Binding Title}" />
+            <TextBlock Margin="0,5,0,0" Text="Сервис" />
+            <ComboBox
+                DisplayMemberPath="Name"
+                ItemsSource="{Binding WorkServices}"
+                SelectedIndex="{Binding WorkServiceIndex}"
+                SelectedItem="{Binding Project.ServicesId, Converter={StaticResource WorkServiceConverter}}" />
+            <TextBlock Text="Название проекта" />
+            <TextBox Text="{Binding Project.Name}" />
+            <TextBlock Text="Статус проекта" />
+            <ComboBox
+                DisplayMemberPath="Name"
+                ItemsSource="{Binding ProjectStatuses}"
+                SelectedIndex="{Binding ProjectStatusIndex}"
+                SelectedItem="{Binding Project.ProjectStatusId, Converter={StaticResource ProjectStatusListConverter}}" />
+            <TextBlock Text="Прогресс" />
+            <dxe:SpinEdit
+                
+                DisplayFormatString="{}{0}%"
+                Increment="5"
+                MaxValue="100"
+                MinValue="0"
+                Value="{Binding Project.StatusPercent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            <StackPanel
+                Margin="0,10,0,0"
+                HorizontalAlignment="Right"
+                Orientation="Horizontal">
+                <Button
+                    Margin="2"
+                    Padding="5"
+                    Content="Отмена"
+                    IsCancel="True" />
+                <Button
+                    Margin="2"
+                    Padding="5"
+                    Command="{Binding SendDialogResultProject}"
+                    CommandParameter="{Binding ElementName=Window}"
+                    Content="Сохранить"
+                    IsDefault="True" />
+            </StackPanel>
+        </StackPanel>
+
+    </Grid>
+</Window>

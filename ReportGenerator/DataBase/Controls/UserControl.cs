@@ -41,6 +41,26 @@ namespace ReportGenerator.DataBase.Controls
             return fullName;
         }
 
+        public User GetUserById(int id)
+        {
+            User user = new User();
+            try
+            {
+                SqlConnection connection = _db.GetConnection();
+                user = connection.Query<User>("SELECT * FROM users WHERE id = @id", new { id })
+                    .FirstOrDefault();
+                connection.Dispose();
+            }
+            catch (Exception ex)
+            {
+                File.AppendAllText(Constants.LogFileName, ex.ToString());
+            }
+
+            return user;
+        }
+
+
+
         /// <summary>
         /// Возвращает id отдела пользователя по id пользователя
         /// </summary>
